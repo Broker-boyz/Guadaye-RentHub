@@ -1,9 +1,8 @@
-# Gojo-RentHub
-Home rent mobile app
+# Gojo-RentHub : Home rent mobile app
 
 ## Introduction
 
-Welcome to our Flutter Gojo-RentHub home rent mobile app Project! This project aims to showcase the capabilities of Flutter in building a robust and feature-rich Gojo-RentHub application. 
+Welcome to our Flutter Gojo-RentHub home rent mobile app project! Gojo-RentHub is designed to simplify the process of finding and renting homes, offering a seamless experience for both tenants and landlords. This project showcases the capabilities of Flutter in building a robust and feature-rich application for the real estate sector.
 
 ## Getting Started
 
