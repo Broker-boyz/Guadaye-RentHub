@@ -13,7 +13,7 @@ Before you begin contributing, make sure you have the following prerequisites in
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/flutter-ecommerce-capstone.git
+git clone https://github.com/your-username/Gojo-RentHub.git
 cd flutter-ecommerce-capstone
 ```
 
