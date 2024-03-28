@@ -14,7 +14,7 @@ Clone the repository to your local machine:
 
 ```bash
 git clone https://github.com/your-username/Gojo-RentHub.git
-cd flutter-ecommerce-capstone
+cd Gojo-RentHub
 ```
 
 Install dependencies:
