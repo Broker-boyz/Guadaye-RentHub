@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "676181882639",
+    "project_id": "gojo-renthub",
+    "storage_bucket": "gojo-renthub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676181882639:android:fa5b7d015ae43dbba1707a",
+        "android_client_info": {
+          "package_name": "com.example.gojo_renthub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1r_eilxmpACcZ7uxjeIRWIIZ-DA4Weg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
