@@ -14,11 +14,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
 final List<House> houseList = [
-  House(name: "Addis Ababa", houseImage: "Assets/images/house.jpg", price: 12,
+    House(
+        name: "Addis Ababa",
+        houseImage: "assets/images/house.jpg",
+        price: 12,
      bedroom: 12, bathroom: 12, long: 12.0, lat: 12.0, details: "Hello john",type: HouseType.Apartment,locationName: "Piyassa"),
-      House(name: "Addis Ababa", houseImage: "Assets/images/house.jpg", price: 12,
+    House(
+        name: "Addis Ababa",
+        houseImage: "assets/images/house.jpg",
+        price: 12,
      bedroom: 12, bathroom: 12, long: 12.0, lat: 12.0, details: "Hello john", type: HouseType.Condo, locationName: "Piyasa"),
-      House(name: "Addis Ababa", houseImage: "Assets/images/house.jpg", price: 12,
+    House(
+        name: "Addis Ababa",
+        houseImage: "assets/images/house.jpg",
+        price: 12,
      bedroom: 12, bathroom: 12, long: 12.0, lat: 12.0, details: "Hello john", type: HouseType.Hotel, locationName: "Asko"), 
      ];
 
@@ -26,10 +35,10 @@ final List<House> houseList = [
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Addis"),
+        title: const Text("Addis"),
         
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.notifications))
+          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))
         ],
       ),
 
@@ -69,7 +78,7 @@ final List<House> houseList = [
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Container(
+                                  child: SizedBox(
                                     height: 100,
                                     width: 110,
                                     child: ClipRRect(

@@ -42,6 +42,7 @@ dependencies:
   get: ^4.6.6
   provider: ^6.1.2
   flash: ^3.0.5+2
+  dot_navigation_bar: ^1.0.2
   flutter_screenutil: ^5.9.0
 
 dev_dependencies:
@@ -67,7 +68,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/
     - assets/icons/
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -18,7 +18,9 @@ class RouteClass {
     ),
     GetPage(
       name: homePage,
-      page: () => const LoginOrRegisterPage(),
+      page: () => const  LoginOrRegisterPage(),
+      transition:Transition.fadeIn,
+      transitionDuration: const Duration(seconds: 1),
     )
   ];
 }

@@ -23,14 +23,14 @@ class _DetailsState extends State<Details> {
     return Scaffold(
       body: ListView(
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(children: [
                   Center(
-                    child: Container(
+                    child: SizedBox(
                       width: 350,
                       height: 310,
                       child: ClipRRect(
@@ -42,7 +42,7 @@ class _DetailsState extends State<Details> {
                   Positioned(
                     top: 20,
                     left: 20,
-                    child: Container(
+                    child: SizedBox(
                       width: 50,
                       height: 50,
                       child: ElevatedButton(
@@ -62,7 +62,7 @@ class _DetailsState extends State<Details> {
                   Positioned(
                     top: 20,
                     right: 20,
-                    child: Container(
+                    child: SizedBox(
                       width: 50,
                       height: 50,
                       child: ElevatedButton(
@@ -75,7 +75,7 @@ class _DetailsState extends State<Details> {
                           shape: const CircleBorder(),
                           padding: const EdgeInsets.all(1),
                         ),
-                        child: Icon(Icons.bookmark),
+                        child: const Icon(Icons.bookmark),
                       ),
                     ),
                   ),
@@ -96,12 +96,12 @@ class _DetailsState extends State<Details> {
               RichText(
                 text: TextSpan(
                   text: displayedText,
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                   children: <TextSpan>[
                     if (!showFullText)
                       TextSpan(
                         text: '... see more',
-                        style: TextStyle(color: Colors.blue),
+                        style: const TextStyle(color: Colors.blue),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             setState(() {
@@ -123,22 +123,22 @@ class _DetailsState extends State<Details> {
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
                   radius: 29,
-                  backgroundImage: AssetImage('Assets/images/nike.jpg'),
+                  backgroundImage: AssetImage('assets/images/nike.jpg'),
                 ),
               ),
               title: Text('Susan lee'),
               subtitle: Text('This is the body'),
             ),
           ),
-          Text("Gallery"),
-          Container(
+          const Text("Gallery"),
+          SizedBox(
             width: double.infinity,
             height: 130,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: 4,
               itemBuilder: (context, index) {
-                return Container(
+                return SizedBox(
                   height: 100,
                   width: 110,
                   child: Padding(
@@ -147,7 +147,7 @@ class _DetailsState extends State<Details> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.asset(
-                        "Assets/images/house.jpg",
+                        "assets/images/house.jpg",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -170,9 +170,12 @@ class _DetailsState extends State<Details> {
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0), 
                 ),),
-                  minimumSize: MaterialStateProperty.all(Size(50, 50)),
-                  backgroundColor: MaterialStatePropertyAll(Colors.blue),
-                  foregroundColor: MaterialStatePropertyAll(Colors.white)
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(50, 50)),
+                      backgroundColor:
+                          const MaterialStatePropertyAll(Colors.blue),
+                      foregroundColor:
+                          const MaterialStatePropertyAll(Colors.white)
                  ),
                  child: const Text("Rent Now"),)
            
