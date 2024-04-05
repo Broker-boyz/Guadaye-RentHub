@@ -15,4 +15,5 @@ ThemeData lightMode = ThemeData(
     inversePrimary: Colors.black,
     error: Colors.blue,
   ),
+ 
 );

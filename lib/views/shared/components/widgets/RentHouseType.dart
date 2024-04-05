@@ -16,9 +16,9 @@ class _RentTypeState extends State<RentType> {
  
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      height: 70,
+      height: 50,
       child: ListView.builder(
         
           scrollDirection: Axis.horizontal,
@@ -33,8 +33,8 @@ class _RentTypeState extends State<RentType> {
                   });
                 },
                 style: ButtonStyle(
-                  elevation: MaterialStatePropertyAll(0),
-                  minimumSize: MaterialStateProperty.all(Size(50, 50)),
+              elevation: const MaterialStatePropertyAll(0),
+              minimumSize: MaterialStateProperty.all(const Size(50, 50)),
                    
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -44,9 +44,9 @@ class _RentTypeState extends State<RentType> {
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
                if (_selectedButtonIndex == index) {
-                    return Colors.blue;
+                    return Colors.black;
                   }
-                  return Color.fromARGB(255, 230, 228, 228);
+                  return const Color.fromARGB(255, 230, 228, 228);
             },
                   ),
                   foregroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -58,10 +58,7 @@ class _RentTypeState extends State<RentType> {
             },
                   ),
                 ),
-                child:  Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                  child: Text("${HouseType.values[index].name}")
-                ),
+            child: Text(HouseType.values[index].name),
               ),
           ),
         ),
