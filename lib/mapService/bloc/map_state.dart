@@ -24,17 +24,15 @@ final class MapLoading extends MapState {}
 final class MapLoaded extends MapState {
   final Position currentPosition;
 
-  final List<MarkerData> points;
 
   const MapLoaded({
     required this.currentPosition,
-    required this.points,
+ 
   });
 
   @override
   List<Object> get props => [
         currentPosition,
-        points,
       ];
 }
 

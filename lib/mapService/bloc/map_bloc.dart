@@ -21,7 +21,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       try {
         _position = event.position;
         return emit(
-            MapLoaded(currentPosition: event.position, points: const []));
+            MapLoaded(currentPosition: event.position));
       } catch (e) {
         emit(const MapPermissionDenied(
             message:
@@ -31,7 +31,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<GoToAddis>((event, emit) {
       emit(MapLoading());
       mapRepo.updateCameraPosition(event.destination, event.mapController);
-      emit(MapLoaded(currentPosition: _position!, points: const []));
+      emit(MapLoaded(currentPosition: _position!));
     });
     on<MapThemeLayoutSelected>(
       (event, emit) {
@@ -41,7 +41,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<MapStyleSelected>(
       (event, emit) {
         emit(MapStyleLoaded(selectedStyle: event.selectedStyle));
-        emit(MapLoaded(currentPosition: _position!, points: const []));
+        emit(MapLoaded(currentPosition: _position!));
       },
     );
   }

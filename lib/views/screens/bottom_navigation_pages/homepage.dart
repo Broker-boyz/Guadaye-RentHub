@@ -50,83 +50,81 @@ class _HomePageState extends State<HomePage> {
         }),
         children: [...pages],
       ),
-      bottomNavigationBar: Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.topCenter,
-          children: [
-            _selectedTab == 0
-                ? Positioned(
-                    top: -60,
-                    child: Container(
-                      width: 100,
-                      height: 35,
-                      decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(.8),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextButton.icon(
-                          onPressed: () {
-                            Get.to(const MapPermissionPage(),
-                                transition: Transition.fadeIn,
-                                duration: const Duration(seconds: 1));
-                          },
-                          icon: const Icon(
-                            Icons.map,
-                          ),
-                          label: const Text('Maps')),
-                    ),
-                  )
-                : const SizedBox(),
-            SizedBox(
-              height: 60,
-              child: DotNavigationBar(
-                backgroundColor: Theme.of(context).colorScheme.background,
-                margin: const EdgeInsets.all(0),
-                marginR: const EdgeInsets.symmetric(
-                  horizontal: 10,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat, // Adjust as needed
+      floatingActionButton: _selectedTab == 0
+          ? TextButton.icon(
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context)
+                    .colorScheme
+                    .inversePrimary
+                    .withOpacity(.7),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                itemPadding: const EdgeInsets.symmetric(horizontal: 16),
-                currentIndex: _selectedTab,
-                onTap: (index) => _handleIndexChanged(index),
-                selectedItemColor: Theme.of(context).colorScheme.inversePrimary,
-                unselectedItemColor: const Color(0xFF9e9e9c),
-                enableFloatingNavBar: false,
-                dotIndicatorColor: Theme.of(context).colorScheme.background,
-                items: [
-                  /// Home
-                  DotNavigationBarItem(
-                    icon: const Icon(
-                      Icons.home_filled,
-                      size: 36,
-                    ),
-                  ),
+              ),
+              onPressed: () {
+               
+                Get.to(() => const MapPermissionPage(),
+                    transition: Transition.fadeIn,
+                    duration: const Duration(seconds: 1));
+              },
+              icon: const Icon(Icons.map),
+              label: const Text('Maps'),
+            )
+          : const SizedBox(),
 
-                  /// Likes
-                  DotNavigationBarItem(
-                    icon: const Icon(
-                      Icons.favorite_border,
-                      size: 36,
-                    ),
-                  ),
-
-                  /// Search
-                  DotNavigationBarItem(
-                    icon: const Icon(
-                      Icons.search,
-                      size: 36,
-                    ),
-                  ),
-
-                  /// Profile
-                  DotNavigationBarItem(
-                    icon: const Icon(
-                      Icons.person,
-                      size: 36,
-                    ),
-                  ),
-                ],
+      bottomNavigationBar: SizedBox(
+        height: 60,
+        child: DotNavigationBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          margin: const EdgeInsets.all(0),
+          marginR: const EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          itemPadding: const EdgeInsets.symmetric(horizontal: 16),
+          currentIndex: _selectedTab,
+          onTap: (index) => _handleIndexChanged(index),
+          selectedItemColor: Theme.of(context).colorScheme.inversePrimary,
+          unselectedItemColor: const Color(0xFF9e9e9c),
+          enableFloatingNavBar: false,
+          dotIndicatorColor: Theme.of(context).colorScheme.background,
+          items: [
+            /// Home
+            DotNavigationBarItem(
+              icon: const Icon(
+                Icons.home_filled,
+                size: 36,
               ),
             ),
-          ]),
+
+            /// Likes
+            DotNavigationBarItem(
+              icon: const Icon(
+                Icons.favorite_border,
+                size: 36,
+              ),
+            ),
+
+            /// Search
+            DotNavigationBarItem(
+              icon: const Icon(
+                Icons.search,
+                size: 36,
+              ),
+            ),
+
+            /// Profile
+            DotNavigationBarItem(
+              icon: const Icon(
+                Icons.person,
+                size: 36,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

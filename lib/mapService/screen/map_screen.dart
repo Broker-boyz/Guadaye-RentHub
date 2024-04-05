@@ -6,6 +6,7 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:custom_map_markers/custom_map_markers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gojo_renthub/mapService/bloc/map_bloc.dart';
 import 'package:gojo_renthub/mapService/component/lower_button1.dart';
 import 'package:gojo_renthub/mapService/component/marker_icon.dart';
@@ -13,6 +14,8 @@ import 'package:gojo_renthub/mapService/component/select_themes_bottom_sheet.dar
 import 'package:gojo_renthub/mapService/mapthemes/map_theme.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:developer' as devtool show log;
+
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class GoogleMapScreen extends StatefulWidget {
   const GoogleMapScreen({super.key});
@@ -27,6 +30,8 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   late final List<MarkerData> _customMarkers = [];
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
+
+  Position? position;
 
   final List<dynamic> _mapThemes = MapTheme.mapThemes;
   int _selectedMapThemes = 0;
@@ -150,16 +155,20 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
           if (state is MapStyleLoaded) {
             _selectedMapThemes = state.selectedStyle;
           }
+        
         },
         builder: (context, state) {
           if (state is MapLoaded) {
+            position = state.currentPosition;
             return Stack(
               children: [
                 CustomGoogleMapMarkerBuilder(
                   customMarkers: _customMarkers,
                   builder: (context, markers) {
                     if (markers == null) {
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(
+                          child: LoadingAnimationWidget.inkDrop(
+                              color: Colors.lightBlueAccent, size: 50));
                     }
 
                     return GoogleMap(
@@ -170,7 +179,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                       padding: const EdgeInsets.only(top: 300),
                       style: _mapThemes[_selectedMapThemes]['style'],
                       initialCameraPosition: CameraPosition(
-                          zoom: 10,
+                          zoom: 12,
                           target: LatLng(state.currentPosition.latitude,
                               state.currentPosition.longitude)),
                       markers: markers,
@@ -215,16 +224,16 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(Icons.layers_rounded, size: 25),
-                          ),
+                          )
                         ],
                       )),
                 )
               ],
             );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(color: Colors.lightBlue),
-            );
+            return Center(
+                child: LoadingAnimationWidget.inkDrop(
+                    color: Colors.lightBlueAccent, size: 50));
           }
         },
       ),

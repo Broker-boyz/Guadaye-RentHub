@@ -20,22 +20,15 @@ class MapPermissionPage extends StatelessWidget {
           return BlocProvider<MapBloc>(
             create: (context) => MapBloc()
               ..add(FetchMapData(position: snapshot.data!, points: const [])),
-            child: MaterialApp(
+            child: const MaterialApp(
               debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                useMaterial3: true,
-              ),
-              home: const GoogleMapScreen(),
+              home: GoogleMapScreen(),
+              
             ),
           );
         } else {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
             home: Scaffold(
               body: Center(
                   child: LoadingAnimationWidget.inkDrop(
