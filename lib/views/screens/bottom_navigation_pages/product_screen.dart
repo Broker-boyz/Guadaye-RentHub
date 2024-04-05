@@ -12,17 +12,14 @@ class _ProductScreenState extends State<ProductScreen> {
   bool _isScrolled = false;
 
   List<Image> homeList = [
-    Image.asset('assets/homemodel/1.avif'),
-    Image.asset('assets/homemodel/2.jpg'),
-    Image.asset('assets/homemodel/3.webp'),
-    Image.asset('assets/homemodel/4.jpg'),
-    Image.asset('assets/homemodel/5.jpg'),
-    Image.asset('assets/homemodel/8.jpg'),
-    Image.asset('assets/homemodel/6.jpg'),
-    Image.asset('assets/homemodel/7.jpg'),
+    Image.asset('assets/images/house.jpg'),
+    Image.asset('assets/images/house.jpg'),
+    Image.asset('assets/images/house.jpg'),
+    Image.asset('assets/images/house.jpg'),
+    Image.asset('assets/images/house.jpg'),
   ];
 
-  var selectedRange = const RangeValues(150.00, 1500.00);
+ 
 
   @override
   void initState() {
@@ -47,11 +44,11 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     return CustomScrollView(controller: _scrollController, slivers: [
       SliverAppBar(
-        expandedHeight: 300.0,
+        expandedHeight: 200.0,
         elevation: 0,
         pinned: true,
-        floating: true,
-        stretch: true,
+        floating: false,
+        stretch: false,
         backgroundColor: Colors.grey.shade50,
         flexibleSpace: FlexibleSpaceBar(
             collapseMode: CollapseMode.pin,
@@ -59,7 +56,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 const EdgeInsets.only(left: 20, right: 30, bottom: 100),
             stretchModes: const [
               StretchMode.zoomBackground,
-              // StretchMode.fadeTitle
+              StretchMode.fadeTitle
             ],
             title: AnimatedOpacity(
               opacity: _isScrolled ? 0.0 : 1.0,
@@ -74,7 +71,7 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
             ),
             background: Image.asset(
-              "assets/homemodel/1.avif",
+              "assets/images/house.jpg",
               fit: BoxFit.cover,
               opacity: const AlwaysStoppedAnimation(0.7),
             )),
@@ -136,7 +133,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Popular Homes',
+                      'Apartments',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
@@ -210,6 +207,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               ],
                             ),
                           );
+                        
                         }))
               ])),
           Container(

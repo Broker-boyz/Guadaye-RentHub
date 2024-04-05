@@ -35,6 +35,9 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Theme.of(context).colorScheme.inversePrimary),
               onPressed: () {},
               child: const Text('Edit Profile'),
             ),
