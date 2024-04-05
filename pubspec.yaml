@@ -44,6 +44,15 @@ dependencies:
   flash: ^3.0.5+2
   dot_navigation_bar: ^1.0.2
   flutter_screenutil: ^5.9.0
+  loading_animation_widget: ^1.2.1
+  flutter_bloc: ^8.1.5
+  equatable: ^2.0.5
+  custom_info_window: ^1.0.1
+  custom_map_markers: ^0.0.2+1
+  flutter_custom_clippers: ^2.1.0
+  panorama_viewer: ^1.0.4
+  google_maps_flutter: ^2.6.0
+  geolocator: ^11.0.0
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +80,7 @@ flutter:
     - assets/
     - assets/icons/
     - assets/images/
+    - .env
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

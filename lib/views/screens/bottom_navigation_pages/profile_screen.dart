@@ -1,18 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:gojo_renthub/controllers/theme_provider/theme_provider.dart';
+import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _isDark = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: const Text('Profile'),
+        actions: const [],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SwitchListTile(
+                activeColor: Colors.amber,
+                title: const Text(
+                  'Dark Mode',
+                  style: TextStyle(color: Colors.black),
+                ),
+                value: _isDark,
+                onChanged: (value) {
+                  setState(() {
+                    _isDark = value;
+                  });
+                  Provider.of<ThemeProvider>(context, listen: false)
+                      .toggleTheme();
+                }),
             const CircleAvatar(
               radius: 50,
               backgroundImage: AssetImage('assets/images/avatar.png'),
