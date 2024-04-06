@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:gojo_renthub/Myproperty/bloc/property_bloc.dart';
+import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/controllers/theme_provider/theme_provider.dart';
 import 'package:gojo_renthub/routes/routes.dart';
 import 'package:gojo_renthub/views/screens/auth/authpage.dart';
@@ -17,6 +20,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
+        ),
+        BlocProvider(
+          create: (context) => PropertyBloc(repo: MyPropertyRepo()),
         ),
       ],
       child: const MyApp(),

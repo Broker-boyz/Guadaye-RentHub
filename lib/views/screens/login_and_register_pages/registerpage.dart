@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:gojo_renthub/services/email/signup.dart';
 import 'package:gojo_renthub/services/google/google_auth.dart';
 import 'package:gojo_renthub/views/shared/fonts/metalmania.dart';
@@ -24,6 +25,9 @@ class _SignupPageState extends State<SignupPage> {
   bool _isObscuredPassword = true;
   bool _isObscuredConfirm = true;
 
+  final List<String> _accountType = ['Tenant', 'Landlord'];
+  String _firstValue = '';
+
   String? validateEmail(String? email) {
     RegExp emailRegex = RegExp(r'^[\w\.-]+@[\w-]+\.\w{2,3}(\.\w{2,3})?$');
     final isEmailValid = emailRegex.hasMatch(email ?? '');
@@ -45,6 +49,7 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
@@ -87,7 +92,7 @@ class _SignupPageState extends State<SignupPage> {
                     TextFormField(
                       controller: _usernameController,
                       decoration: InputDecoration(
-                          hintText: "Username",
+                          hintText: "Full Name",
                           hintStyle: textStyleMetalMania(
                               16,
                               Theme.of(context).colorScheme.inversePrimary,
@@ -136,6 +141,44 @@ class _SignupPageState extends State<SignupPage> {
                             1),
                       ),
                       validator: validateEmail,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                    ),
+                    const SizedBox(height: 20),
+                    FormBuilderDropdown<String>(
+                      name: 'Account Type',
+                      decoration: InputDecoration(
+                        hintText: 'Account Type',
+                        hintStyle: textStyleMetalMania(
+                            16,
+                            Theme.of(context).colorScheme.inversePrimary,
+                            FontWeight.normal,
+                            1),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none),
+                        fillColor: Colors.blue.withOpacity(0.1),
+                        filled: true,
+                      ),
+                      // hint: const Text('Account Type'),
+                      items: _accountType
+                          .map(
+                            (item) => DropdownMenuItem(
+                              value: item,
+                              child: Text(item),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          if(value != null){
+                            _firstValue = value;
+                          }
+                        });
+                      },
+                      valueTransformer: (value) => value.toString(),
+                      validator: (value) => value == null
+                          ? 'Please select your Account type'
+                          : null,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
                     const SizedBox(height: 20),
@@ -228,13 +271,14 @@ class _SignupPageState extends State<SignupPage> {
                         _emailController,
                         _passwordController,
                         _confirmPasswordController,
-                        _usernameController);
+                        _usernameController,
+                        _firstValue);
                   } else {
-                    _formKey.currentState!.reset();
-                    _emailController.clear();
-                    _passwordController.clear();
-                    _confirmPasswordController.clear();
-                    _usernameController.clear();
+                    // _formKey.currentState!.reset();
+                    // _emailController.clear();
+                    // _passwordController.clear();
+                    // _confirmPasswordController.clear();
+                    // _usernameController.clear();
                     CustomSnackBar().showSnackBar(context, 'Wrong Credentials',
                         'Please enter valid credentials');
                   }
@@ -248,30 +292,30 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        offset: const Offset(0, 5),
-                        spreadRadius: 6,
-                        blurRadius: 12,
-                        color: Colors.indigo.withOpacity(0.1),
+                        // offset: const Offset(0, 5),
+                        // spreadRadius: 6,
+                        // blurRadius: 12,
+                        color: Colors.blueAccent,
                       )
                     ],
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.indigo.shade300,
-                        Colors.blue.shade300,
-                        Colors.blue.shade100,
+                    // gradient: LinearGradient(
+                    //   begin: Alignment.topCenter,
+                    //   end: Alignment.bottomCenter,
+                    //   colors: [
+                    //     Colors.indigo.shade300,
+                    //     Colors.blue.shade300,
+                    //     Colors.blue.shade100,
 
-                        // Colors.red.shade500
-                      ],
-                    ),
+                    //     // Colors.red.shade500
+                    //   ],
+                    // ),
                   ),
                   child: Center(
                     child: Text(
                       'Sign Up',
                       style: textStyleOrbitron(
                           20,
-                          Theme.of(context).colorScheme.inversePrimary,
+                          Theme.of(context).colorScheme.secondary,
                           FontWeight.bold,
                           1),
                     ),
@@ -341,7 +385,7 @@ class _SignupPageState extends State<SignupPage> {
                   Text(
                     "Already have an account?",
                     style: textStylePrata(
-                        17,
+                        15,
                         Theme.of(context).colorScheme.inversePrimary,
                         FontWeight.normal,
                         1.6),

@@ -10,7 +10,8 @@ class EmailPasswordSignup {
       TextEditingController email,
       TextEditingController password,
       TextEditingController confirmPassword,
-      TextEditingController username) async {
+      TextEditingController username,
+      String accountType) async {
     showDialog(
       context: context,
       builder: (context) {
@@ -47,7 +48,7 @@ class EmailPasswordSignup {
       wrongCredentialMessage(context, 'Error: ${e.message}');
     }
 
-    addUserDetails(username.text.trim(), email.text.trim());
+    addUserDetails(username.text, email.text.trim(), accountType);
 
     email.clear();
     password.clear();
@@ -65,10 +66,12 @@ class EmailPasswordSignup {
         });
   }
 
-  static Future addUserDetails(String username, String email) async {
+  static Future addUserDetails(String fullName, String email, String accountType) async {
     await FirebaseFirestore.instance.collection('users').doc(userId).set({
-      'username': username,
+      'uid': userId,
+      'full-name': fullName,
       'email': email,
+      'account-type': accountType,
     });
     // print(userId);
   }

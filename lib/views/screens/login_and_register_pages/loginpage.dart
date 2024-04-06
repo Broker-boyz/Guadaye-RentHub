@@ -171,28 +171,28 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        offset: const Offset(0, 5),
-                        spreadRadius: 6,
-                        blurRadius: 12,
-                        color: Colors.indigo.withOpacity(0.1),
+                        // offset: const Offset(0, 5),
+                        // spreadRadius: 6,
+                        // blurRadius: 12,
+                        color: Colors.blueAccent,
                       )
                     ],
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.indigo.shade300,
-                        Colors.blue.shade300,
-                        Colors.blue.shade100,
-                      ],
-                    ),
+                    // gradient: LinearGradient(
+                    //   begin: Alignment.topCenter,
+                    //   end: Alignment.bottomCenter,
+                    //   colors: [
+                    //     Colors.indigo.shade300,
+                    //     Colors.blue.shade300,
+                    //     Colors.blue.shade100,
+                    //   ],
+                    // ),
                   ),
                   child: Center(
                     child: Text(
                       'Login',
                       style: textStyleOrbitron(
                           20,
-                          Theme.of(context).colorScheme.inversePrimary,
+                          Theme.of(context).colorScheme.secondary,
                           FontWeight.bold,
                           1),
                     ),
