@@ -124,9 +124,9 @@ class MyPropertyRepo {
   }
 
   // fetch properties
-  Future<List<MyProperty>> loadMyProperties() async {
+  Future<List<MyProperty>> loadMyProperties(String catagory) async {
     try {
-      final rr = await _firestore.collection('properties').get();
+      final rr = await _firestore.collection('properties').where('category', isEqualTo: catagory).get();
       final result = rr.docs.map((data) {
         return MyProperty.fromMap(data.data());
       }).toList();

@@ -32,7 +32,7 @@ class _AuthPageState extends State<AuthPage> {
                 }else if(accountTypeSnapshot.hasData) {
                   final _accountType = accountTypeSnapshot.data!;
                   if(_accountType == 'Tenant'){
-                    return const BadoScreen();
+                    return const HomePage();
                   }else {
                     print(_accountType);
                     return HomePage();

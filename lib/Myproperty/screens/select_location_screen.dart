@@ -22,8 +22,17 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
             onPicked: (pickedData) {
               print(pickedData.latLong.latitude);
               print(pickedData.latLong.longitude);
-              print(pickedData.address);
+              print('------------elementAt(1)------------');
+              print(pickedData.address['state_district'].toString().split('/ ').elementAt(1));
+              print('------------elementAt(1)------------');
+              final da = pickedData.address['state_district'].toString().split('/ ');
+              if(da.length > 1) {
+                final stringAfterSlash = da[1].trim();
+              print(stringAfterSlash);
+              }
+              print(pickedData.address['county']);
               Navigator.pop(context, pickedData);
             }));
   }
 }
+

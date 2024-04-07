@@ -10,10 +10,10 @@ class NotificationPage extends StatelessWidget {
         preferredSize: const Size.fromHeight(15 + kToolbarHeight),
         child: AppBar(
           elevation: 0,
-          leading: const Icon(
-            Icons.arrow_back,
-            size: 30,
-          ),
+          // leading: const Icon(
+          //   Icons.arrow_back,
+          //   size: 30,
+          // ),
           actions: const [
             Padding(
               padding: EdgeInsets.only(right: 8.0),

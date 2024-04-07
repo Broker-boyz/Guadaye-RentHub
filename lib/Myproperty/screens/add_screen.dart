@@ -21,7 +21,6 @@ class AddScreen extends StatefulWidget {
 }
 
 class _AddScreenState extends State<AddScreen> {
-
   final MyPropertyRepo _repo = MyPropertyRepo();
 
   final _formKey = GlobalKey<FormBuilderState>();
@@ -33,7 +32,7 @@ class _AddScreenState extends State<AddScreen> {
 
   final TextEditingController _priceController = TextEditingController();
 
-  final _typeOptions = ['Apartment', 'Villa', 'Compound', 'Duplex'];
+  final _typeOptions = ['Apartment', 'Villa', 'House', 'Hotel', 'Condominium'];
   bool _typeHasError = false;
 
   PickedData pickedData = PickedData(LatLong(0, 0), '', {});
@@ -116,7 +115,7 @@ class _AddScreenState extends State<AddScreen> {
         amenities: amenities,
         latitude: latitude,
         longitude: longitude,
-        houseRules: houseRules,
+        // houseRules: 'houseRules',
       ),
       userId: user.uid,
       images: _images,
@@ -125,7 +124,7 @@ class _AddScreenState extends State<AddScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(),
+          builder: (context) => const HomePage(),
         ));
   }
 
@@ -573,10 +572,10 @@ class _AddScreenState extends State<AddScreen> {
                                 height: 10,
                               ),
                               Text(
-                                  'Latitude: ${pickedData.latLong.latitude} Longitude: ${pickedData.latLong.longitude} address: ${pickedData.addressName} add: ${pickedData.address}'),
-                              Visibility(
-                                  visible: locationBoolean,
-                                  child: const Text(
+                                  'Latitude: ${pickedData.latLong.latitude} Longitude: ${pickedData.latLong.longitude} address: ${pickedData.address['country']}'),
+                              const Visibility(
+                                  visible: false,
+                                  child: Text(
                                     'Please select the location of your house on map',
                                     style: TextStyle(
                                       color: Colors.red,
@@ -627,6 +626,7 @@ class _AddScreenState extends State<AddScreen> {
                                 width: MediaQuery.of(context).size.width * .90,
                                 // height: 400,
                                 child: FormBuilderTextField(
+                                  controller: _priceController,
                                   name: 'price',
                                   validator: (value) => value == null
                                       ? 'Please enter the price of your house'
@@ -804,7 +804,7 @@ class _AddScreenState extends State<AddScreen> {
                           } else {
                             locationBoolean = false;
                           }
-                          if (_images.length < 3) {
+                          if (_images.length < 1) {
                             imagesBoolean = true;
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -829,7 +829,14 @@ class _AddScreenState extends State<AddScreen> {
                           debugPrint(_amenitiesController.toString());
                           if (imagesBoolean == false &&
                               locationBoolean == false) {
-                            _addProperty(user!, _noOfRooms, _amenitiesController, houseType, pickedData.latLong.latitude, pickedData.latLong.longitude, pickedData.addressName);
+                            _addProperty(
+                                user!,
+                                _noOfRooms,
+                                _amenitiesController,
+                                houseType,
+                                pickedData.latLong.latitude,
+                                pickedData.latLong.longitude,
+                                '${pickedData.address['county']}, ${pickedData.address['state_district'].toString().split('/ ').elementAt(1)}');
                           }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(

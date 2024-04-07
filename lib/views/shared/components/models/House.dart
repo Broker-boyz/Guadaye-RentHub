@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-enum HouseType {Apartment, House, Hotel, Villa, Condo}
+enum HouseType {Apartment, House, Hotel, Villa, Condominium,}
 class House{ 
 
   House({ required this.name, required this.houseImage, required this.price, 

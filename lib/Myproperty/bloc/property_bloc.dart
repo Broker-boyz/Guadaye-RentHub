@@ -15,7 +15,7 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
       emit(PropertyLoading());
       try {
         await repo.addProperty(property: event.property, images: event.images, userId: event.userId);
-        final result = await repo.loadMyProperties();
+        final result = await repo.loadMyProperties(event.property.category);
         emit(PropertyLoaded(properties: result));
       } catch (e) {
         emit(PropertyError(errorMessage: 'Error has occurred while uplaoding new property $e'));
@@ -24,7 +24,7 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
     on<LoadPropertyEvent>((event, emit) async{
       emit(PropertyLoading());
       try {
-        final properties =  await repo.loadMyProperties();
+        final properties =  await repo.loadMyProperties('');
         emit(PropertyLoaded(properties: properties));
       } catch (e) {
         emit(PropertyError(errorMessage: 'Error has occurred while uploading new property $e'));
@@ -34,7 +34,7 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
       emit(PropertyLoading());
       try {
         await repo.approveProperty(property: event.property);
-        final result = await repo.loadMyProperties();
+        final result = await repo.loadMyProperties('');
         emit(PropertyLoaded(properties: result));
       } catch (e) {
         emit(PropertyError(errorMessage: 'Error has occurred while approving a property $e'));
@@ -44,7 +44,7 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
       emit(PropertyLoading());
       try {
         await repo.rejectProperty(property: event.property);
-        final result = await repo.loadMyProperties();
+        final result = await repo.loadMyProperties('');
         emit(PropertyLoaded(properties: result));
       } catch (e) {
         emit(PropertyError(errorMessage: 'Error has occurred while rejecting a property $e'));
