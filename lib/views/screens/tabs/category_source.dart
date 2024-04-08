@@ -26,8 +26,8 @@ FutureBuilder<List<MyProperty>> categorySource(String categoryString) {
           ),
         );
       } else if (snapshot.hasData) {
-        print('snapshot has data ${snapshot.data}');
-        final propertyy = snapshot.data;
+        // print('snapshot has data ${snapshot.data}');
+        // final propertyy = snapshot.data;
         return Expanded(
           child: Container(
             child: ListView.builder(
@@ -48,7 +48,7 @@ FutureBuilder<List<MyProperty>> categorySource(String categoryString) {
                         Stack(children: [
                           GestureDetector(
                             onTap: () {
-                              Get.to(() => PropertyDatailPage(property: _property,));
+                              Get.to(() => PropertyDetailPage(myProperty: _property,));
                             },
                             child: Container(
                               width: double.infinity,
@@ -107,7 +107,7 @@ FutureBuilder<List<MyProperty>> categorySource(String categoryString) {
                               const SizedBox(
                                 height: 5,
                               ),
-                              Text('${_property.price} Birr/year',
+                              Text('${_property.price} ETB, Month',
                                   style: textStyleNunito(
                                       16,
                                       Theme.of(context)

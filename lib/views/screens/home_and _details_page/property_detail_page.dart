@@ -1,5 +1,13 @@
+// ignore_for_file: must_be_immutable
+
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_ellipsis_text/flutter_ellipsis_text.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
+import 'package:gojo_renthub/mapService/component/map_box.dart';
+import 'package:gojo_renthub/mapService/screen/panorama_view.dart';
+import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PropertyDetailPage extends StatefulWidget {
@@ -102,7 +110,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Panorama(
-                                        panoImages: panoImagesPaths,
+                                        panoImages: property.imageUrl,
                                       )));
                         },
                         icon: const Icon(
@@ -117,27 +125,26 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
             Padding(
               padding: const EdgeInsets.only(
                   top: 20, left: 15, right: 15, bottom: 10),
-              child: Container(
+              child: SizedBox(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Column(
+                        Column(
                           children: [
                             Text(
-                              'Addis Ababa, Bole',
-                              style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800),
+                              property.address,
+                              style: textStyleNunito(
+                                  20,
+                                  Theme.of(context).colorScheme.inversePrimary,
+                                  FontWeight.w900,
+                                  0),
                             ),
                             Text(
-                              '2 beds hot bathroom',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
+                             property.noOfRooms.split(',').elementAt(0),
+                                style: textStyleNunito(
+                                    16, Colors.grey[800]!, FontWeight.w700, 0)
                             ),
                           ],
                         ),
@@ -146,14 +153,13 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                           onPressed: () {
                             print('show review');
                           },
-                          label: const Text(
+                          label: Text(
                             'reviews',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                decorationThickness: 2,
-                                decoration: TextDecoration.underline),
+                            style: textStyleNunito(
+                                20,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w900,
+                                0),
                           ),
                           icon: const Icon(Icons.star_half_outlined,
                               color: Colors.amber),
@@ -165,21 +171,25 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'About This Home',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                            style: textStyleNunito(
+                                18,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w900,
+                                0),
                           ),
                           const SizedBox(
                             height: 8,
                           ),
                           EllipsisText(
-                            text:
-                                'A modern, minimalist loft apartment in the heart of the city, boasting panoramic views of the bustling cityscape. Exposed brick walls and sleek concrete floors create an industrial vibe, softened by plush throws and warm lighting. A private balcony offers a tranquil escape from the urban energy.',
-                            ellipsis: '...Show More',
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Colors.grey[500]),
+                            text: property.description,
+                            ellipsis: '... Show More',
+                            style: textStyleNunito(
+                                16,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w600,
+                                0),
                             maxLines: 3,
                           ),
                         ],
@@ -194,7 +204,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                     ),
                     SizedBox(
                       height: 150,
-                      child: _builder(),
+                      child: _builder(property),
                     ),
                     const SizedBox(
                       height: 10,
@@ -218,7 +228,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                           ),
                           SizedBox(
                             height: _isAllAmenties
-                                ? 10 * 42
+                                ? property.amenities.length * 42
                                 : MediaQuery.of(context).size.width * .32,
                             child: GridView.builder(
                               physics: const BouncingScrollPhysics(),
@@ -232,7 +242,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                 crossAxisSpacing: 2,
                                 mainAxisExtent: 40,
                               ),
-                              itemCount: 20,
+                              itemCount: property.amenities.length,
                               itemBuilder: (context, index) {
                                 return Container(
                                   height: 40,
@@ -240,16 +250,16 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                   padding: const EdgeInsets.only(right: 40),
                                   color:
                                       Theme.of(context).colorScheme.background,
-                                  child: const Center(
+                                  child: Center(
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Icon(Icons.hot_tub),
-                                        SizedBox(
+                                        const Icon(Icons.hotel_class_outlined),
+                                        const SizedBox(
                                           width: 8,
                                         ),
-                                        Text("Hot Bath")
+                                        Text(property.amenities[index])
                                       ],
                                     ),
                                   ),
@@ -273,10 +283,14 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                   _isAllAmenties
                                       ? 'Show Less'
                                       : 'Show All Amenties',
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold)))
+                                style: textStyleNunito(
+                                    16,
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .inversePrimary,
+                                    FontWeight.w500,
+                                    0),
+                              ))
                         ],
                       ),
                     ),
@@ -292,15 +306,22 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Where It Found',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                            style: textStyleNunito(
+                                20,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w600,
+                                0),
                           ),
                           const SizedBox(
                             height: 8,
                           ),
-                          MapBox(customMarker: customMarker)
+                          MapBox(
+                            customMarker: customMarker,
+                            latLng:
+                                LatLng(property.latitude, property.longitude),
+                          )
                         ],
                       ),
                     ),
@@ -311,20 +332,26 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                         color: Colors.grey[400],
                       ),
                     ),
-                    const Text(
+                    Text(
                       'Things To Know',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: textStyleNunito(
+                          20,
+                          Theme.of(context).colorScheme.inversePrimary,
+                          FontWeight.w600,
+                          0),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0, bottom: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'House Rule',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                            style: textStyleNunito(
+                                20,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w600,
+                                0),
                           ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * .15,
@@ -356,34 +383,43 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(10.0),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
                     Text.rich(
                         textAlign: TextAlign.start,
                         TextSpan(children: [
                           TextSpan(
-                              text: '1200ETB',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700)),
+                            text: '${property.price}ETB',
+                            style: textStyleNunito(
+                                16,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w900,
+                                0),
+                          ),
                           TextSpan(
-                              text: ', Month',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400))
+                            text: '/ Month',
+                            style: textStyleNunito(
+                                16,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w700,
+                                0),
+                          )
                         ])),
                     Text.rich(TextSpan(
                         text: 'Availablity:',
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w700),
                         children: [
                           TextSpan(
-                              text: 'Available',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700))
+                            text: property.status,
+                            style: textStyleNunito(
+                                16,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w700,
+                                0),
+                          )
                         ]))
                   ],
                 ),
@@ -411,11 +447,11 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
     );
   }
 
-  ListView _builder() {
+  ListView _builder(MyProperty property) {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
-      itemCount: panoImagesPaths.length,
+      itemCount: property.imageUrl.length,
       itemExtent: 300,
       itemBuilder: ((context, index) {
         return GestureDetector(
@@ -436,7 +472,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
-                            image: AssetImage(panoImagesPaths[index]),
+                            image: AssetImage(property.imageUrl[index]),
                             fit: BoxFit.fill),
                       ),
                     ),
@@ -451,7 +487,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
-                    image: AssetImage(panoImagesPaths[index]),
+                    image: AssetImage(property.imageUrl[index]),
                     fit: BoxFit.fill)),
           ),
         );

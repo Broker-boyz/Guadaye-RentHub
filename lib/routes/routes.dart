@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:gojo_renthub/mapService/screen/permissio_screen.dart';
+import 'package:gojo_renthub/mapService/screen/permission_screen.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/property_detail_page.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/forgottenpasswordpage.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/login_or_register_page.dart';
@@ -35,7 +35,7 @@ class RouteClass {
         transitionDuration: const Duration(seconds: 1)),
     GetPage(
         name: propertyDetailPage,
-        page: () => PropertyDatailPage(),
+        page: () => PropertyDetailPage(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(seconds: 1)),
   ];

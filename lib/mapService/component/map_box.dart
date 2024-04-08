@@ -5,9 +5,11 @@ class MapBox extends StatelessWidget {
   const MapBox({
     super.key,
     required this.customMarker,
+    required this.latLng
   });
 
   final BitmapDescriptor customMarker;
+  final LatLng latLng;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class MapBox extends StatelessWidget {
       ),
       child: GoogleMap(
         initialCameraPosition:
-            const CameraPosition(target: LatLng(9.0182, 38.7525), zoom: 14),
+             CameraPosition(target: latLng, zoom: 14),
         onTap: null,
         myLocationButtonEnabled: false,
         zoomControlsEnabled: false,

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/screens/add_screen.dart';
-import 'package:gojo_renthub/mapService/screen/permissio_screen.dart';
+import 'package:gojo_renthub/mapService/screen/permission_screen.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/home_page.dart';
 
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/favorite_screen.dart';

@@ -47,6 +47,7 @@ dependencies:
   google_sign_in: null
   image_picker: ^1.0.7
   open_street_map_search_and_pick: ^0.1.1
+  flutter_ellipsis_text: ^1.0.1
   permission_handler: ^11.3.1
   provider: ^6.1.2
   dot_navigation_bar: ^1.0.2
