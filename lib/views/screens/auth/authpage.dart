@@ -17,6 +17,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -30,12 +31,12 @@ class _AuthPageState extends State<AuthPage> {
                     child: CircularProgressIndicator(),
                   );
                 }else if(accountTypeSnapshot.hasData) {
-                  final _accountType = accountTypeSnapshot.data!;
-                  if(_accountType == 'Tenant'){
+                  final accountType = accountTypeSnapshot.data!;
+                  if (accountType == 'Tenant') {
                     return const HomePage();
                   }else {
-                    print(_accountType);
-                    return HomePage();
+                    print(accountType);
+                    return const HomePage();
                   }
                 }else {
                   return Center(

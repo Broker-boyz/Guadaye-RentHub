@@ -35,7 +35,7 @@ class _ListOfHousesState extends State<ListOfHouses> {
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
                                   image: AssetImage(
-                                      '${widget.houselist[index].houseImage}'),
+                                      widget.houselist[index].houseImage),
                                   fit: BoxFit.cover),
                               boxShadow: [
                                 BoxShadow(
@@ -51,13 +51,13 @@ class _ListOfHousesState extends State<ListOfHouses> {
                               child: Column(
                                 children: [
                                   Text(
-                                    "${widget.houselist[index].name}",
-                                    style: TextStyle(
+                                    widget.houselist[index].name,
+                                    style: const TextStyle(
                                       color: Color.fromARGB(255, 255, 255, 255),
                                           fontSize: 25,
                                     ),
                                   ),
-                                  Text("${widget.houselist[index].name}")
+                                  Text(widget.houselist[index].name)
                                 ],
                               ),
                             ))
@@ -67,7 +67,7 @@ class _ListOfHousesState extends State<ListOfHouses> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => Details(
-                                    house: widget.houselist[index],
+                                  // house: widget.houselist[index],
                                   )),
                         );
                       },

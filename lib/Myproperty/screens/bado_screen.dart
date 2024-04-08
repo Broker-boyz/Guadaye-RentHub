@@ -6,6 +6,7 @@ class BadoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body: Center(
         child: Text('Technically speaking, you are tenant...'),
       ),
