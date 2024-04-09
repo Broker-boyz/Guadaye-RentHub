@@ -1,8 +1,7 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:panorama_viewer/panorama_viewer.dart';
 
@@ -21,11 +20,6 @@ class _PanoramaState extends State<Panorama> {
   int _panoId = 0;
 
   double zoomScale = 1;
-  List<String> panoImagesPaths = [
-    'assets/images/panorama2.webp',
-    'assets/images/panorama.jpg',
-    'assets/images/panorama_cropped.jpg',
-  ];
 
   Widget hotspotButton(
       {String? text, IconData? icon, VoidCallback? onPressed}) {
@@ -63,7 +57,8 @@ class _PanoramaState extends State<Panorama> {
   bool isZoomed = true;
   @override
   Widget build(BuildContext context) {
-    _panoId = _panoId % panoImagesPaths.length;
+    _panoId = _panoId % widget.panoImages.length;
+   
     return Scaffold(
       body: Stack(
         children: [
@@ -95,7 +90,7 @@ class _PanoramaState extends State<Panorama> {
                   widget: hotspotButton(
                     icon: Icons.lens_rounded,
                     onPressed: () => setState(() =>
-                        _panoId = Random().nextInt(panoImagesPaths.length)),
+                        _panoId = Random().nextInt(widget.panoImages.length)),
                   ),
                 ),
                 Hotspot(
@@ -106,13 +101,13 @@ class _PanoramaState extends State<Panorama> {
                   widget: hotspotButton(
                     icon: Icons.arrow_upward,
                     onPressed: () => setState(() {
-                      _panoId = Random().nextInt(panoImagesPaths.length);
+                      _panoId = Random().nextInt(widget.panoImages.length);
                     }),
                   ),
                 ),
               ],
-              child: Image.asset(
-                  panoImagesPaths[_panoId % panoImagesPaths.length])),
+              child: Image.network(
+                  widget.panoImages[_panoId % widget.panoImages.length])),
           Positioned(
             bottom: 20.0,
             right: 20.0,
@@ -181,10 +176,15 @@ class _PanoramaState extends State<Panorama> {
               dropdownColor: Colors.black38,
               iconEnabledColor: Colors.white,
               items: List.generate(
-                panoImagesPaths.length,
+                widget.panoImages.length,
                 (index) => DropdownMenuItem<int>(
                   value: index,
-                  child: Text('Room ${index + 1}'),
+                  child: Text('Room ${index + 1}',
+                      style: textStyleNunito(
+                          18,
+                          Theme.of(context).colorScheme.primary,
+                          FontWeight.w700,
+                          0)),
                 ),
               ),
               onChanged: (value) {

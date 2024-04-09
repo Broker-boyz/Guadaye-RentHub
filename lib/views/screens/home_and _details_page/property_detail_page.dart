@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ellipsis_text/flutter_ellipsis_text.dart';
+import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/mapService/component/map_box.dart';
 import 'package:gojo_renthub/mapService/screen/panorama_view.dart';
@@ -67,7 +68,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
               padding: const EdgeInsets.only(top: 40, left: 10, right: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                image:  DecorationImage(
+                image: DecorationImage(
                   image: NetworkImage(property!.imageUrl[0]),
                   fit: BoxFit.fill,
                 ),
@@ -79,7 +80,9 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                     backgroundColor: Colors.black38,
                     radius: 18,
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.back();
+                        },
                         icon: const Icon(
                           Icons.arrow_back_ios_new_outlined,
                           color: Colors.white,
@@ -142,10 +145,10 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                   0),
                             ),
                             Text(
-                             property.noOfRooms.split(',').elementAt(0),
+                                property.noOfRooms.split(',').elementAt(0) +
+                                    property.noOfRooms.split(',').elementAt(1),
                                 style: textStyleNunito(
-                                    16, Colors.grey[800]!, FontWeight.w700, 0)
-                            ),
+                                    16, Colors.grey[800]!, FontWeight.w700, 0)),
                           ],
                         ),
                         const Spacer(),
@@ -221,10 +224,13 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'What This Home Offers',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                            style: textStyleNunito(
+                                18,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w900,
+                                0),
                           ),
                           SizedBox(
                             height: _isAllAmenties
@@ -259,7 +265,16 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                         const SizedBox(
                                           width: 8,
                                         ),
-                                        Text(property.amenities[index])
+                                        Text(
+                                          property.amenities[index],
+                                          style: textStyleNunito(
+                                              16,
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .inversePrimary,
+                                              FontWeight.w700,
+                                              0),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -280,15 +295,15 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                 });
                               },
                               child: Text(
-                                  _isAllAmenties
-                                      ? 'Show Less'
-                                      : 'Show All Amenties',
+                                _isAllAmenties
+                                    ? 'Show Less'
+                                    : 'Show All Amenties',
                                 style: textStyleNunito(
                                     16,
                                     Theme.of(context)
                                         .colorScheme
                                         .inversePrimary,
-                                    FontWeight.w500,
+                                    FontWeight.w700,
                                     0),
                               ))
                         ],
@@ -309,9 +324,9 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                           Text(
                             'Where It Found',
                             style: textStyleNunito(
-                                20,
+                                18,
                                 Theme.of(context).colorScheme.inversePrimary,
-                                FontWeight.w600,
+                                FontWeight.w900,
                                 0),
                           ),
                           const SizedBox(
@@ -337,7 +352,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                       style: textStyleNunito(
                           20,
                           Theme.of(context).colorScheme.inversePrimary,
-                          FontWeight.w600,
+                          FontWeight.w900,
                           0),
                     ),
                     Padding(
@@ -350,7 +365,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                             style: textStyleNunito(
                                 20,
                                 Theme.of(context).colorScheme.inversePrimary,
-                                FontWeight.w600,
+                                FontWeight.w900,
                                 0),
                           ),
                           SizedBox(
@@ -362,9 +377,16 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                 shrinkWrap: true,
                                 itemCount: 4,
                                 itemBuilder: (context, index) {
-                                  return Text('2 Guest Maximum',
-                                      style:
-                                          TextStyle(color: Colors.grey[500]));
+                                  return Text(
+                                    property.houseRules,
+                                    style: textStyleNunito(
+                                        16,
+                                        Theme.of(context)
+                                            .colorScheme
+                                            .inversePrimary,
+                                        FontWeight.w700,
+                                        0),
+                                  );
                                 }),
                           )
                         ],
@@ -399,7 +421,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                 0),
                           ),
                           TextSpan(
-                            text: '/ Month',
+                            text: ', Month',
                             style: textStyleNunito(
                                 16,
                                 Theme.of(context).colorScheme.inversePrimary,
@@ -409,15 +431,20 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                         ])),
                     Text.rich(TextSpan(
                         text: 'Availablity:',
-                        style: const TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w700),
+                        style: textStyleNunito(
+                            16,
+                            Theme.of(context).colorScheme.inversePrimary,
+                            FontWeight.w700,
+                            0),
                         children: [
                           TextSpan(
-                            text: property.status,
+                            text: property.availability
+                                ? ' Available'
+                                : ' Reserved',
                             style: textStyleNunito(
                                 16,
                                 Theme.of(context).colorScheme.inversePrimary,
-                                FontWeight.w700,
+                                FontWeight.w900,
                                 0),
                           )
                         ]))
@@ -454,6 +481,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
       itemCount: property.imageUrl.length,
       itemExtent: 300,
       itemBuilder: ((context, index) {
+        print(property.imageUrl.length);
         return GestureDetector(
           onTap: (() {
             showDialog(
@@ -472,7 +500,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
-                            image: AssetImage(property.imageUrl[index]),
+                            image: NetworkImage(property.imageUrl[index]),
                             fit: BoxFit.fill),
                       ),
                     ),
@@ -487,7 +515,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
-                    image: AssetImage(property.imageUrl[index]),
+                    image: NetworkImage(property.imageUrl[index]),
                     fit: BoxFit.fill)),
           ),
         );

@@ -115,7 +115,7 @@ class _AddScreenState extends State<AddScreen> {
         amenities: amenities,
         latitude: latitude,
         longitude: longitude,
-        // houseRules: 'houseRules',
+        houseRules: 'houseRules',
       ),
       userId: user.uid,
       images: _images,

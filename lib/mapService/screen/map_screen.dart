@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, unused_import
+// ignore_for_file: library_private_types_in_public_api, unused_import, must_be_immutable
 
 import 'dart:math';
 
@@ -7,18 +7,23 @@ import 'package:custom_map_markers/custom_map_markers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/mapService/bloc/map_bloc.dart';
 import 'package:gojo_renthub/mapService/component/lower_button1.dart';
 import 'package:gojo_renthub/mapService/component/marker_icon.dart';
 import 'package:gojo_renthub/mapService/component/select_themes_bottom_sheet.dart';
 import 'package:gojo_renthub/mapService/mapthemes/map_theme.dart';
+import 'package:gojo_renthub/views/screens/home_and%20_details_page/property_detail_page.dart';
+import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:developer' as devtool show log;
 
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class GoogleMapScreen extends StatefulWidget {
-  const GoogleMapScreen({super.key});
+  GoogleMapScreen({super.key, required this.property});
+  List<MyProperty> property;
 
   @override
   _GoogleMapScreenState createState() => _GoogleMapScreenState();
@@ -26,7 +31,6 @@ class GoogleMapScreen extends StatefulWidget {
 
 class _GoogleMapScreenState extends State<GoogleMapScreen> {
   GoogleMapController? _controller;
-  List<LatLng> coordinates = [];
   late final List<MarkerData> _customMarkers = [];
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
@@ -35,10 +39,11 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
 
   final List<dynamic> _mapThemes = MapTheme.mapThemes;
   int _selectedMapThemes = 0;
-
+  List<MyProperty> myProperty = [];
   @override
   void initState() {
-    coordinates = generateRandomLatLngs(10, 9.0182, 9.0292, 38.7515, 38.7525);
+    myProperty = widget.property;
+    print(myProperty);
     markerCreator();
     super.initState();
   }
@@ -50,11 +55,11 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   }
 
   void markerCreator() {
-    for (var i = 0; i < coordinates.length; i++) {
+    for (var i = 0; i < myProperty.length; i++) {
       _customMarkers.add(MarkerData(
           marker: Marker(
             markerId: MarkerId(i.toString()),
-            position: coordinates[i],
+            position: LatLng(myProperty[i].latitude, myProperty[i].longitude),
             onTap: () {
               _customInfoWindowController.addInfoWindow!(
                 Stack(
@@ -74,7 +79,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: Image.network(
-                                'https://thumbs.dreamstime.com/b/america-middle-class-home-nice-dream-small-town-near-portland-oregon-usa-72283036.jpg',
+                                myProperty[i].imageUrl[0],
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -82,26 +87,32 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                           const SizedBox(
                             height: 15,
                           ),
-                          const Text(
-                            "America middle class home",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14),
+                          Text(
+                            myProperty[i].title,
+                            style: textStyleNunito(
+                                18,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w900,
+                                0),
                           ),
                           const SizedBox(
                             height: 5,
                           ),
-                          Text(
-                            "Nice dream home of middle class in a small town near Portland, Oregon, USA.",
-                            style: TextStyle(
-                                color: Colors.grey.shade600, fontSize: 12),
-                          ),
+                          Text(myProperty[i].description,
+                              style: textStyleNunito(
+                                  16,
+                                  Theme.of(context).colorScheme.inversePrimary,
+                                  FontWeight.w900,
+                                  0)),
                           const SizedBox(
                             height: 8,
                           ),
                           MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.to(() => PropertyDetailPage(
+                                    myProperty: myProperty[i],
+                                  ));
+                            },
                             elevation: 0,
                             height: 40,
                             minWidth: double.infinity,
@@ -132,11 +143,11 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                     ),
                   ],
                 ),
-                coordinates[i],
+                LatLng(myProperty[i].latitude, myProperty[i].longitude),
               );
             },
           ),
-          child: customMarker('${i * 1000}')));
+          child: customMarker(myProperty[i].price)));
       setState(() {});
     }
   }
@@ -155,7 +166,6 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
           if (state is MapStyleLoaded) {
             _selectedMapThemes = state.selectedStyle;
           }
-        
         },
         builder: (context, state) {
           if (state is MapLoaded) {
@@ -239,16 +249,4 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
       ),
     );
   }
-}
-
-List<LatLng> generateRandomLatLngs(
-    int count, double minLat, double maxLat, double minLng, double maxLng) {
-  List<LatLng> coordinates = [];
-  Random random = Random();
-  for (int i = 0; i < count; i++) {
-    double latitude = minLat + random.nextDouble() * (maxLat - minLat);
-    double longitude = minLng + random.nextDouble() * (maxLng - minLng);
-    coordinates.add(LatLng(latitude, longitude));
-  }
-  return coordinates;
 }

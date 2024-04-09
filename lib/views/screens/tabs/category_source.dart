@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -33,7 +34,7 @@ FutureBuilder<List<MyProperty>> categorySource(String categoryString) {
             child: ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
-                  final _property = snapshot.data![index];
+                  final property = snapshot.data![index];
                   return Container(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: MediaQuery.of(context).size.height * 0.4,
@@ -46,9 +47,30 @@ FutureBuilder<List<MyProperty>> categorySource(String categoryString) {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Stack(children: [
+                          CachedNetworkImage(
+                            imageUrl:
+                                'https://plus.unsplash.com/premium_photo-1661962841993-99a07c27c9f4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG91c2V8ZW58MHx8MHx8fDA%3D',
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.29,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                    colorFilter: const ColorFilter.mode(
+                                        Colors.red, BlendMode.colorBurn)),
+                              ),
+                            ),
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
                           GestureDetector(
                             onTap: () {
-                              Get.to(() => PropertyDetailPage(myProperty: _property,));
+                              Get.to(() => PropertyDetailPage(
+                                    myProperty: property,
+                                  ));
                             },
                             child: Container(
                               width: double.infinity,
@@ -56,7 +78,7 @@ FutureBuilder<List<MyProperty>> categorySource(String categoryString) {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
-                                  image: NetworkImage(_property.imageUrl[0]),
+                                  image: NetworkImage(property.imageUrl[0]),
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -85,7 +107,7 @@ FutureBuilder<List<MyProperty>> categorySource(String categoryString) {
                               Row(
                                 children: [
                                   Text(
-                                    _property.address,
+                                    property.address,
                                     style: textStyleNunito(
                                         20,
                                         Theme.of(context)
@@ -101,13 +123,13 @@ FutureBuilder<List<MyProperty>> categorySource(String categoryString) {
                                   )
                                 ],
                               ),
-                              Text(_property.noOfRooms.split(',').elementAt(0),
+                              Text(property.noOfRooms.split(',').elementAt(0),
                                   style: textStyleNunito(16, Colors.grey[800]!,
                                       FontWeight.w700, 0)),
                               const SizedBox(
                                 height: 5,
                               ),
-                              Text('${_property.price} ETB, Month',
+                              Text('${property.price} ETB, Month',
                                   style: textStyleNunito(
                                       16,
                                       Theme.of(context)
@@ -186,7 +208,7 @@ Expanded newMethod(AsyncSnapshot<List<MyProperty>> snapshot) {
       child: ListView.builder(
           itemCount: snapshot.data!.length,
           itemBuilder: (context, index) {
-            final _property = snapshot.data![index];
+            final property = snapshot.data![index];
             return Container(
               width: MediaQuery.of(context).size.width * 0.9,
               height: MediaQuery.of(context).size.height * 0.4,
@@ -245,7 +267,7 @@ Expanded newMethod(AsyncSnapshot<List<MyProperty>> snapshot) {
                                   color: Colors.white,
                                 ),
                                 child: Text(
-                                  _property.address,
+                                  property.address,
                                   style: textStyleNunito(
                                       20,
                                       Theme.of(context)
@@ -289,7 +311,7 @@ Expanded newMethod(AsyncSnapshot<List<MyProperty>> snapshot) {
                               color: Colors.white,
                             ),
                             child: Text(
-                              _property.address,
+                              property.address,
                               style: textStyleNunito(
                                   20,
                                   Theme.of(context).colorScheme.inversePrimary,
@@ -312,7 +334,7 @@ Expanded newMethod(AsyncSnapshot<List<MyProperty>> snapshot) {
                               color: Colors.white,
                             ),
                             child: Text(
-                              _property.address,
+                              property.address,
                               style: textStyleNunito(
                                   20,
                                   Theme.of(context).colorScheme.inversePrimary,

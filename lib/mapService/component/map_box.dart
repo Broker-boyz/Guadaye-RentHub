@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:gojo_renthub/mapService/component/marker_icon.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapBox extends StatelessWidget {
-  const MapBox({
-    super.key,
-    required this.customMarker,
-    required this.latLng
-  });
+  const MapBox({super.key, required this.customMarker, required this.latLng});
 
   final BitmapDescriptor customMarker;
   final LatLng latLng;
 
   @override
   Widget build(BuildContext context) {
+    GoogleMapController? controller;
     return Container(
       height: MediaQuery.of(context).size.height / 4,
       decoration: BoxDecoration(
@@ -26,13 +24,16 @@ class MapBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: GoogleMap(
-        initialCameraPosition:
-             CameraPosition(target: latLng, zoom: 14),
-        onTap: null,
-        myLocationButtonEnabled: false,
+        padding: const EdgeInsets.only(top: 30),
+        initialCameraPosition: CameraPosition(target: latLng, zoom: 8),
+        onTap: (position) {
+          controller!.animateCamera(
+              CameraUpdate.newCameraPosition(CameraPosition(target: latLng)));
+        },
+        myLocationButtonEnabled: true,
         zoomControlsEnabled: false,
         zoomGesturesEnabled: false,
-        mapToolbarEnabled: false,
+        mapToolbarEnabled: true,
         markers: {
           Marker(
               markerId: const MarkerId('id'),

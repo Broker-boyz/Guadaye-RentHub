@@ -76,19 +76,22 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         actions: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: Colors.black,
-            child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NotificationPage(),
-                      ));
-                },
-                icon: Icon(Icons.notifications,
-                    color: Theme.of(context).colorScheme.onPrimary)),
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor: Colors.black,
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NotificationPage(),
+                        ));
+                  },
+                  icon: Icon(Icons.notifications,
+                      color: Theme.of(context).colorScheme.onPrimary)),
+            ),
           )
         ],
       ),
