@@ -71,7 +71,7 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
           amenities: [amenities],
           latitude: 3.3,
           longitude: 8.9,
-          // houseRules: '',
+          houseRules: '',
         ),
         userId: user.uid,
         images: _images,

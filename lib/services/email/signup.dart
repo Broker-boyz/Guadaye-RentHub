@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 String? userId;
 
@@ -15,8 +16,9 @@ class EmailPasswordSignup {
     showDialog(
       context: context,
       builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
+        return Center(
+          child: LoadingAnimationWidget.dotsTriangle(
+              color: Theme.of(context).colorScheme.inversePrimary, size: 50),
         );
       },
     );

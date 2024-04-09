@@ -41,12 +41,14 @@ dependencies:
   flutter_bloc: ^8.1.5
   flutter_form_builder: ^9.2.1
   flutter_screenutil: ^5.9.0
+  cached_network_image: ^3.3.1
   geolocator: ^10.1.1
   get: ^4.6.6
   google_fonts: 6.1.0
   google_sign_in: null
   image_picker: ^1.0.7
   open_street_map_search_and_pick: ^0.1.1
+  flutter_ellipsis_text: ^1.0.1
   permission_handler: ^11.3.1
   provider: ^6.1.2
   dot_navigation_bar: ^1.0.2
@@ -57,6 +59,7 @@ dependencies:
   panorama_viewer: ^1.0.4
   google_maps_flutter: ^2.6.0
   shimmer: ^3.0.0
+
 
 dev_dependencies:
   flutter_lints: ^2.0.0

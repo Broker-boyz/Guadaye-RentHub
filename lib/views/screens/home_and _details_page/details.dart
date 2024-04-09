@@ -3,9 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:gojo_renthub/views/shared/components/models/House.dart';
 
 class Details extends StatefulWidget {
-  Details({super.key, required this.house});
+  Details({super.key});
 
-  House house;
+  // House house;
 
   @override
   State<Details> createState() => _DetailsState();
@@ -35,7 +35,7 @@ class _DetailsState extends State<Details> {
                       height: 310,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(25),
-                        child: Image.asset(widget.house.houseImage, 
+                        child: Image.asset('assets/images/house.jph', 
                         fit: BoxFit.cover,)),
                     ),
                   ),
