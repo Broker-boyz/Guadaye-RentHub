@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "42745284043",
+    "project_id": "virtualhomerent",
+    "storage_bucket": "virtualhomerent.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42745284043:android:20b3c51e909a1967b1224e",
+        "android_client_info": {
+          "package_name": "com.example.hackathon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9WoyT_OluFsSh5ZGT12SF8ifjRvR3O84"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
