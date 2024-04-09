@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class EmailPasswordSignin {
   static Future<void> signInUser(
@@ -11,8 +12,9 @@ class EmailPasswordSignin {
     showDialog(
       context: context,
       builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
+        return Center(
+          child: LoadingAnimationWidget.dotsTriangle(
+              color: Theme.of(context).colorScheme.inversePrimary, size: 50),
         );
       },
     );

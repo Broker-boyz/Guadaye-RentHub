@@ -54,7 +54,7 @@ class _MapPermissionPageState extends State<MapPermissionPage> {
             debugShowCheckedModeBanner: false,
             home: Scaffold(
               body: Center(
-                  child: LoadingAnimationWidget.inkDrop(
+                  child: LoadingAnimationWidget.dotsTriangle(
                       color: Colors.lightBlueAccent, size: 50)),
             ),
           );

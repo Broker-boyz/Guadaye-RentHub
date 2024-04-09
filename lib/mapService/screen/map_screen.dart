@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:custom_map_markers/custom_map_markers.dart';
 import 'package:flutter/material.dart';
@@ -78,8 +79,9 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                             height: 130,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
-                              child: Image.network(
-                                myProperty[i].imageUrl[0],
+                              child: Image(
+                                image: CachedNetworkImageProvider(
+                                    myProperty[i].imageUrl[0]),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -177,7 +179,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                   builder: (context, markers) {
                     if (markers == null) {
                       return Center(
-                          child: LoadingAnimationWidget.inkDrop(
+                          child: LoadingAnimationWidget.dotsTriangle(
                               color: Colors.lightBlueAccent, size: 50));
                     }
 
@@ -242,7 +244,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
             );
           } else {
             return Center(
-                child: LoadingAnimationWidget.inkDrop(
+                child: LoadingAnimationWidget.dotsTriangle(
                     color: Colors.lightBlueAccent, size: 50));
           }
         },

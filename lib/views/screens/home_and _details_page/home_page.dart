@@ -1,19 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Profile/screens/notification_screen.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile_screen.dart';
-import 'package:gojo_renthub/views/screens/home_and _details_page/details.dart';
 import 'package:gojo_renthub/views/screens/tabs/categories.dart';
 import 'package:gojo_renthub/views/shared/components/models/House.dart';
-import 'package:gojo_renthub/views/shared/components/widgets/RentHouseType.dart';
 import 'package:gojo_renthub/views/shared/components/widgets/Search.dart';
-import 'package:gojo_renthub/views/shared/components/widgets/listOfHouse.dart';
-import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
-import 'package:gojo_renthub/views/shared/fonts/prata.dart';
 
 class HomeScreen extends StatefulWidget {
   final PageController pageController;
@@ -64,48 +54,49 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: GestureDetector(
-          onTap: () {
-            widget.pageController.jumpToPage(4);
-          },
-          child: const CircleAvatar(
-            radius: 20,
-            backgroundImage: AssetImage('assets/images/avatar.png'),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: CircleAvatar(
+    return DefaultTabController(
+      length: 5,
+      animationDuration: const Duration(milliseconds: 500),
+      child: Scaffold(
+        appBar: AppBar(
+          title: GestureDetector(
+            onTap: () {
+              widget.pageController.jumpToPage(4);
+            },
+            child: const CircleAvatar(
               radius: 20,
-              backgroundColor: Colors.black,
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NotificationPage(),
-                        ));
-                  },
-                  icon: Icon(Icons.notifications,
-                      color: Theme.of(context).colorScheme.onPrimary)),
+              backgroundImage: AssetImage('assets/images/avatar.png'),
             ),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              FirstSearchBar(
-                pageController: widget.pageController,
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.black,
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NotificationPage(),
+                          ));
+                    },
+                    icon: Icon(Icons.notifications,
+                        color: Theme.of(context).colorScheme.onPrimary)),
               ),
-              DefaultTabController(
-                length: 5,
-                child: Padding(
+            )
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                FirstSearchBar(
+                  pageController: widget.pageController,
+                ),
+                Padding(
                   padding: const EdgeInsets.only(top: 12.0),
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
@@ -114,11 +105,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         TabBar(
-                            isScrollable: true,
+                            physics: const BouncingScrollPhysics(),
                             indicatorWeight: 6,
-                            labelColor: Colors.teal,
+                            isScrollable: true,
+                            labelPadding:
+                                const EdgeInsets.symmetric(horizontal: 10),
                             unselectedLabelColor: Colors.grey,
-                            indicatorColor: const Color(0xFF6055D8),
+                            indicatorColor:
+                                Theme.of(context).colorScheme.inversePrimary,
                             tabs: [
                               Tab(
                                 icon: Text(
@@ -193,11 +187,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
+     
       ),
     );
   }

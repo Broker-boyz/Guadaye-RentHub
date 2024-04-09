@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ellipsis_text/flutter_ellipsis_text.dart';
 import 'package:get/get.dart';
@@ -43,7 +44,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                 context,
               ),
             ),
-            'assets/markers/home-marker.png')
+            'assets/images/home-marker.png')
         .then(
       (icon) {
         customMarker = icon;
@@ -69,7 +70,9 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: NetworkImage(property!.imageUrl[0]),
+                  image: CachedNetworkImageProvider(
+                    property!.imageUrl[0],
+                  ),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -333,7 +336,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                             height: 8,
                           ),
                           MapBox(
-                            customMarker: customMarker,
+                            ccustomMarker: customMarker,
                             latLng:
                                 LatLng(property.latitude, property.longitude),
                           )
@@ -500,7 +503,9 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
-                            image: NetworkImage(property.imageUrl[index]),
+                            image: CachedNetworkImageProvider(
+                              property.imageUrl[0],
+                            ),
                             fit: BoxFit.fill),
                       ),
                     ),
@@ -515,7 +520,9 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
-                    image: NetworkImage(property.imageUrl[index]),
+                    image: CachedNetworkImageProvider(
+                      property.imageUrl[0],
+                    ),
                     fit: BoxFit.fill)),
           ),
         );

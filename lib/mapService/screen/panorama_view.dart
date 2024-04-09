@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -68,7 +69,7 @@ class _PanoramaState extends State<Panorama> {
               minZoom: 0.6,
               maxZoom: 1.9,
               sensorControl: SensorControl.orientation,
-              onImageLoad: () => LoadingAnimationWidget.inkDrop(
+              onImageLoad: () => LoadingAnimationWidget.dotsTriangle(
                   color: Colors.lightBlueAccent, size: 40),
               hotspots: [
                 Hotspot(
@@ -106,8 +107,10 @@ class _PanoramaState extends State<Panorama> {
                   ),
                 ),
               ],
-              child: Image.network(
-                  widget.panoImages[_panoId % widget.panoImages.length])),
+              child: Image(
+                image: CachedNetworkImageProvider(
+                    widget.panoImages[_panoId % widget.panoImages.length]),
+              )),
           Positioned(
             bottom: 20.0,
             right: 20.0,
