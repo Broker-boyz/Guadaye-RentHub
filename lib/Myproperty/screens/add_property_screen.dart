@@ -7,6 +7,7 @@ import 'package:gojo_renthub/Myproperty/bloc/property_bloc.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
+import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddNewPropertyScreen extends StatefulWidget {
@@ -71,7 +72,7 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
           amenities: [amenities],
           latitude: 3.3,
           longitude: 8.9,
-          // houseRules: '',
+          houseRules: '',
         ),
         userId: user.uid,
         images: _images,
@@ -80,7 +81,7 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>  HomePage(),
+            builder: (context) =>  ProfileScreen(),
           ));
     }
   }
@@ -109,7 +110,6 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
                               padding: const EdgeInsets.all(4.0),
                               child: Material(
                                 elevation: 10,
-                                // borderRadius: BorderRadius.circular(20),
                                 child: Card(
                                   child: Image.file(
                                     _images[index],

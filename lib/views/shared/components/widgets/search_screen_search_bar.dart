@@ -21,7 +21,8 @@ class SearchScreenSearchBar extends StatelessWidget {
                 child: TextFormField(
                   onTap: () {
                   },
-                  // readOnly: true,
+                  autofocus: true,
+                  
                   decoration: InputDecoration(
                     hintText: 'Search...',
                     hintStyle:

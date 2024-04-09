@@ -168,48 +168,6 @@ class _HomeScreenShimmerEffectState extends State<HomeScreenShimmerEffect> {
                       ],
                     ),
                   );
-
-                  // return Card(
-                  //   elevation: 0,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(
-                  //         vertical: 5, horizontal: 2),
-                  //     child: Row(
-                  //       children: [
-                  //         Padding(
-                  //           padding: const EdgeInsets.all(8.0),
-                  //           child: SizedBox(
-                  //             height: 100,
-                  //             width: 110,
-                  //             child: ClipRRect(
-                  //               borderRadius: BorderRadius.circular(20),
-                  //               child: Image.asset(
-                  //                 houseList[index].houseImage,
-                  //                 fit: BoxFit.cover,
-                  //               ),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         const Column(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Text("Orchad house",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                  //             Text("Birr 25000/year", style: TextStyle(color: Colors.blue)),
-                  //             Row(
-                  //               children: [
-                  //                 Icon(Icons.king_bed),
-                  //                 Text("6 bedroom"),
-                  //                 SizedBox(width: 20,),
-                  //                 Icon(Icons.bathtub),
-                  //                 Text("4 bathroom")
-                  //               ],
-                  //             )
-                  //           ],
-                  //         )
-                  //       ],
-                  //     ),
-                  //   ),
-                  // );
                 }),
           ),
         );

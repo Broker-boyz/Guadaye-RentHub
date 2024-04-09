@@ -11,8 +11,8 @@ import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile_scree
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/search_screen.dart';
 
 class HomePage extends StatefulWidget {
-  
-  const HomePage({super.key});
+  final String accountType;
+  const HomePage({super.key, required this.accountType});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -35,12 +35,16 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     _pageController = PageController(initialPage: 0);
     super.initState();
+    print('-----------------Account Type----------------');
+    print(widget.accountType);
   }
 
   void _handleIndexChanged(int index) {
     setState(() {
       _selectedTab = index;
       _pageController.jumpToPage(index);
+      print('-----------------Account Type----------------');
+    print(widget.accountType);
     });
   }
 
@@ -55,9 +59,9 @@ class _HomePageState extends State<HomePage> {
           children: [
             HomeScreen(pageController: _pageController),
             const FavoriteScreen(),
-            const AddScreen(),
+            if(widget.accountType == 'Landlord')  const AddScreen(),
             const SearchScreen(),
-            const ProfileScreen()
+            const ProfileScreen(),
           ],
         ),
         floatingActionButtonLocation:
@@ -91,7 +95,7 @@ class _HomePageState extends State<HomePage> {
             marginR: const EdgeInsets.symmetric(
               horizontal: 10,
             ),
-            itemPadding: const EdgeInsets.symmetric(horizontal: 16),
+            itemPadding: const EdgeInsets.symmetric(horizontal: 20),
             currentIndex: _selectedTab,
             onTap: (index) => _handleIndexChanged(index),
             selectedItemColor: Theme.of(context).colorScheme.inversePrimary,
@@ -116,12 +120,19 @@ class _HomePageState extends State<HomePage> {
               ),
 
               /// Add
-              DotNavigationBarItem(
-                icon: const Icon(
-                  Icons.add,
-                  size: 30,
+              if(widget.accountType == 'Landlord') 
+                DotNavigationBarItem(
+                  icon: const Icon(
+                    Icons.add,
+                    size: 30,
+                  ),
                 ),
-              ),
+                // :DotNavigationBarItem(
+                //   icon: const Icon(
+                //     Icons.remove,
+                //     size: 4,
+                //   ),
+                // ),
 
               /// Search
               DotNavigationBarItem(
@@ -140,45 +151,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-        )
- 
-    // body: Center(
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     children: [
-    //       Text(
-    //         'Signed as ${user.email}',
-    //         style: const TextStyle(fontSize: 24),
-    //       ),
-    //       Padding(
-    //         padding: const EdgeInsets.all(20.0),
-    //         child: MaterialButton(
-    //           shape: RoundedRectangleBorder(
-    //             borderRadius: BorderRadius.circular(20),
-    //           ),
-    //           minWidth: MediaQuery.of(context).size.width,
-    //           height: 60.0,
-    //           color: Colors.white,
-    //           onPressed: () {
-    //             Navigator.push(
-    //                 context,
-    //                 MaterialPageRoute(
-    //                   builder: (context) => const AddScreen(),
-    //                 ));
-    //           },
-    //           child: const Text(
-    //             'Add Property',
-    //             style: TextStyle(
-    //               color: Colors.black,
-    //               fontWeight: FontWeight.bold,
-    //               fontSize: 20.0,
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // )
-    );
+        ));
   }
 }

@@ -21,7 +21,7 @@ class MyProperty extends Equatable {
   final bool availability;
   final double latitude;
   final double longitude;
-  // final String houseRules;
+  final String houseRules;
 
   const MyProperty({
     required this.id,
@@ -41,7 +41,7 @@ class MyProperty extends Equatable {
     required this.availability,
     required this.latitude,
     required this.longitude,
-    // required this.houseRules,
+    required this.houseRules,
   });
 
   MyProperty copyWith({
@@ -62,7 +62,7 @@ class MyProperty extends Equatable {
     bool? availability,
     double? latitude,
     double? longitude,
-    // String? houseRules,
+    String? houseRules,
   }) {
     return MyProperty(
       id: id ?? this.id,
@@ -82,7 +82,7 @@ class MyProperty extends Equatable {
       availability: availability ?? this.availability,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
-      // houseRules: houseRules ?? this.houseRules,
+      houseRules: houseRules ?? this.houseRules,
     );
   }
 
@@ -105,7 +105,7 @@ class MyProperty extends Equatable {
       'availability': availability,
       'latitude': latitude,
       'longitude': longitude,
-      // 'houseRules': houseRules,
+      'houseRules': houseRules,
     };
   }
 
@@ -128,7 +128,7 @@ class MyProperty extends Equatable {
       availability: map['availability'] as bool,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
-      // houseRules: map['houseRules'] as String,
+      houseRules: map['houseRules'] as String,
     );
   }
 
@@ -160,7 +160,7 @@ class MyProperty extends Equatable {
       availability,
       latitude,
       longitude,
-      // houseRules,
+      houseRules,
     ];
   }
 }

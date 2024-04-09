@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Myproperty/screens/bado_screen.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
+import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile_screen.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/login_or_register_page.dart';
 
 class AuthPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -32,10 +34,10 @@ class _AuthPageState extends State<AuthPage> {
                 }else if(accountTypeSnapshot.hasData) {
                   final _accountType = accountTypeSnapshot.data!;
                   if(_accountType == 'Tenant'){
-                    return const HomePage();
+                    return const HomePage(accountType: 'Tenant',);
                   }else {
                     print(_accountType);
-                    return HomePage();
+                    return const HomePage(accountType: 'Landlord',);
                   }
                 }else {
                   return Center(

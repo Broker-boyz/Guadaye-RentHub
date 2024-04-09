@@ -10,6 +10,7 @@ import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Myproperty/screens/select_location_screen.dart';
 import 'package:gojo_renthub/Myproperty/services/location_service.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
+import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 
@@ -28,6 +29,7 @@ class _AddScreenState extends State<AddScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _houseRulesController = TextEditingController();
+  final TextEditingController _availableDatesController = TextEditingController();
   String houseType = '';
 
   final TextEditingController _priceController = TextEditingController();
@@ -95,6 +97,7 @@ class _AddScreenState extends State<AddScreen> {
     final description = _descriptionController.text;
     final price = _priceController.text;
     final houseRules = _houseRulesController.text;
+    final availableDates = _availableDatesController.text;
 
     final property = AddPropertyEvent(
       property: MyProperty(
@@ -111,11 +114,11 @@ class _AddScreenState extends State<AddScreen> {
         hostId: user.uid,
         category: houseType,
         address: address,
-        availableDates: 'availableDates',
+        availableDates: availableDates,
         amenities: amenities,
         latitude: latitude,
         longitude: longitude,
-        // houseRules: 'houseRules',
+        houseRules: houseRules,
       ),
       userId: user.uid,
       images: _images,
@@ -124,7 +127,7 @@ class _AddScreenState extends State<AddScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => const ProfileScreen(),
         ));
   }
 
@@ -309,10 +312,11 @@ class _AddScreenState extends State<AddScreen> {
                             child: Column(
                               children: [
                                 Row(
-                                  // mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Expanded(
                                       child: FormBuilderCheckbox(
+                                        checkColor: Colors.white,
+                                        activeColor: Colors.black,
                                         initialValue: false,
                                         title: const Text(
                                           'I certify that I own this property or am an authorized representative of the owner',
@@ -334,6 +338,8 @@ class _AddScreenState extends State<AddScreen> {
                                   children: [
                                     Expanded(
                                       child: FormBuilderCheckbox(
+                                        checkColor: Colors.white,
+                                        activeColor: Colors.black,
                                         initialValue: false,
                                         title: const Text(
                                           'I certify that I have landlord\'s insurance on this property',
@@ -626,6 +632,7 @@ class _AddScreenState extends State<AddScreen> {
                                 width: MediaQuery.of(context).size.width * .90,
                                 // height: 400,
                                 child: FormBuilderTextField(
+                                  keyboardType: TextInputType.phone,
                                   controller: _priceController,
                                   name: 'price',
                                   validator: (value) => value == null
@@ -649,6 +656,69 @@ class _AddScreenState extends State<AddScreen> {
                                     border: const OutlineInputBorder(
                                       borderSide: BorderSide(
                                           // color: Colors.grey,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'LET US KNOW THE FAIR MARKET VALUE TODAY',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('For How long do you want to rent ?'),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * .90,
+                                // height: 400,
+                                child: FormBuilderTextField(
+                                  keyboardType: TextInputType.text,
+                                  controller: _availableDatesController,
+                                  name: 'time period',
+                                  validator: (value) => value == null
+                                      ? 'Please enter the time period'
+                                      : null,
+                                  decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                          const BorderSide(color: Colors.grey),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 219, 219, 219),
+                                      ),
+                                    ),
+                                    hintText:
+                                        'e.g - 6 months, 2 years , 4 days',
+                                    border: const OutlineInputBorder(
+                                      borderSide: BorderSide(
                                           ),
                                     ),
                                   ),
@@ -717,7 +787,6 @@ class _AddScreenState extends State<AddScreen> {
                                                     const EdgeInsets.all(4.0),
                                                 child: Material(
                                                   elevation: 10,
-                                                  // borderRadius: BorderRadius.circular(20),
                                                   child: Card(
                                                     child: Image.file(
                                                       _images[index],
@@ -755,6 +824,14 @@ class _AddScreenState extends State<AddScreen> {
                                           ),
                                   ),
                                 ),
+                                const Visibility(
+                                    visible: true,
+                                    child:  Text(
+                                      'select at least 3 images of your house in 360 degree',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    )),
                                 Visibility(
                                     visible: imagesBoolean,
                                     child: const Text(
@@ -873,9 +950,6 @@ class _AddScreenState extends State<AddScreen> {
       children: [
         Text(
           title,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * .90,
@@ -979,6 +1053,8 @@ class _AddScreenState extends State<AddScreen> {
       mainAxisSize: MainAxisSize.max,
       children: [
         Checkbox(
+          checkColor: Colors.white,
+          activeColor: Colors.black,
           value: boolValue,
           onChanged: onChanged,
         ),

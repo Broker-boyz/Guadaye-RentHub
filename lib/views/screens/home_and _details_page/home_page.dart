@@ -26,41 +26,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final MyPropertyRepo _repo = MyPropertyRepo();
   String categoryString = '';
-  final List<House> houseList = [
-    House(
-        name: "Addis Ababa",
-        houseImage: "assets/images/house.jpg",
-        price: 800,
-        bedroom: 12,
-        bathroom: 12,
-        long: 12.0,
-        lat: 12.0,
-        details: "2 beds 2 baths 1,200 sqft",
-        type: HouseType.Apartment,
-        locationName: "Piyassa"),
-    House(
-        name: "Addis Ababa",
-        houseImage: "assets/images/house.jpg",
-        price: 1200,
-        bedroom: 12,
-        bathroom: 12,
-        long: 12.0,
-        lat: 12.0,
-        details: "3 beds 2 baths 1,200 sqft",
-        type: HouseType.Condominium,
-        locationName: "Piyasa"),
-    House(
-        name: "Addis Ababa",
-        houseImage: "assets/images/house.jpg",
-        price: 1000,
-        bedroom: 12,
-        bathroom: 12,
-        long: 12.0,
-        lat: 12.0,
-        details: "4 beds 1 baths 1,200 sqft",
-        type: HouseType.Hotel,
-        locationName: "Asko"),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(top: 4, right: 8,left: 8,bottom: 40),
           child: Column(
             children: [
               FirstSearchBar(

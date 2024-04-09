@@ -67,6 +67,6 @@ class Condominium extends StatefulWidget {
 class _CondominiumState extends State<Condominium> {
   @override
   Widget build(BuildContext context) {
-    return categorySource('Condominuim');
+    return categorySource('Condominium');
   }
 }
