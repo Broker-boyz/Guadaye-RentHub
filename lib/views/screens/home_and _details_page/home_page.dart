@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
@@ -20,46 +19,51 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: GestureDetector(
-          onTap: () {
-            widget.pageController.jumpToPage(4);
-          },
-          child: const CircleAvatar(
-            radius: 20,
-            backgroundImage: AssetImage('assets/images/avatar.png'),
+    return DefaultTabController(
+      length: 5,
+      animationDuration: const Duration(milliseconds: 500),
+      child: Scaffold(
+        appBar: AppBar(
+          title: GestureDetector(
+            onTap: () {
+              widget.pageController.jumpToPage(4);
+            },
+            child: const CircleAvatar(
+              radius: 20,
+              backgroundImage: AssetImage('assets/images/avatar.png'),
+            ),
           ),
-        ),
-        actions: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: Colors.black,
-            child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NotificationPage(),
-                      ));
-                },
-                icon: Icon(Icons.notifications,
-                    color: Theme.of(context).colorScheme.onPrimary)),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 4, right: 8,left: 8,bottom: 40),
-          child: Column(
-            children: [
-              FirstSearchBar(
-                pageController: widget.pageController,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.black,
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NotificationPage(),
+                          ));
+                    },
+                    icon: Icon(Icons.notifications,
+                        color: Theme.of(context).colorScheme.onPrimary)),
               ),
-              DefaultTabController(
-                length: 5,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 0.0),
+            )
+          ],
+        ),
+        body: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                FirstSearchBar(
+                  pageController: widget.pageController,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12.0),
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: Column(
@@ -67,11 +71,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         TabBar(
-                            isScrollable: true,
+                            physics: const BouncingScrollPhysics(),
                             indicatorWeight: 6,
-                            labelColor: Colors.teal,
+                            isScrollable: true,
+                            labelPadding:
+                                const EdgeInsets.symmetric(horizontal: 10),
                             unselectedLabelColor: Colors.grey,
-                            indicatorColor: const Color(0xFF6055D8),
+                            indicatorColor:
+                                Theme.of(context).colorScheme.inversePrimary,
                             tabs: [
                               Tab(
                                 icon: Text(
@@ -146,9 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

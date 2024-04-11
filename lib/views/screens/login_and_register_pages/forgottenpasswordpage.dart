@@ -6,6 +6,7 @@ import 'package:gojo_renthub/views/shared/fonts/metalmania.dart';
 import 'package:gojo_renthub/views/shared/fonts/orbitron.dart';
 import 'package:gojo_renthub/views/shared/fonts/prata.dart';
 import 'package:gojo_renthub/views/shared/snackbars/snackbar.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -30,8 +31,10 @@ class _ForgottenPasswordPageState extends State<ForgottenPasswordPage> {
       showDialog(
           context: context,
           builder: (context) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: LoadingAnimationWidget.dotsTriangle(
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                  size: 50),
             );
           });
       await FirebaseAuth.instance
@@ -136,8 +139,8 @@ class _ForgottenPasswordPageState extends State<ForgottenPasswordPage> {
                 child: Container(
                   width: 250,
                   padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(12),
                     ),
                     boxShadow: [

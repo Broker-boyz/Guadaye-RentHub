@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/screens/add_screen.dart';
-import 'package:gojo_renthub/mapService/screen/permissio_screen.dart';
+import 'package:gojo_renthub/mapService/screen/permission_screen.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/home_page.dart';
 
@@ -30,10 +30,11 @@ class _HomePageState extends State<HomePage> {
   //   const SearchScreen(),
   //   const ProfileScreen()
   // ];
-
+ 
   @override
-  void initState() {
+  void initState()  {
     _pageController = PageController(initialPage: 0);
+  
     super.initState();
     print('-----------------Account Type----------------');
     print(widget.accountType);

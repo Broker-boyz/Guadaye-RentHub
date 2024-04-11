@@ -1,14 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class GoogleAuth {
   Future<void> signInWithGoogle(BuildContext context) async {
     showDialog(
       context: context,
       builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
+        return Center(
+          child: LoadingAnimationWidget.dotsTriangle(
+              color: Theme.of(context).colorScheme.inversePrimary, size: 50),
         );
       },
     );
