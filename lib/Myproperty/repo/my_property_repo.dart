@@ -18,28 +18,28 @@ class MyPropertyRepo {
   }
 
   // get user account type
-  Future<String> getUserRole({required User user}) async{
-  try {
-    final userQuery = await _firestore
-        .collection('users')
-        .where('uid', isEqualTo: user.uid)
-        .get();
+  Future<String> getUserRole({required User user}) async {
+    try {
+      final userQuery = await _firestore
+          .collection('users')
+          .where('uid', isEqualTo: user.uid)
+          .get();
 
-    if (userQuery.docs.isEmpty) {
-      return 'User not found'; 
+      if (userQuery.docs.isEmpty) {
+        return 'User not found';
+      }
+
+      final userData = userQuery.docs[0].data();
+      if (!userData.containsKey('account-type')) {
+        return 'Role not found';
+      }
+
+      return userData['account-type'];
+    } catch (e) {
+      print(e);
+      throw Exception('Failed to retrieve user role');
     }
-
-    final userData = userQuery.docs[0].data();
-    if (!userData.containsKey('account-type')) {
-      return 'Role not found'; 
-    }
-
-    return userData['account-type'];
-  } catch (e) {
-    print(e);
-    throw Exception('Failed to retrieve user role');
   }
-}
 
   // upload images
   Future<List<String>> uploadImage(
@@ -72,7 +72,7 @@ class MyPropertyRepo {
       List<String> imageUrls = await uploadImage(images, userId, property.id);
 
       if (imageUrls.isNotEmpty) {
-        CollectionReference properties = _firestore.collection('properties');
+        CollectionReference properties = _firestore.collection('property');
         final docRef = await properties.add({
           'title': property.title,
           'description': property.description,
@@ -86,8 +86,11 @@ class MyPropertyRepo {
           'rating': 3.0,
           'reviews': const [],
           'availability': true,
-          'latitude':property.latitude,
-          'longitude':property.longitude,
+          'latitude': property.latitude,
+          'longitude': property.longitude,
+          'city': property.city,
+          'sub-city': property.subCity,
+          'houseRules': property.houseRules,
         });
         await properties.doc(docRef.id).update({
           'id': docRef.id,
@@ -126,13 +129,98 @@ class MyPropertyRepo {
   // fetch properties
   Future<List<MyProperty>> loadMyProperties(String catagory) async {
     try {
-      final rr = await _firestore.collection('properties').where('category', isEqualTo: catagory).get();
+      final rr = await _firestore
+          .collection('properties')
+          .where('category', isEqualTo: catagory)
+          .get();
       final result = rr.docs.map((data) {
         return MyProperty.fromMap(data.data());
       }).toList();
       return result;
     } catch (e) {
-      print('Error while fetching properties: $e');
+      print('Error while fetching property: $e');
+      return [];
+    }
+  }
+
+  // second method
+  Future<List<MyProperty>> loadMyProperty(String category) async {
+  try {
+    List<MyProperty> pro = [];
+    final rr = await _firestore
+        .collection('property')
+        .where('category', isEqualTo: category)
+        .get();
+    final result = rr.docs.map((data) {
+      final mapData = data.data();
+      if (mapData != null) {
+        final df=  MyProperty.fromMap(mapData);
+        pro.add(df);
+      } else {
+        print('Document data is null');
+        return null;
+      }
+    }).where((item) => item != null).toList();
+    return pro;
+  } catch (e) {
+    print('Error while fetching property: $e');
+    return [];
+  }
+}
+
+  // fetch price range
+  Future<List<int>> getPriceRange() async {
+    List<int> priceRange = [];
+    try {
+      final rr = await _firestore.collection('properties').get();
+
+      final result = rr.docs.map((data) {
+        return data.data()['price'] as int;
+      }).toList();
+      int minPrice = result[0];
+      int maxPrice = result[0];
+
+      for(var price in result){
+        if(price < minPrice) minPrice = price;
+        if(price > maxPrice) maxPrice = price;
+      }
+      priceRange.add(minPrice);
+      priceRange.add(maxPrice);
+      return priceRange;
+    } catch (e) {
+      print('Error while fetching price range of properties: $e');
+      return priceRange;
+    }
+  }
+
+  // Filtered properties
+  Future<List<MyProperty>> loadFilteredProperties(
+      String propertyType, String city, String subCity, List<int> price) async {
+    try {
+      Query properties = _firestore.collection('properties');
+
+      if (propertyType.isNotEmpty) {
+        properties = properties.where('category', isEqualTo: propertyType);
+      }
+      if (city.isNotEmpty) {
+        properties = properties.where('city', isEqualTo: city);
+      }
+      if (subCity.isNotEmpty) {
+        properties = properties.where('sub-city', isEqualTo: subCity);
+      }
+      if (price.isNotEmpty) {
+        properties = properties.where('price', isGreaterThanOrEqualTo: price[0]);
+        properties = properties.where('price', isLessThanOrEqualTo: price[1]);
+      }
+
+      final rr = await properties.get();
+
+      final result = rr.docs.map((data) {
+        return MyProperty.fromMap(data.data() as Map<String, dynamic>);
+      }).toList();
+      return result;
+    } catch (e) {
+      print('Error while fetching filtered properties: $e');
       return [];
     }
   }

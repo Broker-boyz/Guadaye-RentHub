@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gojo_renthub/controllers/user_provider/user_provider.dart';
+import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/views/shared/fonts/orbitron.dart';
 import 'package:gojo_renthub/views/shared/fonts/prata.dart';
 import 'package:gojo_renthub/views/shared/snackbars/snackbar.dart';
@@ -60,15 +60,16 @@ class UpdateProfileScreen extends StatelessWidget {
                       height: 35,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.indigo.shade300,
-                            Colors.blue.shade300,
-                            Colors.blue.shade100,
-                          ],
-                        ),
+                        color: Colors.blueAccent,
+                        // gradient: LinearGradient(
+                        //   begin: Alignment.topCenter,
+                        //   end: Alignment.bottomCenter,
+                        //   colors: [
+                        //     Colors.indigo.shade300,
+                        //     Colors.blue.shade300,
+                        //     Colors.blue.shade100,
+                        //   ],
+                        // ),
                       ),
                       child: IconButton(
                         color: Colors.black,
@@ -247,28 +248,28 @@ class UpdateProfileScreen extends StatelessWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              offset: const Offset(0, 5),
-                              spreadRadius: 6,
-                              blurRadius: 12,
-                              color: Colors.indigo.withOpacity(0.1),
+                              // offset: const Offset(0, 5),
+                              // spreadRadius: 6,
+                              // blurRadius: 12,
+                              color: Colors.blueAccent,
                             )
                           ],
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.indigo.shade300,
-                              Colors.blue.shade300,
-                              Colors.blue.shade100,
-                            ],
-                          ),
+                          // gradient: LinearGradient(
+                          //   begin: Alignment.topCenter,
+                          //   end: Alignment.bottomCenter,
+                          //   colors: [
+                          //     Colors.indigo.shade300,
+                          //     Colors.blue.shade300,
+                          //     Colors.blue.shade100,
+                          //   ],
+                          // ),
                         ),
                         child: Center(
                           child: Text(
                             'Edit Profile',
                             style: textStyleOrbitron(
                                 14,
-                                Theme.of(context).colorScheme.inversePrimary,
+                                Theme.of(context).colorScheme.primary,
                                 FontWeight.bold,
                                 1),
                           ),

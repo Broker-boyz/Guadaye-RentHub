@@ -1,12 +1,15 @@
+import 'package:chapa_unofficial/chapa_unofficial.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/bloc/property_bloc.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
+import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/controllers/theme_provider/theme_provider.dart';
 import 'package:gojo_renthub/routes/routes.dart';
 import 'package:gojo_renthub/views/screens/auth/authpage.dart';
+import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +18,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Chapa.configure(privateKey: "CHASECK_TEST-S6Y7XQhsRMWfHvykP7vbSRdX9067HMPQ");
   runApp(
     MultiProvider(
       providers: [
@@ -24,6 +28,12 @@ void main() async {
         BlocProvider(
           create: (context) => PropertyBloc(repo: MyPropertyRepo()),
         ),
+        Provider<UserProvider>(
+          create: (context) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+          child: const ProfileScreen(),)
       ],
       child: const MyApp(),
     ),

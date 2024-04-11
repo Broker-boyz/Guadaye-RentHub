@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
-import 'package:gojo_renthub/Myproperty/screens/bado_screen.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile_screen.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/login_or_register_page.dart';
 
 class AuthPage extends StatefulWidget {

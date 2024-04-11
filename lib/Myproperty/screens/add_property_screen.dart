@@ -6,8 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gojo_renthub/Myproperty/bloc/property_bloc.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile_screen.dart';
+import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddNewPropertyScreen extends StatefulWidget {
@@ -45,7 +44,7 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
   void _addProperty(User user) {
     final name = _nameController.text;
     final description = _descriptionController.text;
-    final price = _priceController.text;
+    final price = int.parse(_priceController.text);
     final noOfRooms = _noOfRoomsController.text;
     final category = _catagoryController.text;
     final amenities = _amenitiesController.text;
@@ -73,6 +72,8 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
           latitude: 3.3,
           longitude: 8.9,
           houseRules: '',
+          city: 'address',
+          subCity: ''
         ),
         userId: user.uid,
         images: _images,
@@ -81,7 +82,7 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>  ProfileScreen(),
+            builder: (context) =>  const ProfileScreen(),
           ));
     }
   }

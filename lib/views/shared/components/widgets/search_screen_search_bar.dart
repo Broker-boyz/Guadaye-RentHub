@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gojo_renthub/views/screens/bottom_navigation_pages/filter_screen.dart';
 
 class SearchScreenSearchBar extends StatelessWidget {
-  const SearchScreenSearchBar({super.key,});
+  final Function(String) onChanged;
+  final Function(String) onFilterResultChanged;
+   SearchScreenSearchBar({
+    super.key, required this.onFilterResultChanged, required this.onChanged,
+  });
+
+  String filterResult = '';
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +26,11 @@ class SearchScreenSearchBar extends StatelessWidget {
                     side: BorderSide.none,
                     borderRadius: BorderRadius.circular(17)),
                 child: TextFormField(
-                  onTap: () {
+                  onChanged: (value) {
+                    onChanged(value);
                   },
+                  onTap: () {},
                   autofocus: true,
-                  
                   decoration: InputDecoration(
                     hintText: 'Search...',
                     hintStyle:
@@ -46,7 +54,14 @@ class SearchScreenSearchBar extends StatelessWidget {
               width: 20,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () async{
+                filterResult = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FilterScreen(),
+                    ));
+                onFilterResultChanged(filterResult);
+              },
               child: Container(
                 height: 45,
                 width: 45,

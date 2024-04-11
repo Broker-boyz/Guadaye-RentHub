@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:gojo_renthub/controllers/theme_provider/theme_provider.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class ProfileScreenOne extends StatefulWidget {
+  const ProfileScreenOne({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<ProfileScreenOne> createState() => _ProfileScreenOneState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenOneState extends State<ProfileScreenOne> {
   bool _isDark = false;
   @override
   Widget build(BuildContext context) {

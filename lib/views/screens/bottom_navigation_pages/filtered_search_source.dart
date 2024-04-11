@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
-import 'package:gojo_renthub/views/screens/shimmer_efffects/home_screen_shimmer_effect.dart';
+import 'package:gojo_renthub/views/screens/shimmer_efffects/search_screen_shimmer_effect.dart';
 import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
-import 'package:shimmer/shimmer.dart';
 
 final MyPropertyRepo _repo = MyPropertyRepo();
 
-FutureBuilder<List<MyProperty>> categorySource(String categoryString) {
+FutureBuilder<List<MyProperty>> filteredSearchSource(String propertyType,
+      String city, String subCity, List<int> priceRange) {
   return FutureBuilder(
-    future: _repo.loadMyProperties(categoryString),
+    future: _repo.loadFilteredProperties(propertyType, city, subCity, priceRange),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return HomeScreenShimmerEffect(snapshot: snapshot);
+        return const SearchScreenShimmerEffect();
       } else if (snapshot.hasError) {
         return Center(
           child: Text(

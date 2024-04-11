@@ -1,19 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Profile/screens/notification_screen.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile_screen.dart';
-import 'package:gojo_renthub/views/screens/home_and _details_page/details.dart';
 import 'package:gojo_renthub/views/screens/tabs/categories.dart';
-import 'package:gojo_renthub/views/shared/components/models/House.dart';
-import 'package:gojo_renthub/views/shared/components/widgets/RentHouseType.dart';
 import 'package:gojo_renthub/views/shared/components/widgets/Search.dart';
-import 'package:gojo_renthub/views/shared/components/widgets/listOfHouse.dart';
-import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
-import 'package:gojo_renthub/views/shared/fonts/prata.dart';
 
 class HomeScreen extends StatefulWidget {
   final PageController pageController;
@@ -68,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
               DefaultTabController(
                 length: 5,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 12.0),
+                  padding: const EdgeInsets.only(top: 0.0),
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: Column(

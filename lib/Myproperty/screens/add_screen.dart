@@ -7,10 +7,10 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:gojo_renthub/Myproperty/bloc/property_bloc.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
+import 'package:gojo_renthub/Myproperty/screens/confirmation_screen.dart';
 import 'package:gojo_renthub/Myproperty/screens/select_location_screen.dart';
 import 'package:gojo_renthub/Myproperty/services/location_service.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile_screen.dart';
+import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 
@@ -29,7 +29,8 @@ class _AddScreenState extends State<AddScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _houseRulesController = TextEditingController();
-  final TextEditingController _availableDatesController = TextEditingController();
+  final TextEditingController _availableDatesController =
+      TextEditingController();
   String houseType = '';
 
   final TextEditingController _priceController = TextEditingController();
@@ -95,7 +96,7 @@ class _AddScreenState extends State<AddScreen> {
       String houseType, double latitude, double longitude, String address) {
     final name = _nameController.text;
     final description = _descriptionController.text;
-    final price = _priceController.text;
+    final price = int.parse(_priceController.text);
     final houseRules = _houseRulesController.text;
     final availableDates = _availableDatesController.text;
 
@@ -119,6 +120,8 @@ class _AddScreenState extends State<AddScreen> {
         latitude: latitude,
         longitude: longitude,
         houseRules: houseRules,
+        city: address.split(',').elementAt(0),
+        subCity: address.split(', ').elementAt(1),
       ),
       userId: user.uid,
       images: _images,
@@ -127,7 +130,8 @@ class _AddScreenState extends State<AddScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const ProfileScreen(),
+          builder: (context) => CommissionConfirmationScreen(
+              propertyValue: property.property.price),
         ));
   }
 
@@ -718,8 +722,7 @@ class _AddScreenState extends State<AddScreen> {
                                     hintText:
                                         'e.g - 6 months, 2 years , 4 days',
                                     border: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          ),
+                                      borderSide: BorderSide(),
                                     ),
                                   ),
                                 ),
@@ -826,7 +829,7 @@ class _AddScreenState extends State<AddScreen> {
                                 ),
                                 const Visibility(
                                     visible: true,
-                                    child:  Text(
+                                    child: Text(
                                       'select at least 3 images of your house in 360 degree',
                                       style: TextStyle(
                                         color: Colors.black,
@@ -858,72 +861,79 @@ class _AddScreenState extends State<AddScreen> {
                         backgroundColor: Colors.blueAccent,
                       ),
                       onPressed: () {
-                        __addToAmenities(
-                            booleanValueOne,
-                            booleanValueTwo,
-                            booleanValueThree,
-                            booleanValueFour,
-                            booleanValueFive,
-                            booleanValueSix);
-                        _noOfRooms =
-                            '$integerValueOne living rooms, $integerValueTwo bed rooms, $integerValueThree shower rooms, $integerValueFour kitchen rooms';
-                        if (_formKey.currentState!.saveAndValidate()) {
-                          if (pickedData.latLong.latitude == 0 &&
-                              pickedData.latLong.longitude == 0) {
-                            locationBoolean = true;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Please select the location of your house on map and select at least 3 images of your house',
-                                ),
-                              ),
-                            );
-                          } else {
-                            locationBoolean = false;
-                          }
-                          if (_images.length < 1) {
-                            imagesBoolean = true;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Please select at least 3 images of your house',
-                                ),
-                              ),
-                            );
-                          } else {
-                            imagesBoolean = false;
-                          }
-                          print(_formKey.currentState!.value);
-                          print('----------name---------- ');
-                          print(_nameController.text);
-                          print('----------description---------- ');
-                          print(_descriptionController.text);
-                          print('----------house type---------- ');
-                          print(houseType);
-                          print('----------number of rooms---------- ');
-                          print(_noOfRooms);
-                          print('----------Amenities---------- ');
-                          debugPrint(_amenitiesController.toString());
-                          if (imagesBoolean == false &&
-                              locationBoolean == false) {
-                            _addProperty(
-                                user!,
-                                _noOfRooms,
-                                _amenitiesController,
-                                houseType,
-                                pickedData.latLong.latitude,
-                                pickedData.latLong.longitude,
-                                '${pickedData.address['county']}, ${pickedData.address['state_district'].toString().split('/ ').elementAt(1)}');
-                          }
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'Please fill all the fields',
-                              ),
-                            ),
-                          );
-                        }
+                        // __addToAmenities(
+                        //     booleanValueOne,
+                        //     booleanValueTwo,
+                        //     booleanValueThree,
+                        //     booleanValueFour,
+                        //     booleanValueFive,
+                        //     booleanValueSix);
+                        // _noOfRooms =
+                        //     '$integerValueOne living rooms, $integerValueTwo bed rooms, $integerValueThree shower rooms, $integerValueFour kitchen rooms';
+                        // if (_formKey.currentState!.saveAndValidate()) {
+                        //   if (pickedData.latLong.latitude == 0 &&
+                        //       pickedData.latLong.longitude == 0) {
+                        //     locationBoolean = true;
+                        //     ScaffoldMessenger.of(context).showSnackBar(
+                        //       const SnackBar(
+                        //         content: Text(
+                        //           'Please select the location of your house on map and select at least 3 images of your house',
+                        //         ),
+                        //       ),
+                        //     );
+                        //   } else {
+                        //     locationBoolean = false;
+                        //   }
+                        //   if (_images.length < 1) {
+                        //     imagesBoolean = true;
+                        //     ScaffoldMessenger.of(context).showSnackBar(
+                        //       const SnackBar(
+                        //         content: Text(
+                        //           'Please select at least 3 images of your house',
+                        //         ),
+                        //       ),
+                        //     );
+                        //   } else {
+                        //     imagesBoolean = false;
+                        //   }
+                        //   print(_formKey.currentState!.value);
+                        //   print('----------name---------- ');
+                        //   print(_nameController.text);
+                        //   print('----------description---------- ');
+                        //   print(_descriptionController.text);
+                        //   print('----------house type---------- ');
+                        //   print(houseType);
+                        //   print('----------number of rooms---------- ');
+                        //   print(_noOfRooms);
+                        //   print('----------Amenities---------- ');
+                        //   debugPrint(_amenitiesController.toString());
+                        //   if (imagesBoolean == false &&
+                        //       locationBoolean == false) {
+                        //     _addProperty(
+                        //         user!,
+                        //         _noOfRooms,
+                        //         _amenitiesController,
+                        //         houseType,
+                        //         pickedData.latLong.latitude,
+                        //         pickedData.latLong.longitude,
+                        //         '${pickedData.address['county']}, ${pickedData.address['state_district'].toString().split('/ ').elementAt(1)}');
+                        //   }
+                        // } else {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     const SnackBar(
+                        //       content: Text(
+                        //         'Please fill all the fields',
+                        //       ),
+                        //     ),
+                        //   );
+                        // }
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CommissionConfirmationScreen(
+                                      propertyValue: 6000),
+                            ));
                       },
                       child: const Text(
                         'Save',

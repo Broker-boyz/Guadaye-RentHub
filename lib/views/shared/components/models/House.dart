@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 
 enum HouseType {Apartment, House, Hotel, Villa, Condominium,}

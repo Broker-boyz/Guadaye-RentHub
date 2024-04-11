@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gojo_renthub/controllers/user_provider/user_provider.dart';
+import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/routes/routes.dart';
 import 'package:gojo_renthub/services/email/signout.dart';
 import 'package:gojo_renthub/views/shared/fonts/orbitron.dart';
@@ -47,15 +47,16 @@ class ProfileScreen extends StatelessWidget {
                       height: 35,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.indigo.shade300,
-                            Colors.blue.shade300,
-                            Colors.blue.shade100,
-                          ],
-                        ),
+                        color: Colors.blueAccent,
+                        // gradient: LinearGradient(
+                        //   begin: Alignment.topCenter,
+                        //   end: Alignment.bottomCenter,
+                        //   colors: [
+                        //     Colors.indigo.shade300,
+                        //     Colors.blue.shade300,
+                        //     Colors.blue.shade100,
+                        //   ],
+                        // ),
                       ),
                       child: IconButton(
                         color: Colors.black,
@@ -65,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
                         },
                         icon: Icon(
                           LineAwesomeIcons.alternate_pencil,
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                     ),
@@ -104,28 +105,28 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        offset: const Offset(0, 5),
-                        spreadRadius: 6,
-                        blurRadius: 12,
-                        color: Colors.indigo.withOpacity(0.1),
+                        // offset: const Offset(0, 5),
+                        // spreadRadius: 6,
+                        // blurRadius: 12,
+                        color: Colors.blueAccent,
                       )
                     ],
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.indigo.shade300,
-                        Colors.blue.shade300,
-                        Colors.blue.shade100,
-                      ],
-                    ),
+                    // gradient: LinearGradient(
+                    //   begin: Alignment.topCenter,
+                    //   end: Alignment.bottomCenter,
+                    //   colors: [
+                    //     Colors.indigo.shade300,
+                    //     Colors.blue.shade300,
+                    //     Colors.blue.shade100,
+                    //   ],
+                    // ),
                   ),
                   child: Center(
                     child: Text(
                       'Edit Profile',
                       style: textStyleOrbitron(
                           14,
-                          Theme.of(context).colorScheme.inversePrimary,
+                          Theme.of(context).colorScheme.primary,
                           FontWeight.bold,
                           1),
                     ),
