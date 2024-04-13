@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ellipsis_text/flutter_ellipsis_text.dart';
 import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
+import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/mapService/component/map_box.dart';
 import 'package:gojo_renthub/mapService/screen/panorama_view.dart';
 import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
@@ -28,6 +29,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
   void initState() {
     controller = ScrollController();
     _getIcon();
+    _setFavorite();
     super.initState();
   }
 
@@ -54,6 +56,11 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
   }
 
   bool _isAllAmenties = false;
+  bool _isFavorite = false;
+
+  _setFavorite() {
+    _isFavorite = widget.myProperty!.availability;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +88,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                 children: [
                   CircleAvatar(
                     backgroundColor: Colors.black38,
-                    radius: 18,
+                    radius: 20,
                     child: IconButton(
                         onPressed: () {
                           Get.back();
@@ -95,14 +102,23 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                   const Spacer(),
                   CircleAvatar(
                     backgroundColor: Colors.black26,
-                    radius: 18,
+                    radius: 20,
                     child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.favorite_border,
-                          color: Colors.white,
-                          size: 20,
-                        )),
+                      onPressed: () {
+                        _isFavorite = !_isFavorite;
+
+                        MyPropertyRepo().updateItem(property.id, _isFavorite);
+                        _isFavorite
+                            ? MyPropertyRepo().addFavorites(property: property)
+                            : MyPropertyRepo()
+                                .removeFavorites(property: property);
+                        setState(() {});
+                      },
+                      icon: _isFavorite
+                          ? const Icon(Icons.favorite_rounded,
+                              color: Colors.pinkAccent)
+                          : const Icon(Icons.favorite_border),
+                    ),
                   ),
                   const SizedBox(
                     width: 8,
@@ -180,7 +196,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                           Text(
                             'About This Home',
                             style: textStyleNunito(
-                                18,
+                                20,
                                 Theme.of(context).colorScheme.inversePrimary,
                                 FontWeight.w900,
                                 0),
@@ -371,26 +387,13 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                 FontWeight.w900,
                                 0),
                           ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * .15,
-                            child: ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                controller: controller,
-                                padding: const EdgeInsets.only(top: 0),
-                                shrinkWrap: true,
-                                itemCount: 4,
-                                itemBuilder: (context, index) {
-                                  return Text(
-                                    property.houseRules,
-                                    style: textStyleNunito(
-                                        16,
-                                        Theme.of(context)
-                                            .colorScheme
-                                            .inversePrimary,
-                                        FontWeight.w700,
-                                        0),
-                                  );
-                                }),
+                          Text(
+                            property.houseRules,
+                            style: textStyleNunito(
+                                16,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w700,
+                                0),
                           )
                         ],
                       ),
@@ -484,7 +487,6 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
       itemCount: property.imageUrl.length,
       itemExtent: 300,
       itemBuilder: ((context, index) {
-        print(property.imageUrl.length);
         return GestureDetector(
           onTap: (() {
             showDialog(

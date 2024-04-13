@@ -11,7 +11,7 @@ class Apartment extends StatefulWidget {
 class _ApartmentState extends State<Apartment> {
   @override
   Widget build(BuildContext context) {
-    return categorySource('Apartment');
+    return const CategorySource(categoryString: 'Apartment');
   }
 }
 
@@ -25,7 +25,7 @@ class Houses extends StatefulWidget {
 class _HousesState extends State<Houses> {
   @override
   Widget build(BuildContext context) {
-    return categorySource('House');
+    return const CategorySource(categoryString: 'House');
   }
 }
 
@@ -39,7 +39,7 @@ class Villas extends StatefulWidget {
 class _VillasState extends State<Villas> {
   @override
   Widget build(BuildContext context) {
-    return categorySource('Villa');
+    return const CategorySource(categoryString: 'Villa');
   }
 }
 
@@ -53,7 +53,7 @@ class Hotel extends StatefulWidget {
 class _HotelState extends State<Hotel> {
   @override
   Widget build(BuildContext context) {
-    return categorySource('Hotel');
+    return const CategorySource(categoryString: 'Hotel');
   }
 }
 
@@ -67,6 +67,6 @@ class Condominium extends StatefulWidget {
 class _CondominiumState extends State<Condominium> {
   @override
   Widget build(BuildContext context) {
-    return categorySource('Condominuim');
+    return const CategorySource(categoryString: 'Condominuim');
   }
 }

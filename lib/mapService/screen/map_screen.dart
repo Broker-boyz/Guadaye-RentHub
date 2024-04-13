@@ -149,7 +149,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
               );
             },
           ),
-          child: customMarker(myProperty[i].price)));
+          child: customMarker(myProperty[i].price.toString())));
       setState(() {});
     }
   }

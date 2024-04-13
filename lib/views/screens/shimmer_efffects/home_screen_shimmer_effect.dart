@@ -16,20 +16,53 @@ class HomeScreenShimmerEffect extends StatefulWidget {
 class _HomeScreenShimmerEffectState extends State<HomeScreenShimmerEffect> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-          child: Container(
-            child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  // final _property = widget.snapshot.data![index];
-                  return Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    margin: const EdgeInsets.only(top: 20),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+    return Container(
+      child: ListView.builder(
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            // final _property = widget.snapshot.data![index];
+            return Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: MediaQuery.of(context).size.height * 0.4,
+              margin: const EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey.shade400,
+                    highlightColor: Colors.grey.shade100,
+                    enabled: true,
+                    child: Stack(children: [
+                      Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.29,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.white,
+                        ),
+                      ),
+                      Positioned(
+                        top: 12,
+                        right: 10,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.black26,
+                          radius: 20,
+                          child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.favorite_border)),
+                        ),
+                      )
+                    ]),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -37,182 +70,147 @@ class _HomeScreenShimmerEffectState extends State<HomeScreenShimmerEffect> {
                           baseColor: Colors.grey.shade400,
                           highlightColor: Colors.grey.shade100,
                           enabled: true,
-                          child: Stack(children: [
-                            Container(
-                              width: double.infinity,
-                              height: MediaQuery.of(context).size.height * 0.29,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                color: Colors.white,
-                              ),
-                            ),
-                            Positioned(
-                              top: 12,
-                              right: 10,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.black26,
-                                radius: 20,
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.favorite_border)),
-                              ),
-                            )
-                          ]),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
                             children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width* .7,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(12.0),
+                                  color: Colors.white,
+                                ),
+                                child: Text(
+                                  '_property.address',
+                                  style: textStyleNunito(
+                                      20,
+                                      Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary,
+                                      FontWeight.w900,
+                                      0),
+                                ),
+                              ),
+                              const Spacer(),
                               Shimmer.fromColors(
                                 baseColor: Colors.grey.shade400,
                                 highlightColor: Colors.grey.shade100,
                                 enabled: true,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width* .7,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                        color: Colors.white,
-                                      ),
-                                      child: Text(
-                                        '_property.address',
-                                        style: textStyleNunito(
-                                            20,
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .inversePrimary,
-                                            FontWeight.w900,
-                                            0),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Shimmer.fromColors(
-                                      baseColor: Colors.grey.shade400,
-                                      highlightColor: Colors.grey.shade100,
-                                      enabled: true,
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .2,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          color: Colors.white,
-                                        ),
-                                        child: const Icon(
-                                          Icons.star_half_outlined,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 5,),
-                              Shimmer.fromColors(
-                                baseColor: Colors.grey.shade400,
-                                      highlightColor: Colors.grey.shade100,
-                                      enabled: true,
                                 child: Container(
-                                  width: MediaQuery.of(context).size.width,
+                                  width:
+                                      MediaQuery.of(context).size.width *
+                                          .2,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
+                                    borderRadius:
+                                        BorderRadius.circular(12.0),
                                     color: Colors.white,
                                   ),
-                                  child: Text(
-                                    '_property.address',
-                                    style: textStyleNunito(
-                                        20,
-                                        Theme.of(context)
-                                            .colorScheme
-                                            .inversePrimary,
-                                        FontWeight.w900,
-                                        0),
+                                  child: const Icon(
+                                    Icons.star_half_outlined,
+                                    color: Colors.black,
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              Shimmer.fromColors(
-                                baseColor: Colors.grey.shade400,
-                                      highlightColor: Colors.grey.shade100,
-                                      enabled: true,
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    color: Colors.white,
-                                  ),
-                                  child: Text(
-                                    '_property.address',
-                                    style: textStyleNunito(
-                                        20,
-                                        Theme.of(context)
-                                            .colorScheme
-                                            .inversePrimary,
-                                        FontWeight.w900,
-                                        0),
-                                  ),
-                                ),
-                              ),
+                              )
                             ],
                           ),
-                        )
+                        ),
+                        const SizedBox(height: 5,),
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey.shade400,
+                                highlightColor: Colors.grey.shade100,
+                                enabled: true,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              color: Colors.white,
+                            ),
+                            child: Text(
+                              '_property.address',
+                              style: textStyleNunito(
+                                  20,
+                                  Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary,
+                                  FontWeight.w900,
+                                  0),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey.shade400,
+                                highlightColor: Colors.grey.shade100,
+                                enabled: true,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              color: Colors.white,
+                            ),
+                            child: Text(
+                              '_property.address',
+                              style: textStyleNunito(
+                                  20,
+                                  Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary,
+                                  FontWeight.w900,
+                                  0),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  );
-
-                  // return Card(
-                  //   elevation: 0,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(
-                  //         vertical: 5, horizontal: 2),
-                  //     child: Row(
-                  //       children: [
-                  //         Padding(
-                  //           padding: const EdgeInsets.all(8.0),
-                  //           child: SizedBox(
-                  //             height: 100,
-                  //             width: 110,
-                  //             child: ClipRRect(
-                  //               borderRadius: BorderRadius.circular(20),
-                  //               child: Image.asset(
-                  //                 houseList[index].houseImage,
-                  //                 fit: BoxFit.cover,
-                  //               ),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         const Column(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Text("Orchad house",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                  //             Text("Birr 25000/year", style: TextStyle(color: Colors.blue)),
-                  //             Row(
-                  //               children: [
-                  //                 Icon(Icons.king_bed),
-                  //                 Text("6 bedroom"),
-                  //                 SizedBox(width: 20,),
-                  //                 Icon(Icons.bathtub),
-                  //                 Text("4 bathroom")
-                  //               ],
-                  //             )
-                  //           ],
-                  //         )
-                  //       ],
-                  //     ),
-                  //   ),
-                  // );
-                }),
-          ),
-        );
+                  )
+                ],
+              ),
+            );
+    
+            // return Card(
+            //   elevation: 0,
+            //   child: Padding(
+            //     padding: const EdgeInsets.symmetric(
+            //         vertical: 5, horizontal: 2),
+            //     child: Row(
+            //       children: [
+            //         Padding(
+            //           padding: const EdgeInsets.all(8.0),
+            //           child: SizedBox(
+            //             height: 100,
+            //             width: 110,
+            //             child: ClipRRect(
+            //               borderRadius: BorderRadius.circular(20),
+            //               child: Image.asset(
+            //                 houseList[index].houseImage,
+            //                 fit: BoxFit.cover,
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //         const Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Text("Orchad house",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+            //             Text("Birr 25000/year", style: TextStyle(color: Colors.blue)),
+            //             Row(
+            //               children: [
+            //                 Icon(Icons.king_bed),
+            //                 Text("6 bedroom"),
+            //                 SizedBox(width: 20,),
+            //                 Icon(Icons.bathtub),
+            //                 Text("4 bathroom")
+            //               ],
+            //             )
+            //           ],
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // );
+          }),
+    );
       
   }
 }
@@ -222,7 +220,7 @@ Shimmer newShimmerEffect() {
     baseColor: Colors.red,
     highlightColor: Colors.grey.shade100,
     enabled: true,
-    period: Duration(seconds: 30),
+    period: const Duration(seconds: 30),
     child: SizedBox(
       width: 300,
       height: 300,
@@ -279,7 +277,7 @@ Shimmer newShimmerEffect() {
                     children: [
                       Row(
                         children: [
-                          Container(
+                          SizedBox(
                             height: 30,
                             width: double.infinity,
                             child: Text(
@@ -298,7 +296,7 @@ Shimmer newShimmerEffect() {
                           )
                         ],
                       ),
-                      Container(
+                      SizedBox(
                         height: 30,
                         width: double.infinity,
                         child: Text(
@@ -313,7 +311,7 @@ Shimmer newShimmerEffect() {
                       const SizedBox(
                         height: 5,
                       ),
-                      Container(
+                      SizedBox(
                         height: 30,
                         width: double.infinity,
                         child: Text(

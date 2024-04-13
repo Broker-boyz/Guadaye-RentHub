@@ -93,7 +93,7 @@ class _AddScreenState extends State<AddScreen> {
       String houseType, double latitude, double longitude, String address) {
     final name = _nameController.text;
     final description = _descriptionController.text;
-    final price = _priceController.text;
+    final price = int.parse(_priceController.text);
     final houseRules = _houseRulesController.text;
 
     final property = AddPropertyEvent(
@@ -116,6 +116,8 @@ class _AddScreenState extends State<AddScreen> {
         latitude: latitude,
         longitude: longitude,
         houseRules: 'houseRules',
+        city: address.split(',').elementAt(0),
+        subCity: address.split(', ').elementAt(1),
       ),
       userId: user.uid,
       images: _images,

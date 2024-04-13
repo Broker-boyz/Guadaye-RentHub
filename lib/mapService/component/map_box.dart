@@ -62,7 +62,7 @@ class _MapBoxState extends State<MapBox> {
           child: GoogleMap(
             padding: const EdgeInsets.only(top: 30),
             initialCameraPosition:
-                CameraPosition(target: widget.latLng, zoom: 12),
+                CameraPosition(target: widget.latLng, zoom: 10),
             onTap: (position) {
               controller!.animateCamera(CameraUpdate.newCameraPosition(
                   CameraPosition(target: widget.latLng)));

@@ -1,8 +1,10 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/bloc/property_bloc.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
@@ -30,13 +32,13 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
       TextEditingController();
 
   final ImagePicker _picker = ImagePicker();
-  List<File> _images = [];
+  final List<File> _images = [];
 
   Future<void> _pickImage() async {
     var image = await _picker.pickMultiImage();
     for (var imageList in image) {
-      final _doKnow = File(imageList.path);
-      _images.add(_doKnow);
+      final doKnow = File(imageList.path);
+      _images.add(doKnow);
     }
     setState(() {});
   }
@@ -44,7 +46,7 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
   void _addProperty(User user) {
     final name = _nameController.text;
     final description = _descriptionController.text;
-    final price = _priceController.text;
+    final price = int.parse( _priceController.text);
     final noOfRooms = _noOfRoomsController.text;
     final category = _catagoryController.text;
     final amenities = _amenitiesController.text;
@@ -72,6 +74,8 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
           latitude: 3.3,
           longitude: 8.9,
           houseRules: '',
+          city: '',
+          subCity: '',
         ),
         userId: user.uid,
         images: _images,
@@ -80,7 +84,7 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>  HomePage(),
+            builder: (context) =>  const HomePage(),
           ));
     }
   }

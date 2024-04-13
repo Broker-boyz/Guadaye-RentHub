@@ -8,7 +8,7 @@ class MyProperty extends Equatable {
   final String title;
   final String description;
   final String noOfRooms;
-  final String price;
+  final int price;
   final String hostId;
   final List<String> imageUrl;
   final String category;
@@ -22,7 +22,8 @@ class MyProperty extends Equatable {
   final double latitude;
   final double longitude;
   final String houseRules;
-
+  final String city;
+  final String subCity;
   const MyProperty({
     required this.id,
     required this.title,
@@ -42,6 +43,8 @@ class MyProperty extends Equatable {
     required this.latitude,
     required this.longitude,
     required this.houseRules,
+    required this.city,
+    required this.subCity,
   });
 
   MyProperty copyWith({
@@ -49,7 +52,7 @@ class MyProperty extends Equatable {
     String? title,
     String? description,
     String? noOfRooms,
-    String? price,
+    int? price,
     String? hostId,
     List<String>? imageUrl,
     String? category,
@@ -63,6 +66,8 @@ class MyProperty extends Equatable {
     double? latitude,
     double? longitude,
     String? houseRules,
+    String? city,
+    String? subCity,
   }) {
     return MyProperty(
       id: id ?? this.id,
@@ -83,6 +88,8 @@ class MyProperty extends Equatable {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       houseRules: houseRules ?? this.houseRules,
+      city: city ?? this.city,
+      subCity: subCity ?? this.subCity,
     );
   }
 
@@ -105,7 +112,9 @@ class MyProperty extends Equatable {
       'availability': availability,
       'latitude': latitude,
       'longitude': longitude,
-      // 'houseRules': houseRules,
+      'houseRules': houseRules,
+      'city': city,
+      'subCity': subCity,
     };
   }
 
@@ -115,20 +124,22 @@ class MyProperty extends Equatable {
       title: map['title'] as String,
       description: map['description'] as String,
       noOfRooms: map['noOfRooms'] as String,
-      price: map['price'] as String,
+      price: map['price'] as int,
       hostId: map['hostId'] as String,
-      imageUrl: List<String>.from((map['imageUrl'] ?? [])),
+      imageUrl: List<String>.from((map['imageUrl'] as List)),
       category: map['category'] as String,
       address: map['address'] as String,
       status: map['status'] as String,
       availableDates: map['availableDates'] as String,
       rating: map['rating'] as double,
-      amenities: List<String>.from((map['amenities'] ?? [])),
-      reviews: List<String>.from((map['reviews'] ?? [])),
+      amenities: List<String>.from((map['amenities'] as List)),
+      reviews: List<String>.from((map['reviews'] as List)),
       availability: map['availability'] as bool,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
       houseRules: map['houseRules'] as String,
+      city: map['city'] as String,
+      subCity: map['sub-city'] as String,
     );
   }
 
@@ -161,6 +172,8 @@ class MyProperty extends Equatable {
       latitude,
       longitude,
       houseRules,
+      city,
+      subCity,
     ];
   }
 }

@@ -18,28 +18,28 @@ class MyPropertyRepo {
   }
 
   // get user account type
-  Future<String> getUserRole({required User user}) async{
-  try {
-    final userQuery = await _firestore
-        .collection('users')
-        .where('uid', isEqualTo: user.uid)
-        .get();
+  Future<String> getUserRole({required User user}) async {
+    try {
+      final userQuery = await _firestore
+          .collection('users')
+          .where('uid', isEqualTo: user.uid)
+          .get();
 
-    if (userQuery.docs.isEmpty) {
-      return 'User not found'; 
+      if (userQuery.docs.isEmpty) {
+        return 'User not found';
+      }
+
+      final userData = userQuery.docs[0].data();
+      if (!userData.containsKey('account-type')) {
+        return 'Role not found';
+      }
+
+      return userData['account-type'];
+    } catch (e) {
+      print(e);
+      throw Exception('Failed to retrieve user role');
     }
-
-    final userData = userQuery.docs[0].data();
-    if (!userData.containsKey('account-type')) {
-      return 'Role not found'; 
-    }
-
-    return userData['account-type'];
-  } catch (e) {
-    print(e);
-    throw Exception('Failed to retrieve user role');
   }
-}
 
   // upload images
   Future<List<String>> uploadImage(
@@ -86,8 +86,11 @@ class MyPropertyRepo {
           'rating': 3.0,
           'reviews': const [],
           'availability': true,
-          'latitude':property.latitude,
-          'longitude':property.longitude,
+          'latitude': property.latitude,
+          'longitude': property.longitude,
+          'houseRules': property.houseRules,
+          'city': property.address.split(',').elementAt(0),
+          'sub-city': property.address.split(', ').elementAt(1),
         });
         await properties.doc(docRef.id).update({
           'id': docRef.id,
@@ -126,7 +129,10 @@ class MyPropertyRepo {
   // fetch properties
   Future<List<MyProperty>> loadMyProperties(String catagory) async {
     try {
-      final rr = await _firestore.collection('properties').where('category', isEqualTo: catagory).get();
+      final rr = await _firestore
+          .collection('properties')
+          .where('category', isEqualTo: catagory)
+          .get();
       final result = rr.docs.map((data) {
         return MyProperty.fromMap(data.data());
       }).toList();
@@ -173,6 +179,85 @@ class MyPropertyRepo {
       });
     } catch (e) {
       print('Error while adding review: $e');
+    }
+  }
+
+  // Update Items
+  void updateItem(String docId, bool value) async {
+    DocumentReference ref = _firestore.collection('properties').doc(docId);
+    ref.update({'availability': value});
+  }
+
+  // Adding Favorites
+
+  Future<void> addFavorites({required MyProperty property}) async {
+    try {
+      User user = getCurrentUser()!;
+      CollectionReference favCollection = _firestore.collection('favorites');
+      await favCollection
+          .doc(user.uid)
+          .collection('myFavorites')
+          .doc(property.id)
+          .set({
+        'title': property.title,
+        'description': property.description,
+        'noOfRooms': property.noOfRooms,
+        'price': property.price,
+        'category': property.category,
+        'address': property.address,
+        'availableDates': property.availableDates,
+        'amenities': property.amenities,
+        'status': 'waiting',
+        'rating': 3.0,
+        'reviews': const [],
+        'availability': true,
+        'latitude': property.latitude,
+        'longitude': property.longitude,
+        'id': property.id,
+        'hostId': property.hostId,
+        'imageUrl': property.imageUrl,
+        'houseRules': property.houseRules,
+        'city': property.address.split(',').elementAt(0),
+        'sub-city': property.address.split(', ').elementAt(1),
+      });
+      print('Adding succeeded');
+    } catch (e) {
+      print('Error while adding favorite: $e');
+    }
+  }
+
+  // Remove Favorite
+  Future<void> removeFavorites({required MyProperty property}) async {
+    try {
+      User user = getCurrentUser()!;
+      CollectionReference favCollection = _firestore.collection('favorites');
+      favCollection
+          .doc(user.uid)
+          .collection('myFavorites')
+          .doc(property.id)
+          .delete();
+      print('Remove is succeeded');
+    } catch (e) {
+      print('Error while removing review: $e');
+    }
+  }
+  // Loading favorites
+
+  Future<List<MyProperty>> loadingFavorites() async {
+    try {
+      final favoriteReference = await _firestore
+          .collection('favorites')
+          .doc(getCurrentUser()!.uid)
+          .collection('myFavorites')
+          .get();
+
+      final result = favoriteReference.docs
+          .map((doc) => MyProperty.fromMap(doc.data()))
+          .toList();
+      return result;
+    } on Exception catch (e) {
+      print('Error while loading favorite: $e');
+      return [];
     }
   }
 }
