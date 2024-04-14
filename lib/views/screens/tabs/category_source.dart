@@ -10,6 +10,7 @@ import 'package:gojo_renthub/views/screens/home_and%20_details_page/component/se
 import 'package:gojo_renthub/views/screens/shimmer_efffects/home_screen_shimmer_effect.dart';
 import 'package:gojo_renthub/views/screens/tabs/bloc/favorite_bloc.dart';
 import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
+import 'dart:developer' as dev show log;
 
 class CategorySource extends StatefulWidget {
   const CategorySource({super.key, required this.categoryString});
@@ -32,8 +33,8 @@ class _CategorySourceState extends State<CategorySource> {
     super.initState();
   }
 
-  _calculateRating(property, length) {
-    rating = property!.rating.reduce((a, b) => a + b) / length;
+  _calculateRating(MyProperty property, int length) {
+    rating = property.rating.reduce((a, b) => a + b) / length;
   }
 
   List<bool> isFavorites = [];
@@ -46,7 +47,7 @@ class _CategorySourceState extends State<CategorySource> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: myProperty,
+      future: _repo.loadMyProperties(widget.categoryString),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return HomeScreenShimmerEffect(snapshot: snapshot);
@@ -72,10 +73,11 @@ class _CategorySourceState extends State<CategorySource> {
                       ? snapshot.data![index]
                       : null;
                   isFavorites[index] = property?.isFavorite ?? false;
+                  dev.log(isFavorites[index].toString());
                   return index < snapshot.data!.length
                       ? BlocBuilder<FavoriteBloc, FavoriteState>(
                           builder: (context, state) {
-                            _calculateRating(property, property!.rating.length);
+                            _calculateRating(property!, property.rating.length);
                             return Container(
                               width: MediaQuery.of(context).size.width * 0.9,
                               height: MediaQuery.of(context).size.height * 0.4,
@@ -177,13 +179,27 @@ class _CategorySourceState extends State<CategorySource> {
                                                   0),
                                             ),
                                             const Spacer(),
-                                            Row(
-                                              children: [
-                                                ratingStarSelection(rating),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                              ],
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10.0, right: 10),
+                                              child: Row(
+                                                children: [
+                                                  ratingStarSelection(rating),
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text(
+                                                    rating.toStringAsFixed(1),
+                                                    style: textStyleNunito(
+                                                        20,
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .inversePrimary,
+                                                        FontWeight.w900,
+                                                        0),
+                                                  ),
+                                                ],
+                                              ),
                                             )
                                           ],
                                         ),

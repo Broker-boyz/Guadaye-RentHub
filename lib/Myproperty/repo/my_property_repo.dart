@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
+import 'package:gojo_renthub/Myproperty/model/review_model.dart';
 import 'package:uuid/uuid.dart';
 
 class MyPropertyRepo {
@@ -155,7 +156,7 @@ class MyPropertyRepo {
         'price': property.price,
         'category': property.category,
         'rating': property.rating,
-        'review':property.reviews,
+        'reviews': property.reviews,
         'address': property.address,
         'availableDates': property.availableDates,
         'amenities': property.amenities,
@@ -174,11 +175,15 @@ class MyPropertyRepo {
     try {
       User? user = getCurrentUser();
       CollectionReference localReview = _firestore.collection('reviews');
-      await localReview.doc(property.id).set({
-        'id': property.id,
+      await localReview
+          .doc(property.id)
+          .collection('home-reviews')
+          .doc(user!.uid)
+          .set({
+        'reviewId': property.id,
         'review': review,
         'rating': rating,
-        'userId': user!.uid,
+        'userId': user.uid,
         'date': Timestamp.now(),
       });
     } catch (e) {
@@ -186,10 +191,29 @@ class MyPropertyRepo {
     }
   }
 
+// loading reviews
+  Future<List<Review>> loadingReviews(MyProperty property) async {
+    try {
+      final reviewReference = await _firestore
+          .collection('reviews')
+          .doc(property.id)
+          .collection('home-reviews')
+          .get();
+
+      final result = reviewReference.docs
+          .map((doc) => Review.fromMap(doc.data()))
+          .toList();
+      return result;
+    } on Exception catch (e) {
+      print('Error while loading favorite: $e');
+      return [];
+    }
+  }
+
   // Update Items
   void updateItem(String docId, bool value) async {
     DocumentReference ref = _firestore.collection('properties').doc(docId);
-    ref.update({'availability': value});
+    ref.update({'isFavorite': value});
   }
 
   // Adding Favorites
@@ -234,7 +258,6 @@ class MyPropertyRepo {
   // Remove Favorite
   Future<void> removeFavorites({required MyProperty property}) async {
     try {
-     
       User user = getCurrentUser()!;
       CollectionReference favCollection = _firestore.collection('favorites');
       favCollection
@@ -247,6 +270,7 @@ class MyPropertyRepo {
       print('Error while removing review: $e');
     }
   }
+
   // Loading favorites
 
   Future<List<MyProperty>> loadingFavorites() async {
@@ -265,5 +289,25 @@ class MyPropertyRepo {
       print('Error while loading favorite: $e');
       return [];
     }
+  }
+
+  Future<Map<String, dynamic>> findOneUser(String userId) async {
+    final reference = await _firestore
+        .collection('users')
+        .where('uid', isEqualTo: userId)
+        .get();
+    final result = reference.docs.firstOrNull;
+    final userData = result!.data();
+    return userData;
+  }
+  Future<int> findLength(MyProperty property) async {
+      final reviewReference = await _firestore
+          .collection('reviews')
+          .doc(property.id)
+          .collection('home-reviews')
+          .get();
+    final length = reviewReference.docs.length;
+    
+    return length;
   }
 }

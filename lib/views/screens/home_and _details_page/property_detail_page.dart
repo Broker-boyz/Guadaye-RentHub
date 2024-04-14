@@ -1,9 +1,9 @@
-// ignore_for_file: must_be_immutable
-
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_ellipsis_text/flutter_ellipsis_text.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -12,7 +12,10 @@ import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/mapService/component/map_box.dart';
 import 'package:gojo_renthub/mapService/screen/panorama_view.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
+import 'package:gojo_renthub/views/screens/home_and%20_details_page/component/carousel_builder.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/component/select_rating_star.dart';
+import 'package:gojo_renthub/views/screens/review/review_page.dart';
+import 'package:gojo_renthub/views/screens/review/user_review_card.dart';
 import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:modern_form_line_awesome_icons/modern_form_line_awesome_icons.dart';
@@ -30,11 +33,11 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
   late TextEditingController _reviewController;
   double ratingController = 3;
   BitmapDescriptor customMarker = BitmapDescriptor.defaultMarker;
-
+  final List<String> _listOfReview = [];
   @override
   void initState() {
     int length = widget.myProperty!.rating.length;
-
+    _listOfReview.addAll(widget.myProperty!.reviews);
     _controller = ScrollController();
     _reviewController = TextEditingController();
     _getIcon();
@@ -75,19 +78,21 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
   double rating = 0;
 
   _calculateRating(length) {
-    
     rating = widget.myProperty!.rating.reduce((a, b) => a + b) / length;
-    
-
   }
 
   @override
   Widget build(BuildContext context) {
-   MyProperty? property = widget.myProperty;
+    MyProperty? property = widget.myProperty;
+    int length = 0;
+    MyPropertyRepo().findLength(property!).then(
+      (value) {
+        length = value;
+      },
+    );
     return PopScope(
       canPop: false,
       onPopInvoked: (value) {
-        dev.log(value.toString());
         showReview();
       },
       child: Scaffold(
@@ -103,7 +108,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                   borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
                     image: CachedNetworkImageProvider(
-                      property!.imageUrl[0],
+                      property.imageUrl[0],
                     ),
                     fit: BoxFit.fill,
                   ),
@@ -203,30 +208,35 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                             ],
                           ),
                           const Spacer(),
-                          Row(
-                            children: [
-                              ratingStarSelection(rating),
-                              Text(
-                                rating.toStringAsFixed(1),
-                                style: textStyleNunito(
-                                    20,
-                                    Theme.of(context)
-                                        .colorScheme
-                                        .inversePrimary,
-                                    FontWeight.w900,
-                                    0),
-                              ),
-                              Text(
-                                ' / 5',
-                                style: textStyleNunito(
-                                    20,
-                                    Theme.of(context)
-                                        .colorScheme
-                                        .inversePrimary,
-                                    FontWeight.w900,
-                                    0),
-                              ),
-                            ],
+                          GestureDetector(
+                            onTap: () {
+                              showReview();
+                            },
+                            child: Row(
+                              children: [
+                                ratingStarSelection(rating),
+                                Text(
+                                  rating.toStringAsFixed(1),
+                                  style: textStyleNunito(
+                                      20,
+                                      Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary,
+                                      FontWeight.w900,
+                                      0),
+                                ),
+                                Text(
+                                  ' / 5',
+                                  style: textStyleNunito(
+                                      20,
+                                      Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary,
+                                      FontWeight.w900,
+                                      0),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -250,7 +260,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                               text: property.description,
                               ellipsis: '... Show More',
                               style: textStyleNunito(
-                                  16,
+                                  15,
                                   Theme.of(context).colorScheme.inversePrimary,
                                   FontWeight.w600,
                                   0),
@@ -268,7 +278,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                       ),
                       SizedBox(
                         height: 150,
-                        child: _builder(property),
+                        child: carouselBuilder(property),
                       ),
                       const SizedBox(
                         height: 10,
@@ -302,7 +312,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                   crossAxisSpacing: 2,
                                   mainAxisExtent: 40,
                                 ),
-                                itemCount: property.reviews.length,
+                                itemCount: property.amenities.length,
                                 itemBuilder: (context, index) {
                                   return Container(
                                     height: 40,
@@ -322,7 +332,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                             width: 8,
                                           ),
                                           Text(
-                                            property.reviews[index],
+                                            property.amenities[index],
                                             style: textStyleNunito(
                                                 16,
                                                 Theme.of(context)
@@ -371,6 +381,44 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                             right: 20, left: 20, bottom: 10),
                         child: Divider(
                           color: Colors.grey[400],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Reviews($length)',
+                                  style: textStyleNunito(
+                                      18,
+                                      Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary,
+                                      FontWeight.w900,
+                                      0),
+                                ),
+                                const Spacer(),
+                                IconButton(
+                                    onPressed: () => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => ReviewsPage(
+                                                property: property))),
+                                    icon: const Icon(Icons.arrow_forward_ios)),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            property.reviews.isNotEmpty
+                                ? SizedBox(
+                                    height: 200,
+                                    child: reviewCardBuilder(
+                                        property, Axis.horizontal))
+                                : const SizedBox(),
+                          ],
                         ),
                       ),
                       Padding(
@@ -519,199 +567,155 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
     );
   }
 
-  ListView _builder(MyProperty property) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      physics: const BouncingScrollPhysics(),
-      itemCount: property.imageUrl.length,
-      itemExtent: 250,
-      itemBuilder: ((context, index) {
-        return GestureDetector(
-          onTap: (() {
-            showDialog(
-              context: context,
-              barrierColor: Colors.black54,
-              builder: (BuildContext context) {
-                return BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: AlertDialog(
-                    backgroundColor: Colors.transparent,
-                    surfaceTintColor: Colors.transparent,
-                    insetPadding: EdgeInsets.zero,
-                    content: Container(
-                      height: MediaQuery.of(context).size.height / 4,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              property.imageUrl[0],
-                            ),
-                            fit: BoxFit.fill),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
-          }),
-          child: Container(
-            height: 90,
-            margin: const EdgeInsets.only(right: 10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                image: DecorationImage(
-                    image: CachedNetworkImageProvider(
-                      property.imageUrl[0],
-                    ),
-                    fit: BoxFit.fill)),
-          ),
-        );
-      }),
-    );
-  }
-
   void showReview() {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
+        showDragHandle: true,
         builder: (context) {
-          return Container(
-            padding: const EdgeInsets.all(20),
-            height: MediaQuery.of(context).size.height * 0.4,
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10))),
-            child: Center(
-              child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Please Give rating about home service',
-                      style: textStyleNunito(
-                          20,
-                          Theme.of(context).colorScheme.inversePrimary,
-                          FontWeight.w900,
-                          0)),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  RatingBar.builder(
-                    initialRating: 3,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    glowColor: Colors.yellow,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) =>
-                        const Icon(Icons.star, color: Colors.amber),
-                    onRatingUpdate: (rating) {
-                      ratingController = rating;
-                      print(rating);
-                    },
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Please write some reviews',
-                          style: textStyleNunito(
-                              16,
-                              Theme.of(context).colorScheme.inversePrimary,
-                              FontWeight.w900,
-                              0)),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      TextField(
-                        controller: _reviewController,
+          return Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              height: MediaQuery.of(context).size.height * 0.4,
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10))),
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Please Give rating about home service',
                         style: textStyleNunito(
-                            16, Colors.grey[400]!, FontWeight.w700, 0),
-                        decoration: InputDecoration(
-                            prefixIcon: const Icon(LineAwesomeIcons.comment),
-                            hintText: 'Mention your thought here (optional)',
-                            hintStyle: textStyleNunito(
-                                16, Colors.grey[400]!, FontWeight.w700, 0),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey[200]!),
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.inversePrimary,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
+                            20,
+                            Theme.of(context).colorScheme.inversePrimary,
+                            FontWeight.w900,
+                            0)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    RatingBar.builder(
+                      initialRating: 3,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      glowColor: Colors.yellow,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) =>
+                          const Icon(Icons.star, color: Colors.amber),
+                      onRatingUpdate: (rating) {
+                        ratingController = rating;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Please write some reviews',
+                            style: textStyleNunito(
+                                16,
+                                Theme.of(context).colorScheme.inversePrimary,
+                                FontWeight.w900,
+                                0)),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        TextField(
+                          controller: _reviewController,
+                          style: textStyleNunito(
+                              16, Colors.grey[400]!, FontWeight.w700, 0),
+                          decoration: InputDecoration(
+                              prefixIcon: const Icon(LineAwesomeIcons.comment),
+                              hintText: 'Mention your thought here (optional)',
+                              hintStyle: textStyleNunito(
+                                  16, Colors.grey[400]!, FontWeight.w700, 0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey[200]!),
+                              )),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
+                              onPressed: () {
+                                MyProperty updatedProperty = widget.myProperty!
+                                    .copyWith(rating: [
+                                  ...widget.myProperty!.rating,
+                                  ratingController
+                                ], reviews: [
+                                  ...widget.myProperty!.reviews,
+                                  _reviewController.text
+                                ]);
+
+                                MyPropertyRepo()
+                                    .updateproperty(property: updatedProperty);
+                                MyPropertyRepo().addReview(
+                                    property: updatedProperty,
+                                    review: _reviewController.text,
+                                    rating: ratingController);
+                                _calculateRating(updatedProperty.rating.length);
+                                _listOfReview.add(_reviewController.text);
+                                reviewCardBuilder(
+                                    updatedProperty, Axis.horizontal);
+                                Navigator.of(context).pop();
+                                setState(() {});
+                              },
+                              child: Text('Submit',
+                                  style: textStyleNunito(
+                                      16,
+                                      Theme.of(context).colorScheme.primary,
+                                      FontWeight.w900,
+                                      0)),
                             ),
-                            onPressed: () {
-                              MyProperty property = widget.myProperty!.copyWith(
-                                  rating: [
-                                    ...widget.myProperty!.rating,
-                                    ratingController
-                                  ],
-                                  reviews: [
-                                    ...widget.myProperty!.reviews,
-                                    _reviewController.text
-                                  ]);
-                              print(property);
-                              MyPropertyRepo()
-                                  .updateproperty(property: property);
-                              MyPropertyRepo().addReview(
-                                  property: property,
-                                  review: _reviewController.text,
-                                  rating: ratingController);
-                              _calculateRating(property.rating.length);
-                              Navigator.of(context).pop();
-                              setState(() {});
-                            },
-                            child: Text('Submit',
-                                style: textStyleNunito(
-                                    16,
-                                    Theme.of(context).colorScheme.primary,
-                                    FontWeight.w900,
-                                    0)),
-                          ),
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Get.to(() => const HomePage(),
+                                    transition: Transition.fadeIn,
+                                    duration:
+                                        const Duration(milliseconds: 500));
+                              },
+                              child: Text('Cancel',
+                                  style: textStyleNunito(
+                                      16,
+                                      Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary,
+                                      FontWeight.w900,
+                                      0)),
                             ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Get.to(() => const HomePage(),
-                                  transition: Transition.fadeIn,
-                                  duration: const Duration(milliseconds: 500));
-                            },
-                            child: Text('Cancel',
-                                style: textStyleNunito(
-                                    16,
-                                    Theme.of(context)
-                                        .colorScheme
-                                        .inversePrimary,
-                                    FontWeight.w900,
-                                    0)),
-                          ),
-                        ],
-                      )
-                    ],
-                  )
-                ],
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           );
         });
   }
 }
-

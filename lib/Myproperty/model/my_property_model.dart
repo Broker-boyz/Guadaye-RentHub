@@ -139,7 +139,7 @@ class MyProperty extends Equatable {
       availableDates: map['availableDates'] as String,
       amenities: List<String>.from((map['amenities'] as List)),
       reviews: List<String>.from((map['reviews'] as List)),
-      isFavorite: map['availability'] as bool,
+      isFavorite: map['isFavorite'] as bool,
       rating: List<double>.from(map['rating'] as List),
       availability: map['availability'] as bool,
       latitude: map['latitude'] as double,
