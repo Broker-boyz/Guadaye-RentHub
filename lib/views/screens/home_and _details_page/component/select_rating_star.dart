@@ -21,6 +21,7 @@ Widget ratingStarSelection(double rating) {
       );
     case 5:
       return const Icon(
+        
         Icons.stars,
         color: Colors.red,
       );

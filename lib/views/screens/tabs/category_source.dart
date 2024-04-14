@@ -1,15 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/property_detail_page.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/component/select_rating_star.dart';
+import 'package:gojo_renthub/views/screens/home_and%20_details_page/component/select_rating_star.dart';
 import 'package:gojo_renthub/views/screens/shimmer_efffects/home_screen_shimmer_effect.dart';
 import 'package:gojo_renthub/views/screens/tabs/bloc/favorite_bloc.dart';
+import 'package:gojo_renthub/views/screens/tabs/bloc/favorite_bloc.dart';
 import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
+import 'dart:developer' as dev show log;
 
 class CategorySource extends StatefulWidget {
   const CategorySource({super.key, required this.categoryString});
@@ -45,8 +50,8 @@ class _CategorySourceState extends State<CategorySource> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: myProperty,
+    return FutureBuilder<List<MyProperty>>(
+      future: _repo.loadMyProperties(widget.categoryString),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return HomeScreenShimmerEffect(snapshot: snapshot);
@@ -72,6 +77,7 @@ class _CategorySourceState extends State<CategorySource> {
                       ? snapshot.data![index]
                       : null;
                   isFavorites[index] = property?.isFavorite ?? false;
+                  dev.log(isFavorites[index].toString());
                   return index < snapshot.data!.length
                       ? BlocBuilder<FavoriteBloc, FavoriteState>(
                           builder: (context, state) {
@@ -177,13 +183,27 @@ class _CategorySourceState extends State<CategorySource> {
                                                   0),
                                             ),
                                             const Spacer(),
-                                            Row(
-                                              children: [
-                                                ratingStarSelection(rating),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                              ],
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10.0, right: 10),
+                                              child: Row(
+                                                children: [
+                                                  ratingStarSelection(rating),
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text(
+                                                    rating.toStringAsFixed(1),
+                                                    style: textStyleNunito(
+                                                        20,
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .inversePrimary,
+                                                        FontWeight.w900,
+                                                        0),
+                                                  ),
+                                                ],
+                                              ),
                                             )
                                           ],
                                         ),
@@ -197,7 +217,7 @@ class _CategorySourceState extends State<CategorySource> {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        Text('${property.price} ETB/ Month',
+                                        Text('${property.price} ETB, Month',
                                             style: textStyleNunito(
                                                 16,
                                                 Theme.of(context)

@@ -1,6 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Review extends Equatable {
@@ -9,7 +10,6 @@ class Review extends Equatable {
   final double rating;
   final String userId;
   final DateTime date;
-
   const Review({
     required this.reviewId,
     required this.review,
@@ -50,13 +50,14 @@ class Review extends Equatable {
       review: map['review'] as String,
       rating: map['rating'] as double,
       userId: map['userId'] as String,
-      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      date: (map['date'] as Timestamp).toDate(),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Review.fromJson(String source) => Review.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Review.fromJson(String source) =>
+      Review.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;

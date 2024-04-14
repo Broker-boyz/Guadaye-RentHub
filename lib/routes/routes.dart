@@ -12,9 +12,6 @@ import 'package:gojo_renthub/views/screens/login_and_register_pages/verify_email
 import 'package:gojo_renthub/views/subscreens/setting_old.dart';
 import 'package:gojo_renthub/views/subscreens/terms_and_conditions.dart';
 import 'package:gojo_renthub/views/subscreens/update_profile_screen.dart';
-import 'package:gojo_renthub/views/subscreens/setting_old.dart';
-import 'package:gojo_renthub/views/subscreens/terms_and_conditions.dart';
-import 'package:gojo_renthub/views/subscreens/update_profile_screen.dart';
 
 class RouteClass {
   static String homePage = '/';

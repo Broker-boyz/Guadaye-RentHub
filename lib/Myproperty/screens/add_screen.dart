@@ -907,27 +907,8 @@ class _AddScreenState extends State<AddScreen> {
                           } else {
                             imagesBoolean = false;
                           }
-                          print(_formKey.currentState!.value);
-                          print('----------name---------- ');
-                          print(_nameController.text);
-                          print('----------description---------- ');
-                          print(_descriptionController.text);
-                          print('----------house type---------- ');
-                          print(houseType);
-                          print('----------number of rooms---------- ');
-                          print(_noOfRooms);
-                          print('----------Amenities---------- ');
-                          debugPrint(_amenitiesController.toString());
                           if (imagesBoolean == false &&
                               locationBoolean == false) {
-                            // _addProperty(
-                            //     user!,
-                            //     _noOfRooms,
-                            //     _amenitiesController,
-                            //     houseType,
-                            //     pickedData.latLong.latitude,
-                            //     pickedData.latLong.longitude,
-                            //     '${pickedData.address['county']}, ${pickedData.address['state_district'].toString().split('/ ').elementAt(1)}');
                             Navigator.push(
                               context,
                               MaterialPageRoute(

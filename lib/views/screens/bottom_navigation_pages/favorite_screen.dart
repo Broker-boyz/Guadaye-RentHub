@@ -2,6 +2,8 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
@@ -125,7 +127,7 @@ class FavoriteScreen extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(
-                                  width: 30,
+                                  width: 10,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(

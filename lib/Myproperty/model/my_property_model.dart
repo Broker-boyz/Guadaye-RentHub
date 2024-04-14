@@ -126,6 +126,7 @@ class MyProperty extends Equatable {
 
   factory MyProperty.fromMap(Map<String, dynamic> map) {
   
+  
     return MyProperty(
       id: map['id'] as String,
       title: map['title'] as String,
