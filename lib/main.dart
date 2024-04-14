@@ -10,6 +10,7 @@ import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/controllers/theme_provider/theme_provider.dart';
 import 'package:gojo_renthub/routes/routes.dart';
 import 'package:gojo_renthub/views/screens/auth/authpage.dart';
+import 'package:gojo_renthub/views/screens/tabs/bloc/favorite_bloc.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,9 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => PropertyBloc(repo: MyPropertyRepo()),
+        ),
+        BlocProvider(
+          create: ((context) => FavoriteBloc()),
         ),
         Provider<UserProvider>(
           create: (context) => UserProvider(),

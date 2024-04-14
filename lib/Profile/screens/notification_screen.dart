@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gojo_renthub/Myproperty/model/notification_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -60,7 +61,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 ),
               ),
               const SizedBox(height: 15),
-            FutureBuilder(
+            FutureBuilder<List<MyNotification>>(
               future: _repo.fetchNotifications(user!.uid),
               builder: (context, snapshot) {
               if(snapshot.connectionState == ConnectionState.waiting){
@@ -68,6 +69,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   child: CircularProgressIndicator(),
                 );
               }else if(snapshot.hasData){
+                final sData = snapshot.data;
                 return Expanded(
                   child: ListView.builder(
                     itemCount: snapshot.data!.length,

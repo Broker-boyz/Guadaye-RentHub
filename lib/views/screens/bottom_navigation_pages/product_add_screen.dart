@@ -70,6 +70,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         houseRules: widget.houseRules,
         city: widget.address.split(',').elementAt(0),
         subCity: widget.address.split(', ').elementAt(1),
+        isFavorite: false,
       ),
       userId: widget.user.uid,
       images: widget.images,

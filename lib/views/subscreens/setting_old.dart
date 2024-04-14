@@ -253,14 +253,14 @@ class SettingsPage extends StatelessWidget {
                         FontWeight.bold,
                         1),
                   ),
-                  // trailing: Switch(
-                  //   value: themeProvider.isDarkMode ?? false,
-                  //   onChanged: (bool value) {
-                  //     themeProvider.toggleTheme();
-                  //   },
-                  //   activeColor: const Color.fromARGB(255, 20, 70, 111),
-                  //   activeTrackColor: Colors.blueAccent[100],
-                  // ),
+                  trailing: Switch(
+                    value: themeProvider.isDarkMode,
+                    onChanged: (bool value) {
+                      themeProvider.toggleTheme();
+                    },
+                    activeColor: const Color.fromARGB(255, 20, 70, 111),
+                    activeTrackColor: Colors.blueAccent[100],
+                  ),
                 ),
               ],
             ),
