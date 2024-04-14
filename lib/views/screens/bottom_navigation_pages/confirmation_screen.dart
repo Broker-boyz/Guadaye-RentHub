@@ -137,7 +137,7 @@ class _CommissionConfirmationScreenState
                       propertyConfirmation(
                           context, 'Owner: ', widget.user.email.toString()),
                       propertyConfirmation(
-                          context, 'Property Address: ', widget.address),
+                          context, 'Property Address: ', widget.address.split(',').elementAt(0)),
                       propertyConfirmation(context, 'Rooms: ', widget.rooms.substring(0,14)),
                       propertyConfirmation(
                           context, 'House Type: ', widget.houseType),

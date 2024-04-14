@@ -6,15 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Profile/user_model/user.dart';
-import 'package:gojo_renthub/otp/otp_registration_page.dart';
-import 'package:gojo_renthub/routes/routes.dart';
 import 'package:gojo_renthub/views/screens/auth/authpage.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/complete_registration_screen.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/confirm_email_verification_screen.dart';
-import 'package:gojo_renthub/views/screens/login_and_register_pages/phone_auth_screen.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/verify_email_screen.dart';
 import 'package:gojo_renthub/views/shared/snackbars/snackbar.dart';
 
@@ -158,20 +154,76 @@ class UserProvider extends ChangeNotifier {
     await loadUserInfo(userId, context);
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) =>  VerifyEmailScreen(accountType: accountType,)),
+        MaterialPageRoute(
+            builder: (context) => VerifyEmailScreen(
+                  accountType: accountType,
+                )),
         (route) => false);
     CustomSnackBar()
         .showSnackBar(context, 'Success!', 'Profile updated successfully!');
   }
 
+  Future<void> completeGoogleSignIn(
+    String userId,
+    String username,
+    String gender,
+    String address,
+    String phoneNumber,
+    BuildContext context,
+  ) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Stack(children: [
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+            child: Container(
+              width: double.infinity,
+            ),
+          ),
+        ]);
+      },
+    );
+    CollectionReference userCollection =
+        FirebaseFirestore.instance.collection('users');
+    DocumentReference userReference = userCollection.doc(userId);
+
+    DocumentSnapshot userSnapshot = await userReference.get();
+
+    // String updatedName = userSnapshot.get('username');
+
+    // updatedName = username;
+    await userReference.update({
+      'username': username,
+      'gender': gender,
+      'address': address,
+      'phone-number': phoneNumber,
+    });
+    // await FirebaseAuth.instance.currentUser!.updatePhotoURL(imagePath);
+
+    await loadUserInfo(userId, context);
+    await reloadUser(context);
+    // Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => const AuthPage()),
+    //     (route) => false);
+    // Navigator.pop(context);
+    CustomSnackBar()
+        .showSnackBar(context, 'Success!', 'Profile updated successfully!');
+  }
+
   Future<void> updateProfile(
-      String userId,
-      String username,
-      String gender,
-      String address,
-      String phoneNumber,
-      String imagePath,
-      BuildContext context,) async {
+    String userId,
+    String username,
+    String gender,
+    String address,
+    String phoneNumber,
+    String imagePath,
+    BuildContext context,
+  ) async {
     showDialog(
       context: context,
       builder: (context) {
@@ -212,7 +264,8 @@ class UserProvider extends ChangeNotifier {
         .showSnackBar(context, 'Success!', 'Profile updated successfully!');
   }
 
-  Future<void> sendVerificationEmail(BuildContext context, String accountType) async {
+  Future<void> sendVerificationEmail(
+      BuildContext context, String accountType) async {
     showDialog(
       context: context,
       builder: (context) {
@@ -232,7 +285,10 @@ class UserProvider extends ChangeNotifier {
     await FirebaseAuth.instance.currentUser!.sendEmailVerification();
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) =>  ConfirmEmailScreen(accoutType: accountType,)),
+        MaterialPageRoute(
+            builder: (context) => ConfirmEmailScreen(
+                  accoutType: accountType,
+                )),
         (route) => false);
     CustomSnackBar().showSnackBar(
         context, 'Success!', 'verification email sent successfully!');
@@ -263,7 +319,7 @@ class UserProvider extends ChangeNotifier {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => const OtpRegistrationPage(),
+              builder: (context) => const AuthPage(),
             ),
             (route) => false);
         CustomSnackBar()
@@ -333,8 +389,9 @@ class UserProvider extends ChangeNotifier {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            const CompleteRegistrationScreen(accoutType: 'Tenant',),
+                        builder: (context) => const CompleteRegistrationScreen(
+                          accoutType: 'Tenant',
+                        ),
                       ),
                       (route) => false);
                 },

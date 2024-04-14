@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:gojo_renthub/mapService/screen/permission_screen.dart';
+import 'package:gojo_renthub/onboarding/splash_screen.dart';
+import 'package:gojo_renthub/onboarding/welcome.dart';
 import 'package:gojo_renthub/otp/otp_registration_page.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/property_detail_page.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/confirm_email_verification_screen.dart';
@@ -26,6 +28,8 @@ class RouteClass {
   static String confirmEmail = '/confirm-email';
   static String verifyEmail = '/verify-email';
   static String otp = '/verify-otp';
+  static String splash = '/splash';
+  static String welcome = '/welcome';
  
 
   static String getHomeRoute() => homePage;
@@ -39,10 +43,25 @@ class RouteClass {
   static String getConfirmEmail() => confirmEmail;
   static String getVerifyEmail() => verifyEmail;
   static String getOtp() => otp;
+  static String getSplash() => splash;
+  static String getWelcome() => welcome;
+
   static List<GetPage> routes = [
     GetPage(
       name: forgottenPasswordPage,
       page: () => const ForgottenPasswordPage(),
+      transition: Transition.fade,
+      transitionDuration: const Duration(seconds: 1),
+    ),
+    // GetPage(
+    //   name: welcome,
+    //   page: () => const Welcome(),
+    //   transition: Transition.fade,
+    //   transitionDuration: const Duration(seconds: 1),
+    // ),
+    GetPage(
+      name: splash,
+      page: () => const SplashScreen(),
       transition: Transition.fade,
       transitionDuration: const Duration(seconds: 1),
     ),

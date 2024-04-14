@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/complete_google_sign_in_screen.dart';
+import 'package:gojo_renthub/views/screens/login_and_register_pages/loginpage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -30,8 +31,6 @@ class GoogleAuth {
         accessToken: gAuth.accessToken,
         idToken: gAuth.idToken,
       );
-
-      // Sign in with Firebase
       final userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       final User? user = userCredential.user;
@@ -41,22 +40,28 @@ class GoogleAuth {
         'email': user.email,
         'image-path': user.photoURL,
         'uid': user.uid,
+        'account-type': 'Tenant',
       }, SetOptions(merge: true));
-
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (context) => const CompleteGoogleSignInScreen(),
           ),
           (route) => false);
+      // Sign in with Firebase
+
+      // await FirebaseAuth.instance.currentUser!.updatePhotoURL(user.);
     } catch (error) {
       // Handle sign-in error
       // ignore: avoid_print
       print('Error signing in with Google: $error');
-    } finally {
-      // Dismiss the dialog after sign-in attempt
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
+      // Navigator.pop(context);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginPage(),
+          ),
+          (route) => false);
     }
   }
 }

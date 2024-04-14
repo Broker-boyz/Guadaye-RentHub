@@ -141,9 +141,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                           propertyConfirmation(
                               context, 'Owner: ', widget.user.email.toString()),
                           propertyConfirmation(
-                              context, 'Property Address: ', widget.address),
+                              context, 'Property Address: ', widget.address.split(',').elementAt(0)),
                           propertyConfirmation(
-                              context, 'Rooms: ', widget.rooms),
+                              context, 'Rooms: ', widget.rooms.substring(0,28)),
                           propertyConfirmation(
                               context, 'House Type: ', widget.houseType),
                           propertyConfirmation(context, 'Amenities: ',

@@ -14,6 +14,7 @@ import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/mapService/component/map_box.dart';
 import 'package:gojo_renthub/mapService/screen/panorama_view.dart';
+import 'package:gojo_renthub/views/screens/auth/authpage.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/component/select_rating_star.dart';
 import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
@@ -79,10 +80,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
   double rating = 0;
 
   _calculateRating(length) {
-    
     rating = widget.myProperty!.rating.reduce((a, b) => a + b) / length;
-    
-
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -91,7 +89,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
   @override
   Widget build(BuildContext context) {
     User? user = _repo.getCurrentUser();
-   MyProperty? property = widget.myProperty;
+    MyProperty? property = widget.myProperty;
     return PopScope(
       canPop: false,
       onPopInvoked: (value) {
@@ -124,10 +122,16 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                       radius: 20,
                       child: IconButton(
                           onPressed: () {
-                            Navigator.pop(context);
-                            // Get.to(() => const HomePage(),
+                            // Navigator.pop(context);
+                            // Get.to(() => const AuthPage(),
                             //     transition: Transition.fadeIn,
                             //     duration: const Duration(milliseconds: 500));
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AuthPage(),
+                                ),
+                                (route) => false);
                           },
                           icon: const Icon(
                             Icons.arrow_back_ios_new_outlined,
@@ -454,7 +458,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
         ),
         bottomNavigationBar: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.07,
+            height: MediaQuery.of(context).size.height * 0.08,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -474,7 +478,7 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                                   0),
                             ),
                             TextSpan(
-                              text: ', Month',
+                              text: '/ Month',
                               style: textStyleNunito(
                                   16,
                                   Theme.of(context).colorScheme.inversePrimary,
@@ -505,16 +509,16 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                   ),
                 ),
                 FutureBuilder(
-                future: _repo.getUserRole(user: user!),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasData) {
-                    final accountType = snapshot.data;
-                    if (accountType == 'Tenant') {
-                      return Padding(
+                  future: _repo.getUserRole(user: user!),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasData) {
+                      final accountType = snapshot.data;
+                      if (accountType == 'Tenant') {
+                        return Padding(
                           padding: const EdgeInsets.only(right: 20.0),
                           child: MaterialButton(
                             minWidth: MediaQuery.of(context).size.width * .3,
@@ -525,24 +529,24 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                             onPressed: () {
-                            Provider.of<UserProvider>(context, listen: false)
-                                .isEmailVerified(context, property.hostId);
-                          },
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .isEmailVerified(context, property.hostId);
+                            },
                             child: const Text('Rent Now',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
                                     fontSize: 18)),
                           ),
+                        );
+                      }
+                    } else {
+                      return const Center(
+                        child: Text('Error has occurred'),
                       );
                     }
-                  } else {
-                    return const Center(
-                      child: Text('Error has occurred'),
-                    );
-                  }
-                  return Container();
-                },
+                    return Container();
+                  },
                 )
               ],
             )),
@@ -745,4 +749,3 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
         });
   }
 }
-

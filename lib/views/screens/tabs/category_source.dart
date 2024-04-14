@@ -32,8 +32,8 @@ class _CategorySourceState extends State<CategorySource> {
     super.initState();
   }
 
-  _calculateRating(property, length) {
-    rating = property!.rating.reduce((a, b) => a + b) / length;
+  _calculateRating(MyProperty property, int length) {
+    rating = property.rating.reduce((a, b) => a + b) / length;
   }
 
   List<bool> isFavorites = [];
@@ -75,7 +75,7 @@ class _CategorySourceState extends State<CategorySource> {
                   return index < snapshot.data!.length
                       ? BlocBuilder<FavoriteBloc, FavoriteState>(
                           builder: (context, state) {
-                            _calculateRating(property, property!.rating.length);
+                            _calculateRating(property!, property.rating.length);
                             return Container(
                               width: MediaQuery.of(context).size.width * 0.9,
                               height: MediaQuery.of(context).size.height * 0.4,
@@ -197,7 +197,7 @@ class _CategorySourceState extends State<CategorySource> {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        Text('${property.price} ETB, Month',
+                                        Text('${property.price} ETB/ Month',
                                             style: textStyleNunito(
                                                 16,
                                                 Theme.of(context)

@@ -186,7 +186,10 @@ class _OtpRegistrationPageState extends State<OtpRegistrationPage> {
                                       });
                                     }
                                   },
-                                  child: const Text('Submit'),
+                                  child: const Text('Submit',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),),
                                 )
                               ],
                             );

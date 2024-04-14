@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
+import 'package:gojo_renthub/views/screens/bottom_navigation_pages/complete_google_sign_in_screen.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/login_or_register_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -36,10 +37,15 @@ class _AuthPageState extends State<AuthPage> {
                   final accountType = accountTypeSnapshot.data!;
                   if(accountType == 'Tenant'){
                     return const HomePage(accountType: 'Tenant',);
-                  }else {
-                    print(accountType);
+                  } else if(accountType == 'Landlord'){
                     return const HomePage(accountType: 'Landlord',);
                   }
+                  else {
+                    print(accountType);
+                    return Container();
+                    // return const CompleteGoogleSignInScreen();
+                  }
+
                 }else {
                   return Center(
                     child: Text('Error has occured: ${accountTypeSnapshot.error}'),

@@ -35,7 +35,18 @@ class EmailPasswordSignup {
         );
         userId = userCredential.user!.uid;
         // ignore: use_build_context_synchronously
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>  CompleteRegistrationScreen(accoutType: accountType,),));
+        if(userCredential.user != null){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CompleteRegistrationScreen(
+                accoutType: accountType,
+              ),
+            ));
+        }else {
+          Navigator.pop(context);
+        }
+        
         // ignore: avoid_print
         print('Sign-in successful for email: $email');
       } else {
@@ -69,7 +80,8 @@ class EmailPasswordSignup {
         });
   }
 
-  static Future addUserDetails(String fullName, String email, String accountType) async {
+  static Future addUserDetails(
+      String fullName, String email, String accountType) async {
     await FirebaseFirestore.instance.collection('users').doc(userId).set({
       'uid': userId,
       'full-name': fullName,

@@ -8,6 +8,9 @@ import 'package:gojo_renthub/Myproperty/bloc/property_bloc.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/controllers/theme_provider/theme_provider.dart';
+import 'package:gojo_renthub/onboarding/welcome.dart';
+import 'package:gojo_renthub/onboarding/welcome_bloc.dart';
+import 'package:gojo_renthub/onboarding/welcome_event.dart';
 import 'package:gojo_renthub/routes/routes.dart';
 import 'package:gojo_renthub/views/screens/auth/authpage.dart';
 import 'package:gojo_renthub/views/screens/tabs/bloc/favorite_bloc.dart';
@@ -33,17 +36,23 @@ void main() async {
         BlocProvider(
           create: ((context) => FavoriteBloc()),
         ),
+        // BlocProvider(
+        //   create: ((context) => WelcomeBloc()..add(WelcomeEvent())),
+        //   child: const Welcome(),
+        // ),
         Provider<UserProvider>(
           create: (context) => UserProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => UserProvider(),
-          child: const MyApp(),)
+          child: const MyApp(),
+        )
       ],
       child: const MyApp(),
     ),
   );
 }
+
 // 703797823
 class MyApp extends StatefulWidget {
   const MyApp({super.key});

@@ -15,7 +15,7 @@ class OtpAuth {
       required Function nextStep}) async {
     await _firebaseAuth
         .verifyPhoneNumber(
-      timeout: const Duration(seconds: 30),
+      timeout: const Duration(seconds: 120),
       phoneNumber: "+251$phone",
       verificationCompleted: (phoneAuthCredential) async {
         return;
