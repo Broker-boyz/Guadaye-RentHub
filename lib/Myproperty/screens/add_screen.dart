@@ -11,7 +11,6 @@ import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Myproperty/screens/select_location_screen.dart';
 import 'package:gojo_renthub/Myproperty/services/location_service.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/confirmation_screen.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 
@@ -44,7 +43,7 @@ class _AddScreenState extends State<AddScreen> {
     'state_district':'Addis ababa / Addis Ababa' ,
   });
   final ImagePicker _picker = ImagePicker();
-  List<File> _images = [];
+  final List<File> _images = [];
   bool? booleanValueOne = false;
   bool? booleanValueTwo = false;
   bool? booleanValueThree = false;
@@ -58,7 +57,7 @@ class _AddScreenState extends State<AddScreen> {
   int integerValueFour = 0;
 
   String _noOfRooms = '';
-  List<String> _amenitiesController = [];
+  final List<String> _amenitiesController = [];
 
   bool imagesBoolean = false;
   bool locationBoolean = false;
@@ -67,8 +66,8 @@ class _AddScreenState extends State<AddScreen> {
   Future<void> _pickImage() async {
     var image = await _picker.pickMultiImage();
     for (var imageList in image) {
-      final _doKnow = File(imageList.path);
-      _images.add(_doKnow);
+      final doKnow = File(imageList.path);
+      _images.add(doKnow);
     }
     setState(() {});
   }
@@ -109,7 +108,7 @@ class _AddScreenState extends State<AddScreen> {
       property: MyProperty(
         status: 'waiting',
         reviews: const [],
-        rating: const [3.0],
+        rating: const [3.5],
         availability: true,
         imageUrl: const [],
         id: '',
@@ -119,6 +118,7 @@ class _AddScreenState extends State<AddScreen> {
         price: price,
         hostId: user.uid,
         category: houseType,
+        isFavorite: false,
         address: address,
         availableDates: availableDates,
         amenities: amenities,
@@ -202,7 +202,7 @@ class _AddScreenState extends State<AddScreen> {
                             height: 20,
                           ),
                           const Text('Home Type'),
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width * .90,
                             child: FormBuilderDropdown<String>(
                               name: 'property type',
@@ -315,7 +315,7 @@ class _AddScreenState extends State<AddScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          Container(
+                          SizedBox(
                             height: 200,
                             width: MediaQuery.of(context).size.width * .90,
                             child: Column(
@@ -782,7 +782,7 @@ class _AddScreenState extends State<AddScreen> {
                               children: [
                                 GestureDetector(
                                   onTap: _pickImage,
-                                  child: Container(
+                                  child: SizedBox(
                                     height: 250,
                                     child: _images.isNotEmpty
                                         ? GridView.builder(
@@ -986,6 +986,9 @@ class _AddScreenState extends State<AddScreen> {
       children: [
         Text(
           title,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.inversePrimary,
+          ),
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * .90,

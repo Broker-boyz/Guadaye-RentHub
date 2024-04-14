@@ -10,6 +10,9 @@ import 'package:gojo_renthub/views/screens/login_and_register_pages/verify_email
 import 'package:gojo_renthub/views/subscreens/setting_old.dart';
 import 'package:gojo_renthub/views/subscreens/terms_and_conditions.dart';
 import 'package:gojo_renthub/views/subscreens/update_profile_screen.dart';
+import 'package:gojo_renthub/views/subscreens/setting_old.dart';
+import 'package:gojo_renthub/views/subscreens/terms_and_conditions.dart';
+import 'package:gojo_renthub/views/subscreens/update_profile_screen.dart';
 
 class RouteClass {
   static String homePage = '/';
@@ -23,6 +26,7 @@ class RouteClass {
   static String confirmEmail = '/confirm-email';
   static String verifyEmail = '/verify-email';
   static String otp = '/verify-otp';
+ 
 
   static String getHomeRoute() => homePage;
   static String getMapPermission() => mapPermissionPage;
@@ -35,7 +39,6 @@ class RouteClass {
   static String getConfirmEmail() => confirmEmail;
   static String getVerifyEmail() => verifyEmail;
   static String getOtp() => otp;
-
   static List<GetPage> routes = [
     GetPage(
       name: forgottenPasswordPage,
@@ -100,6 +103,21 @@ class RouteClass {
     GetPage(
         name: propertyDetailPage,
         page: () => PropertyDetailPage(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(seconds: 1)),
+    GetPage(
+        name: updateProfilePage,
+        page: () => UpdateProfileScreen(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(seconds: 1)),
+    GetPage(
+        name: settingsPage,
+        page: () => SettingsPage(),
+        transition: Transition.fadeIn,
+        transitionDuration: const Duration(seconds: 1)),
+    GetPage(
+        name: termsAndConditionsPage,
+        page: () => const TermsAndConditionsPage(),
         transition: Transition.fadeIn,
         transitionDuration: const Duration(seconds: 1)),
   ];

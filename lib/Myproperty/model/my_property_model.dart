@@ -18,6 +18,7 @@ class MyProperty extends Equatable {
   final List<double> rating;
   final List<String> amenities;
   final List<String> reviews;
+  final bool isFavorite;
   final bool availability;
   final double latitude;
   final double longitude;
@@ -40,6 +41,7 @@ class MyProperty extends Equatable {
     required this.rating,
     required this.amenities,
     required this.reviews,
+    required this.isFavorite,
     required this.availability,
     required this.latitude,
     required this.longitude,
@@ -63,6 +65,7 @@ class MyProperty extends Equatable {
     List<double>? rating,
     List<String>? amenities,
     List<String>? reviews,
+    bool? isFavorite,
     bool? availability,
     double? latitude,
     double? longitude,
@@ -85,6 +88,7 @@ class MyProperty extends Equatable {
       rating: rating ?? this.rating,
       amenities: amenities ?? this.amenities,
       reviews: reviews ?? this.reviews,
+      isFavorite: isFavorite ?? this.isFavorite,
       availability: availability ?? this.availability,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
@@ -110,6 +114,7 @@ class MyProperty extends Equatable {
       'rating': rating,
       'amenities': amenities,
       'reviews': reviews,
+      'isFavorite': isFavorite,
       'availability': availability,
       'latitude': latitude,
       'longitude': longitude,
@@ -120,6 +125,7 @@ class MyProperty extends Equatable {
   }
 
   factory MyProperty.fromMap(Map<String, dynamic> map) {
+  
     return MyProperty(
       id: map['id'] as String,
       title: map['title'] as String,
@@ -127,7 +133,7 @@ class MyProperty extends Equatable {
       noOfRooms: map['noOfRooms'] as String,
       price: map['price'] as int,
       hostId: map['hostId'] as String,
-      imageUrl: List<String>.from((map['imageUrl'] ?? [])),
+      imageUrl: List<String>.from((map['imageUrl'] as List)),
       category: map['category'] as String,
       address: map['address'] as String,
       status: map['status'] as String,
@@ -141,6 +147,7 @@ class MyProperty extends Equatable {
       houseRules: map['houseRules'] as String,
       city: map['city'] as String,
       subCity: map['sub-city'] as String,
+      isFavorite: map['isFavorite'] as bool,
     );
   }
 
@@ -169,6 +176,7 @@ class MyProperty extends Equatable {
       rating,
       amenities,
       reviews,
+      isFavorite,
       availability,
       latitude,
       longitude,

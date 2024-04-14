@@ -162,14 +162,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 10),
               ProfileMenuWidget(
                 title: 'Billing Detail',
-                icon: LineAwesomeIcons.wallet,
+                icon: LineAwesomeIcons.money_bill,
                 onPress: () {},
                 textColor: Theme.of(context).colorScheme.inversePrimary,
               ),
               const SizedBox(height: 10),
               ProfileMenuWidget(
                 title: 'User Management',
-                icon: LineAwesomeIcons.user_check,
+                icon: LineAwesomeIcons.user,
                 onPress: () {},
                 textColor: Theme.of(context).colorScheme.inversePrimary,
               ),
@@ -186,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 10),
               ProfileMenuWidget(
                 title: 'Log Out',
-                icon: LineAwesomeIcons.alternate_sign_out,
+                icon: LineAwesomeIcons.sign,
                 textColor: Colors.red,
                 endIcon: false,
                 onPress: () async => EmailPasswordSignout.signUserOut(),
