@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/property_detail_page.dart';
+import 'package:gojo_renthub/views/screens/home_and%20_details_page/component/select_rating_star.dart';
 import 'package:gojo_renthub/views/screens/shimmer_efffects/home_screen_shimmer_effect.dart';
 import 'package:gojo_renthub/views/screens/tabs/bloc/favorite_bloc.dart';
 import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
-import 'dart:developer' as dev show log;
 
 class CategorySource extends StatefulWidget {
   const CategorySource({super.key, required this.categoryString});
@@ -23,12 +23,17 @@ class _CategorySourceState extends State<CategorySource> {
   User user = FirebaseAuth.instance.currentUser!;
   final MyPropertyRepo _repo = MyPropertyRepo();
   late Future<List<MyProperty>> myProperty;
+  double rating = 0;
 
   @override
   void initState() {
     myProperty = _repo.loadMyProperties(widget.categoryString);
 
     super.initState();
+  }
+
+  _calculateRating(property, length) {
+    rating = property!.rating.reduce((a, b) => a + b) / length;
   }
 
   List<bool> isFavorites = [];
@@ -55,7 +60,7 @@ class _CategorySourceState extends State<CategorySource> {
             ),
           );
         } else if (snapshot.hasData) {
-          // snapshot.data!.shuffle();
+          snapshot.data!.shuffle();
 
           createFav(snapshot.data!.length + 1);
           return SizedBox(
@@ -66,10 +71,11 @@ class _CategorySourceState extends State<CategorySource> {
                   final property = index < snapshot.data!.length
                       ? snapshot.data![index]
                       : null;
-                  isFavorites[index] = property?.availability ?? false;
+                  isFavorites[index] = property?.isFavorite ?? false;
                   return index < snapshot.data!.length
                       ? BlocBuilder<FavoriteBloc, FavoriteState>(
                           builder: (context, state) {
+                            _calculateRating(property, property!.rating.length);
                             return Container(
                               width: MediaQuery.of(context).size.width * 0.9,
                               height: MediaQuery.of(context).size.height * 0.4,
@@ -106,7 +112,7 @@ class _CategorySourceState extends State<CategorySource> {
                                               BorderRadius.circular(10),
                                           image: DecorationImage(
                                             image: CachedNetworkImageProvider(
-                                              property!.imageUrl[0],
+                                              property.imageUrl[0],
                                             ),
                                             fit: BoxFit.fill,
                                           ),
@@ -148,8 +154,6 @@ class _CategorySourceState extends State<CategorySource> {
                                         ),
                                       ),
                                     )
-                                                        
-                                                      
                                   ]),
                                   const SizedBox(
                                     height: 10,
@@ -173,9 +177,13 @@ class _CategorySourceState extends State<CategorySource> {
                                                   0),
                                             ),
                                             const Spacer(),
-                                            const Icon(
-                                              Icons.star_half_outlined,
-                                              color: Colors.black,
+                                            Row(
+                                              children: [
+                                                ratingStarSelection(rating),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                              ],
                                             )
                                           ],
                                         ),
@@ -204,7 +212,7 @@ class _CategorySourceState extends State<CategorySource> {
                               ),
                             );
                           },
-                      )
+                        )
                       : SizedBox(
                           width: double.infinity,
                           height: MediaQuery.of(context).size.height * 0.29,

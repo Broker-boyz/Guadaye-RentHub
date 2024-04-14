@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:custom_map_markers/custom_map_markers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';

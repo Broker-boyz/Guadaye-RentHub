@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gojo_renthub/controllers/user_provider/user_provider.dart';
+import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/routes/routes.dart';
 import 'package:gojo_renthub/services/email/signout.dart';
 import 'package:gojo_renthub/views/shared/fonts/orbitron.dart';
 import 'package:gojo_renthub/views/shared/fonts/prata.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:modern_form_line_awesome_icons/modern_form_line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                           Get.toNamed(RouteClass.updateProfilePage);
                         },
                         icon: Icon(
-                          LineAwesomeIcons.alternate_pencil,
+                          LineAwesomeIcons.pencil,
                           color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                       ),
@@ -146,14 +146,14 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 10),
               ProfileMenuWidget(
                 title: 'Billing Detail',
-                icon: LineAwesomeIcons.wallet,
+                icon: LineAwesomeIcons.money,
                 onPress: () {},
                 textColor: Theme.of(context).colorScheme.inversePrimary,
               ),
               const SizedBox(height: 10),
               ProfileMenuWidget(
                 title: 'User Management',
-                icon: LineAwesomeIcons.user_check,
+                icon: LineAwesomeIcons.user_md,
                 onPress: () {},
                 textColor: Theme.of(context).colorScheme.inversePrimary,
               ),
@@ -170,7 +170,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 10),
               ProfileMenuWidget(
                 title: 'Log Out',
-                icon: LineAwesomeIcons.alternate_sign_out,
+                icon: LineAwesomeIcons.sign_out,
                 textColor: Colors.red,
                 endIcon: false,
                 onPress: () async => EmailPasswordSignout.signUserOut(),

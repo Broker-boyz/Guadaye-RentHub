@@ -1,10 +1,8 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/bloc/property_bloc.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
@@ -58,7 +56,7 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
         property: MyProperty(
           status: 'waiting',
           reviews: const [],
-          rating: 3.0,
+          rating: const [3.0],
           availability: true,
           imageUrl: const [],
           id: '',
@@ -68,6 +66,7 @@ class _AddNewPropertyScreenState extends State<AddNewPropertyScreen> {
           price: price,
           hostId: user.uid,
           category: category,
+          isFavorite: false,
           address: location,
           availableDates: availableDates,
           amenities: [amenities],

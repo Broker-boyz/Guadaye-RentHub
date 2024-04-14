@@ -4,7 +4,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gojo_renthub/models/user_model/user.dart';
+import 'package:gojo_renthub/Profile/user_model/user.dart';
 import 'package:gojo_renthub/views/shared/snackbars/snackbar.dart';
 
 class UserProvider extends ChangeNotifier {

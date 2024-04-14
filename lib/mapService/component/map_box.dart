@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:gojo_renthub/mapService/mapthemes/map_theme.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapBox extends StatefulWidget {
@@ -13,6 +16,7 @@ class MapBox extends StatefulWidget {
 
 class _MapBoxState extends State<MapBox> {
   BitmapDescriptor customMarker = BitmapDescriptor.defaultMarker;
+  final Completer<GoogleMapController> _controller = Completer();
 
   @override
   void initState() {
@@ -32,7 +36,7 @@ class _MapBoxState extends State<MapBox> {
                 context,
               ),
             ),
-            'assets/images/home-marker.png')
+            'assets/images/home_marker.png')
         .then(
       (icon) {
         customMarker = icon;
@@ -43,12 +47,12 @@ class _MapBoxState extends State<MapBox> {
 
   @override
   Widget build(BuildContext context) {
-    GoogleMapController? controller;
-  
+    
     return Column(
       children: [
+       
         Container(
-          height: MediaQuery.of(context).size.height / 4,
+          height: MediaQuery.of(context).size.height / 2,
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -61,23 +65,37 @@ class _MapBoxState extends State<MapBox> {
           ),
           child: GoogleMap(
             padding: const EdgeInsets.only(top: 30),
-            initialCameraPosition:
-                CameraPosition(target: widget.latLng, zoom: 10),
-            onTap: (position) {
-              controller!.animateCamera(CameraUpdate.newCameraPosition(
-                  CameraPosition(target: widget.latLng)));
+            style: MapTheme.mapThemes[2]['style'],
+            onMapCreated: (controller) {
+              _controller.complete(controller);
             },
-            myLocationButtonEnabled: true,
+            initialCameraPosition:
+                CameraPosition(target: widget.latLng, zoom: 15),
+            onTap: (position) async {
+              final GoogleMapController controller = await _controller.future;
+              controller.animateCamera(CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: widget.latLng,
+                  zoom: 15.0,
+                ),
+              ));
+             
+            },
+            myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
             zoomGesturesEnabled: false,
             mapToolbarEnabled: true,
             markers: {
               Marker(
-                  markerId: const MarkerId('id'),
-                  position: const LatLng(9.0182, 38.7525),
+                  markerId: MarkerId('${widget.latLng}'),
+                  position: widget.latLng,
                   icon: customMarker,
                   infoWindow:
-                      const InfoWindow(title: 'Address is given after booking'))
+                      const InfoWindow(
+                      snippet:
+                          'You can send rent request by pressing rent now button',
+                      title:
+                          'Contact detail is given after sending rent request')),
             },
           ),
         ),

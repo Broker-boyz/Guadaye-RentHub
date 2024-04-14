@@ -231,7 +231,7 @@ class SettingsPage extends StatelessWidget {
                         1),
                   ),
                   trailing: Switch(
-                    value: themeProvider.isDarkMode ?? false,
+                    value: themeProvider.isDarkMode,
                     onChanged: (bool value) {
                       themeProvider.toggleTheme();
                     },

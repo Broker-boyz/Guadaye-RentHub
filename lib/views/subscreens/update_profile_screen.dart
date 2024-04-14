@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gojo_renthub/controllers/user_provider/user_provider.dart';
+import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/views/shared/fonts/orbitron.dart';
 import 'package:gojo_renthub/views/shared/fonts/prata.dart';
 import 'package:gojo_renthub/views/shared/snackbars/snackbar.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:modern_form_line_awesome_icons/modern_form_line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -168,7 +168,7 @@ class UpdateProfileScreen extends StatelessWidget {
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.error),
                           ),
-                          prefixIcon: Icon(LineAwesomeIcons.user_1,
+                          prefixIcon: Icon(LineAwesomeIcons.user,
                               color: Theme.of(context).colorScheme.error),
                           errorMaxLines: 2,
                           errorStyle: textStylePrata(

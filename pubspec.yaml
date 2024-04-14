@@ -59,6 +59,8 @@ dependencies:
   panorama_viewer: ^1.0.4
   google_maps_flutter: ^2.6.0
   shimmer: ^3.0.0
+  modern_form_line_awesome_icons: ^2.0.1
+  flutter_rating_bar: ^4.0.1
 
 
 dev_dependencies:

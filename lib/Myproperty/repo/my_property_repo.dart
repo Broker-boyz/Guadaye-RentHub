@@ -86,6 +86,7 @@ class MyPropertyRepo {
           'rating': 3.0,
           'reviews': const [],
           'availability': true,
+          'isFavorite': false,
           'latitude': property.latitude,
           'longitude': property.longitude,
           'houseRules': property.houseRules,
@@ -153,6 +154,8 @@ class MyPropertyRepo {
         'noOfRooms': property.noOfRooms,
         'price': property.price,
         'category': property.category,
+        'rating': property.rating,
+        'review':property.reviews,
         'address': property.address,
         'availableDates': property.availableDates,
         'amenities': property.amenities,
@@ -163,18 +166,19 @@ class MyPropertyRepo {
   }
 
   // add review
-  Future<void> addReview(
-      {required MyProperty property,
-      required String review,
-      required double rating,
-      required String userId}) async {
+  Future<void> addReview({
+    required MyProperty property,
+    required String review,
+    required double rating,
+  }) async {
     try {
+      User? user = getCurrentUser();
       CollectionReference localReview = _firestore.collection('reviews');
       await localReview.doc(property.id).set({
         'id': property.id,
         'review': review,
         'rating': rating,
-        'userId': userId,
+        'userId': user!.uid,
         'date': Timestamp.now(),
       });
     } catch (e) {
@@ -207,10 +211,11 @@ class MyPropertyRepo {
         'address': property.address,
         'availableDates': property.availableDates,
         'amenities': property.amenities,
-        'status': 'waiting',
-        'rating': 3.0,
-        'reviews': const [],
-        'availability': true,
+        'status': property.status,
+        'rating': property.rating,
+        'reviews': property.reviews,
+        'availability': property.availability,
+        'isFavorite': property.isFavorite,
         'latitude': property.latitude,
         'longitude': property.longitude,
         'id': property.id,
@@ -229,6 +234,7 @@ class MyPropertyRepo {
   // Remove Favorite
   Future<void> removeFavorites({required MyProperty property}) async {
     try {
+     
       User user = getCurrentUser()!;
       CollectionReference favCollection = _firestore.collection('favorites');
       favCollection
