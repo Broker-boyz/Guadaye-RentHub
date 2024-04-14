@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
+import 'package:gojo_renthub/Myproperty/model/notification_model.dart';
+import 'package:gojo_renthub/Profile/user_model/user.dart';
 import 'package:uuid/uuid.dart';
 
 class MyPropertyRepo {
@@ -15,6 +17,19 @@ class MyPropertyRepo {
   // get current user
   User? getCurrentUser() {
     return _auth.currentUser;
+  }
+
+  // get current user info
+  Future<MyUser> getCurrentUserInfo()async {
+    try {
+      User? user = await _auth.currentUser;
+      final rr = await _firestore.collection('users').doc(user!.uid).get();
+      return MyUser.fromMap(rr.data()!);
+    } catch (e) {
+      print('Error while fetching user info: $e');
+      throw Exception('Failed to retrieve user info');
+      
+    }
   }
 
   // get user account type
@@ -72,7 +87,7 @@ class MyPropertyRepo {
       List<String> imageUrls = await uploadImage(images, userId, property.id);
 
       if (imageUrls.isNotEmpty) {
-        CollectionReference properties = _firestore.collection('property');
+        CollectionReference properties = _firestore.collection('properties');
         final docRef = await properties.add({
           'title': property.title,
           'description': property.description,
@@ -83,7 +98,7 @@ class MyPropertyRepo {
           'availableDates': property.availableDates,
           'amenities': property.amenities,
           'status': 'waiting',
-          'rating': 3.0,
+          'rating':property.rating,
           'reviews': const [],
           'availability': true,
           'latitude': property.latitude,
@@ -102,6 +117,54 @@ class MyPropertyRepo {
       }
     } catch (e) {
       print('Error while uploading new property: $e');
+    }
+  }
+
+  // add notification
+  Future<void> sendNotification(String userId, String hostId)async {
+    try {
+      final rr = await _firestore.collection('users').doc(hostId).get();
+      final host = MyUser.fromMap(rr.data()!);
+      CollectionReference notifications = _firestore.collection('notifications').doc(userId).collection('user-notifications');
+      await notifications.add({
+        'address': host.address,
+        'full-name': host.fullName,
+        'phone-number': host.phoneNumber,
+        'email': host.email,
+        'gender': host.gender,
+        // 'date': Timestamp.now(),
+        'uid': userId,
+      });
+      final rrr = await _firestore.collection('users').doc(userId).get();
+      final user = MyUser.fromMap(rrr.data()!);
+      CollectionReference notification = _firestore.collection('notifications').doc(hostId).collection('user-notifications');
+      await notification.add({
+        'address': user.address,
+        'full-name': user.fullName,
+        'phone-number': user.phoneNumber,
+        'email': user.email,
+        'gender': user.gender,
+        // 'date': Timestamp.now(),
+        'uid': userId,
+      });
+    } catch (e) {
+      print('Error while sending notification: $e');
+    }
+  }
+
+  // fetch all notifications
+  Future<List<MyNotification>> fetchNotifications (String userId)async {
+    try {
+      final  rr = await _firestore.collection('notifications').doc(userId).collection('user-notifications').get();
+      // QuerySnapshot querySnapshot = await notifications.get();
+      // List<MyNotification> notificationsList = [];
+      final result = rr.docs.map((data) {
+        return MyNotification.fromMap(data.data());
+      }).toList();
+      return result;
+    } catch (e) {
+      print('Error while fetching notifications: $e');
+      throw Exception('Failed to fetch notifications');
     }
   }
 

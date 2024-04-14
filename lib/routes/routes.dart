@@ -1,8 +1,12 @@
 import 'package:get/get.dart';
 import 'package:gojo_renthub/mapService/screen/permission_screen.dart';
+import 'package:gojo_renthub/otp/otp_registration_page.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/property_detail_page.dart';
+import 'package:gojo_renthub/views/screens/login_and_register_pages/confirm_email_verification_screen.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/forgottenpasswordpage.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/login_or_register_page.dart';
+import 'package:gojo_renthub/views/screens/login_and_register_pages/phone_auth_screen.dart';
+import 'package:gojo_renthub/views/screens/login_and_register_pages/verify_email_screen.dart';
 import 'package:gojo_renthub/views/subscreens/setting_old.dart';
 import 'package:gojo_renthub/views/subscreens/terms_and_conditions.dart';
 import 'package:gojo_renthub/views/subscreens/update_profile_screen.dart';
@@ -15,6 +19,10 @@ class RouteClass {
   static String settingsPage = '/settings-page';
   static String termsAndConditionsPage = '/terms-and-conditions-page';
   static String propertyDetailPage = '/property-detail-page';
+  static String phoneAuthentication = '/phone-authentication';
+  static String confirmEmail = '/confirm-email';
+  static String verifyEmail = '/verify-email';
+  static String otp = '/verify-otp';
 
   static String getHomeRoute() => homePage;
   static String getMapPermission() => mapPermissionPage;
@@ -23,11 +31,39 @@ class RouteClass {
   static String getUpdateProfilePage() => updateProfilePage;
   static String getSettingsPage() => settingsPage;
   static String getTermsAndConditionsPage() => termsAndConditionsPage;
+  static String getPhoneAuthentication() => phoneAuthentication;
+  static String getConfirmEmail() => confirmEmail;
+  static String getVerifyEmail() => verifyEmail;
+  static String getOtp() => otp;
 
   static List<GetPage> routes = [
     GetPage(
       name: forgottenPasswordPage,
       page: () => const ForgottenPasswordPage(),
+      transition: Transition.fade,
+      transitionDuration: const Duration(seconds: 1),
+    ),
+    GetPage(
+      name: otp,
+      page: () => const OtpRegistrationPage(),
+      transition: Transition.fade,
+      transitionDuration: const Duration(seconds: 1),
+    ),
+    GetPage(
+      name: verifyEmail,
+      page: () =>  VerifyEmailScreen(accountType: 'Tenant',),
+      transition: Transition.fade,
+      transitionDuration: const Duration(seconds: 1),
+    ),
+    GetPage(
+      name: confirmEmail,
+      page: () => const ConfirmEmailScreen(accoutType: 'Tenant',),
+      transition: Transition.fade,
+      transitionDuration: const Duration(seconds: 1),
+    ),
+    GetPage(
+      name: phoneAuthentication,
+      page: () => const PhoneAuthScreen(),
       transition: Transition.fade,
       transitionDuration: const Duration(seconds: 1),
     ),
@@ -61,11 +97,6 @@ class RouteClass {
       transition: Transition.fadeIn,
       transitionDuration: const Duration(seconds: 1),
     ),
-    GetPage(
-        name: mapPermissionPage,
-        page: () => const MapPermissionPage(),
-        transition: Transition.fadeIn,
-        transitionDuration: const Duration(seconds: 1)),
     GetPage(
         name: propertyDetailPage,
         page: () => PropertyDetailPage(),

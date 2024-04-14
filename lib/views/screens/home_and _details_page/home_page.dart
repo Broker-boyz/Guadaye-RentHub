@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Profile/screens/notification_screen.dart';
+import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/views/screens/tabs/categories.dart';
 import 'package:gojo_renthub/views/shared/components/widgets/Search.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   final PageController pageController;

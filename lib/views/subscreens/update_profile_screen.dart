@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
+import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
+import 'package:gojo_renthub/views/shared/fonts/metalmania.dart';
 import 'package:gojo_renthub/views/shared/fonts/orbitron.dart';
 import 'package:gojo_renthub/views/shared/fonts/prata.dart';
 import 'package:gojo_renthub/views/shared/snackbars/snackbar.dart';
@@ -15,18 +18,26 @@ import 'package:firebase_storage/firebase_storage.dart';
 final _formKey = GlobalKey<FormState>();
 
 // ignore: must_be_immutable
-class UpdateProfileScreen extends StatelessWidget {
+class UpdateProfileScreen extends StatefulWidget {
   UpdateProfileScreen({super.key});
 
-  final _firstName = TextEditingController();
-  final _lastName = TextEditingController();
-  final _userName = TextEditingController();
-  final _phoneNumber = TextEditingController();
-  final userId = FirebaseAuth.instance.currentUser!.uid;
+  @override
+  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+}
+
+class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+  final MyPropertyRepo _repo = MyPropertyRepo();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
   String? imageUrl = '';
+  String _firstValue = '';
+  File? _image;
+  final List<String> _genderOptions = ['Male', 'Female'];
 
   @override
   Widget build(BuildContext context) {
+    User? user = _repo.getCurrentUser();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -45,12 +56,12 @@ class UpdateProfileScreen extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 60,
-                    backgroundColor: Colors.amber,
-                    backgroundImage: AssetImage(
-                      'assets/icons/user.png',
-                    ),
+                    backgroundImage: _image == null
+                        ? const AssetImage('assets/images/avatar.png')
+                            as ImageProvider<Object>?
+                        : FileImage(_image!),
                   ),
                   Positioned(
                     bottom: 0,
@@ -61,15 +72,6 @@ class UpdateProfileScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                         color: Colors.blueAccent,
-                        // gradient: LinearGradient(
-                        //   begin: Alignment.topCenter,
-                        //   end: Alignment.bottomCenter,
-                        //   colors: [
-                        //     Colors.indigo.shade300,
-                        //     Colors.blue.shade300,
-                        //     Colors.blue.shade100,
-                        //   ],
-                        // ),
                       ),
                       child: IconButton(
                         color: Colors.black,
@@ -78,8 +80,13 @@ class UpdateProfileScreen extends StatelessWidget {
                           ImagePicker imagePicker = ImagePicker();
                           XFile? file = await imagePicker.pickImage(
                               source: ImageSource.gallery);
+
                           print(file?.path);
                           if (file == null) return;
+                          setState(() {
+                            _image = File(file.path);
+                          });
+                          // _image = File(file.path);
                           String uniqueFileName =
                               DateTime.now().microsecondsSinceEpoch.toString();
                           Reference referenceRoot =
@@ -108,16 +115,16 @@ class UpdateProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: _firstName,
+                      controller: _usernameController,
                       decoration: InputDecoration(
                         label: Text(
-                          'First Name',
+                          'Username',
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.error),
                         ),
@@ -133,43 +140,20 @@ class UpdateProfileScreen extends StatelessWidget {
                             1),
                       ),
                       validator: (firstName) => firstName!.length < 2
-                          ? 'First name should be at least two characters'
+                          ? 'Username should be at least two characters'
                           : null,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 20),
                     TextFormField(
-                      controller: _lastName,
-                      decoration: InputDecoration(
-                        label: Text(
-                          'Last Name',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.error),
-                        ),
-                        prefixIcon: Icon(LineAwesomeIcons.user,
-                            color: Theme.of(context).colorScheme.error),
-                        errorMaxLines: 2,
-                        errorStyle: textStylePrata(
-                            10,
-                            Theme.of(context).colorScheme.error,
-                            FontWeight.bold,
-                            1),
-                      ),
-                      validator: (lastName) => lastName!.length < 2
-                          ? 'Last name should be at least two characters'
-                          : null,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                    ),
-                    const SizedBox(height: 40),
-                    TextFormField(
-                        controller: _userName,
+                        controller: _addressController,
                         decoration: InputDecoration(
                           label: Text(
-                            'Username',
+                            'Address',
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.error),
                           ),
-                          prefixIcon: Icon(LineAwesomeIcons.user_1,
+                          prefixIcon: Icon(Icons.location_on_outlined,
                               color: Theme.of(context).colorScheme.error),
                           errorMaxLines: 2,
                           errorStyle: textStylePrata(
@@ -179,12 +163,12 @@ class UpdateProfileScreen extends StatelessWidget {
                               1),
                         ),
                         validator: (username) => username!.length < 2
-                            ? "Username should be at least two characters"
+                            ? "address should be at least two characters"
                             : null,
                         autovalidateMode: AutovalidateMode.onUserInteraction),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 20),
                     TextFormField(
-                      controller: _phoneNumber,
+                      controller: _phoneNumberController,
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                         label: Text(
@@ -206,33 +190,62 @@ class UpdateProfileScreen extends StatelessWidget {
                           : null,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
-                    const SizedBox(height: 80),
+                    const SizedBox(height: 20),
+                    FormBuilderDropdown<String>(
+                      name: 'Gender',
+                      decoration: InputDecoration(
+                        hintText: 'Gender',
+                        hintStyle: textStyleMetalMania(
+                            16,
+                            Theme.of(context).colorScheme.inversePrimary,
+                            FontWeight.normal,
+                            1),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none),
+                        fillColor: Colors.blue.withOpacity(0.1),
+                        filled: true,
+                      ),
+                      items: _genderOptions
+                          .map(
+                            (item) => DropdownMenuItem(
+                              value: item,
+                              child: Text(item),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value != null) {
+                            _firstValue = value;
+                          }
+                        });
+                      },
+                      valueTransformer: (value) => value.toString(),
+                      validator: (value) =>
+                          value == null ? 'Please select your Gender' : null,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                    ),
+                    const SizedBox(height: 30),
                     GestureDetector(
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
                           Provider.of<UserProvider>(context, listen: false)
-                              .updateUserInfo(
-                                  userId,
-                                  _userName.text,
-                                  _firstName.text,
-                                  _lastName.text,
-                                  _phoneNumber.text,
+                              .updateProfile(
+                                  user!.uid,
+                                  _usernameController.text,
+                                  _firstValue,
+                                  _addressController.text,
+                                  _phoneNumberController.text,
                                   imageUrl!,
-                                  context);
+                                  context,);
 
-                          _userName.clear();
-                          _firstName.clear();
-                          _lastName.clear();
-                          _phoneNumber.clear();
-                          _userName.clear();
+                          _usernameController.clear();
+                          _addressController.clear();
+                          _phoneNumberController.clear();
                           _formKey.currentState!.reset();
                         } else {
                           _formKey.currentState!.reset();
-                          _userName.clear();
-                          _firstName.clear();
-                          _lastName.clear();
-                          _phoneNumber.clear();
-                          _userName.clear();
                           CustomSnackBar().showSnackBar(
                               context,
                               'Wrong Credentials',
@@ -240,33 +253,21 @@ class UpdateProfileScreen extends StatelessWidget {
                         }
                       },
                       child: Container(
-                        width: double.infinity,
+                        width: 250,
                         padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(
                             Radius.circular(15),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              // offset: const Offset(0, 5),
-                              // spreadRadius: 6,
-                              // blurRadius: 12,
                               color: Colors.blueAccent,
                             )
                           ],
-                          // gradient: LinearGradient(
-                          //   begin: Alignment.topCenter,
-                          //   end: Alignment.bottomCenter,
-                          //   colors: [
-                          //     Colors.indigo.shade300,
-                          //     Colors.blue.shade300,
-                          //     Colors.blue.shade100,
-                          //   ],
-                          // ),
                         ),
                         child: Center(
                           child: Text(
-                            'Edit Profile',
+                            'Update Profile',
                             style: textStyleOrbitron(
                                 14,
                                 Theme.of(context).colorScheme.primary,
@@ -276,7 +277,7 @@ class UpdateProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 60),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),

@@ -15,7 +15,7 @@ class MyProperty extends Equatable {
   final String address;
   final String status;
   final String availableDates; // needs modification in the future
-  final double rating;
+  final List<double> rating;
   final List<String> amenities;
   final List<String> reviews;
   final bool availability;
@@ -60,7 +60,7 @@ class MyProperty extends Equatable {
     String? address,
     String? status,
     String? availableDates,
-    double? rating,
+    List<double>? rating,
     List<String>? amenities,
     List<String>? reviews,
     bool? availability,
@@ -132,7 +132,7 @@ class MyProperty extends Equatable {
       address: map['address'] as String,
       status: map['status'] as String,
       availableDates: map['availableDates'] as String,
-      rating: map['rating'] as double,
+      rating: List<double>.from((map['rating'] ?? [])),
       amenities: List<String>.from((map['amenities'] ?? [])),
       reviews: List<String>.from((map['reviews'] ?? [])),
       availability: map['availability'] as bool,

@@ -38,6 +38,7 @@ dependencies:
   equatable: ^2.0.5
   firebase_auth: null
   firebase_core: null
+  firebase_messaging: ^14.8.1
   firebase_storage: ^11.7.0
   flash: ^3.0.5+2
   flutter:

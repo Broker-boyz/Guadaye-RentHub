@@ -3,14 +3,20 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_ellipsis_text/flutter_ellipsis_text.dart';
 import 'package:get/get.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
+import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
+import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/mapService/component/map_box.dart';
 import 'package:gojo_renthub/mapService/screen/panorama_view.dart';
+import 'package:gojo_renthub/views/screens/home_and%20_details_page/contact_info_screen.dart';
 import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class PropertyDetailPage extends StatefulWidget {
   PropertyDetailPage({super.key, this.myProperty});
@@ -55,8 +61,12 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
 
   bool _isAllAmenties = false;
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final MyPropertyRepo _repo = MyPropertyRepo();
+
   @override
   Widget build(BuildContext context) {
+    User? user = _repo.getCurrentUser();
     MyProperty? property = widget.myProperty;
     return Scaffold(
       body: SingleChildScrollView(
@@ -454,23 +464,45 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: MaterialButton(
-                  minWidth: MediaQuery.of(context).size.width * .3,
-                  height: MediaQuery.of(context).size.width * .1,
-                  elevation: 0,
-                  color: Colors.black,
-                  textColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  onPressed: () {},
-                  child: const Text('Rent Now',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18)),
-                ),
+              FutureBuilder(
+                future: _repo.getUserRole(user: user!),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasData) {
+                    final accountType = snapshot.data;
+                    if (accountType == 'Tenant') {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: MaterialButton(
+                          minWidth: MediaQuery.of(context).size.width * .3,
+                          height: MediaQuery.of(context).size.width * .1,
+                          elevation: 0,
+                          color: Colors.black,
+                          textColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          onPressed: () {
+                            Provider.of<UserProvider>(context, listen: false)
+                                .isEmailVerified(context, property.hostId);
+                          },
+                          child: const Text('Rent Now',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 18)),
+                        ),
+                      );
+                    }
+                  } else {
+                    return const Center(
+                      child: Text('Error has occurred'),
+                    );
+                  }
+                  return Container();
+                },
               )
             ],
           )),

@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
+import 'package:gojo_renthub/Profile/user_model/user.dart';
 import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/routes/routes.dart';
 import 'package:gojo_renthub/services/email/signout.dart';
@@ -8,12 +11,35 @@ import 'package:gojo_renthub/views/shared/fonts/prata.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final MyPropertyRepo _repo = MyPropertyRepo();
+  MyUser? user;
+
+  Future _info() async {
+    MyUser user = await _repo.getCurrentUserInfo();
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _info();
+  //   user == null ? print('-----------------sth before full name and user is null -----------'):
+  //   print('-----------------sth before full name and user is not null -----------');
+  //   print(user!.fullName.toString());
+  // }
+
+  @override
   Widget build(BuildContext context) {
+    User? _user = _repo.getCurrentUser();
     final user = context.watch<UserProvider>().user;
+    print(user);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -22,12 +48,15 @@ class ProfileScreen extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
+              const SizedBox(height: 50),
               Stack(
                 children: [
                   CircleAvatar(
                     radius: 60,
-                    backgroundImage: Image.network(
-                      '${user?.imagePath}',
+                    backgroundImage: _user!.photoURL == null ? 
+                    const AssetImage('assets/images/avatar.png') 
+                    :Image.network(
+                      '${_user.photoURL}',
                       loadingBuilder: (BuildContext context, Widget child,
                           ImageChunkEvent? loadingProgress) {
                         if (loadingProgress == null) {
@@ -48,15 +77,6 @@ class ProfileScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                         color: Colors.blueAccent,
-                        // gradient: LinearGradient(
-                        //   begin: Alignment.topCenter,
-                        //   end: Alignment.bottomCenter,
-                        //   colors: [
-                        //     Colors.indigo.shade300,
-                        //     Colors.blue.shade300,
-                        //     Colors.blue.shade100,
-                        //   ],
-                        // ),
                       ),
                       child: IconButton(
                         color: Colors.black,
@@ -74,17 +94,24 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              Text(
-                '${user?.username}',
-                style: textStylePrata(
-                    18,
-                    Theme.of(context).colorScheme.inversePrimary,
-                    FontWeight.bold,
-                    1),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${_user.displayName}',
+                    style: textStylePrata(
+                        18,
+                        Theme.of(context).colorScheme.inversePrimary,
+                        FontWeight.bold,
+                        1),
+                  ),
+                  if(_user.emailVerified) const Icon(Icons.verified_outlined,
+                  color: Colors.blue,)
+                ],
               ),
               const SizedBox(height: 5),
               Text(
-                '${user?.email}',
+                _user.email.toString(),
                 style: textStylePrata(
                     14,
                     Theme.of(context).colorScheme.inversePrimary,
@@ -99,27 +126,15 @@ class ProfileScreen extends StatelessWidget {
                 child: Container(
                   width: 180,
                   padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
                       Radius.circular(15),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        // offset: const Offset(0, 5),
-                        // spreadRadius: 6,
-                        // blurRadius: 12,
                         color: Colors.blueAccent,
                       )
                     ],
-                    // gradient: LinearGradient(
-                    //   begin: Alignment.topCenter,
-                    //   end: Alignment.bottomCenter,
-                    //   colors: [
-                    //     Colors.indigo.shade300,
-                    //     Colors.blue.shade300,
-                    //     Colors.blue.shade100,
-                    //   ],
-                    // ),
                   ),
                   child: Center(
                     child: Text(

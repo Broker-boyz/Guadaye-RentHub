@@ -33,11 +33,11 @@ class _AuthPageState extends State<AuthPage> {
                         size: 50),
                   );
                 }else if(accountTypeSnapshot.hasData) {
-                  final _accountType = accountTypeSnapshot.data!;
-                  if(_accountType == 'Tenant'){
+                  final accountType = accountTypeSnapshot.data!;
+                  if(accountType == 'Tenant'){
                     return const HomePage(accountType: 'Tenant',);
                   }else {
-                    print(_accountType);
+                    print(accountType);
                     return const HomePage(accountType: 'Landlord',);
                   }
                 }else {

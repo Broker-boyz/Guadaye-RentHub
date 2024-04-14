@@ -12,7 +12,28 @@
           "package_name": "com.example.gojo_renthub"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "676181882639-3d4ng6pu0ofeukiikc53kdlr4hsr4vod.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gojo_renthub",
+            "certificate_hash": "67a0f296fd37f832eeb4ac308f91b917f10982dc"
+          }
+        },
+        {
+          "client_id": "676181882639-5i2ukfku6e5skdsvt7vgs8tv2rdfs3ic.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gojo_renthub",
+            "certificate_hash": "df846ae772e38c69c028dddbbfdb7434e29ccc82"
+          }
+        },
+        {
+          "client_id": "676181882639-qq96u739e9rckuaq01qg1po61r4vmsa4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD1r_eilxmpACcZ7uxjeIRWIIZ-DA4Weg0"
@@ -20,7 +41,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "676181882639-lsil6vrkvk6j1rcig1cc906vqmq2tn5u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "676181882639-8vl7p1i719s5e2j8gv25lqrnu5afe4kt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gojoRenthub"
+              }
+            }
+          ]
         }
       }
     }

@@ -40,14 +40,7 @@ class _FilterScreenState extends State<FilterScreen> {
   String _selectedCity = '';
   String _selectedSubcity = '';
 
-  RangeValues _currentRangeValues = const RangeValues(9000, 70000);
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // _priceRange();
-  //   print(_priceRangeList);
-  // }
+  RangeValues _currentRangeValues = const RangeValues(3000, 70000);
 
   @override
   Widget build(BuildContext context) {

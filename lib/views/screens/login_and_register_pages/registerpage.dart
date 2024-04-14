@@ -286,8 +286,8 @@ class _SignupPageState extends State<SignupPage> {
                 child: Container(
                   width: 250,
                   padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
+                  decoration: const BoxDecoration(
+                    borderRadius:  BorderRadius.all(
                       Radius.circular(15),
                     ),
                     boxShadow: [

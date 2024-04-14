@@ -1,10 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 
-class NotificationPage extends StatelessWidget {
+class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
 
   @override
+  State<NotificationPage> createState() => _NotificationPageState();
+}
+
+class _NotificationPageState extends State<NotificationPage> {
+  final MyPropertyRepo _repo = MyPropertyRepo();
+  @override
   Widget build(BuildContext context) {
+    User? user = _repo.getCurrentUser();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(15 + kToolbarHeight),
@@ -27,42 +36,92 @@ class NotificationPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10.0, left: 10),
-        child: ListView(
+        child: Column(
           children: [
             const Row(
-              children: [
-                Text(
-                  "Notifications ",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  "*",
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red),
-                ),
-              ],
-            ),
-            Text(
-              "You have 3 Notifications Today",
-              style: TextStyle(
-                color: Colors.grey[600],
+                children: [
+                  Text(
+                    "Notifications ",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "*",
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red),
+                  ),
+                ],
               ),
+              Text(
+                "You have 3 Notifications Today",
+                style: TextStyle(
+                  color: Colors.grey[600],
+                ),
+              ),
+              const SizedBox(height: 15),
+            FutureBuilder(
+              future: _repo.fetchNotifications(user!.uid),
+              builder: (context, snapshot) {
+              if(snapshot.connectionState == ConnectionState.waiting){
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }else if(snapshot.hasData){
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      final notification = snapshot.data![index];
+                      return NotifyCard(notification.fullName, notification.phoneNumber);
+                    },),
+                );
+              }else {
+                return const Center(
+                  child: Text('I dont know what happened to you...'),
+                );
+              }
+                
+              },
+              // child: ListView(
+              //   children: [
+              //     const Row(
+              //       children: [
+              //         Text(
+              //           "Notifications ",
+              //           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              //         ),
+              //         Text(
+              //           "*",
+              //           style: TextStyle(
+              //               fontSize: 30,
+              //               fontWeight: FontWeight.bold,
+              //               color: Colors.red),
+              //         ),
+              //       ],
+              //     ),
+              //     Text(
+              //       "You have 3 Notifications Today",
+              //       style: TextStyle(
+              //         color: Colors.grey[600],
+              //       ),
+              //     ),
+              //     const SizedBox(height: 15),
+              //     NotifyCard(),
+              //     NotifyCard(),
+              //     NotifyCard(),
+              //     const SizedBox(height: 15),
+              //     const Text(
+              //       "This Week",
+              //       style: TextStyle(fontWeight: FontWeight.w600),
+              //     ),
+              //     WeekNotifications(),
+              //     WeekNotifications(),
+              //     WeekNotifications(),
+              //     WeekNotifications()
+              //   ],
+              // ),
             ),
-            const SizedBox(height: 15),
-            NotifyCard(),
-            NotifyCard(),
-            NotifyCard(),
-            const SizedBox(height: 15),
-            const Text(
-              "This Week",
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-            WeekNotifications(),
-            WeekNotifications(),
-            WeekNotifications(),
-            WeekNotifications()
           ],
         ),
       ),
@@ -71,7 +130,7 @@ class NotificationPage extends StatelessWidget {
 }
 
 // ignore: non_constant_identifier_names
-Widget NotifyCard() {
+Widget NotifyCard(String fullname, String address) {
   return Card(
     elevation: 1,
     margin: const EdgeInsets.symmetric(
@@ -88,16 +147,16 @@ Widget NotifyCard() {
           ),
           const SizedBox(
               width: 12), // Adjust the width between the avatar and text
-          const Column(
+           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Congrats',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                fullname,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               SizedBox(height: 8),
               Text(
-                'Description goes here...',
+                address,
                 style: TextStyle(fontSize: 16),
               ),
             ],

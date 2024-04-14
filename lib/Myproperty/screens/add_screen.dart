@@ -2,14 +2,15 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:gojo_renthub/Myproperty/bloc/property_bloc.dart';
 import 'package:gojo_renthub/Myproperty/model/my_property_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
-import 'package:gojo_renthub/Myproperty/screens/confirmation_screen.dart';
 import 'package:gojo_renthub/Myproperty/screens/select_location_screen.dart';
 import 'package:gojo_renthub/Myproperty/services/location_service.dart';
+import 'package:gojo_renthub/views/screens/bottom_navigation_pages/confirmation_screen.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
@@ -38,7 +39,10 @@ class _AddScreenState extends State<AddScreen> {
   final _typeOptions = ['Apartment', 'Villa', 'House', 'Hotel', 'Condominium'];
   bool _typeHasError = false;
 
-  PickedData pickedData = PickedData(LatLong(0, 0), '', {});
+  PickedData pickedData = PickedData(const LatLong(0, 0), '', {
+    'county': 'Akaki Kaliti',
+    'state_district':'Addis ababa / Addis Ababa' ,
+  });
   final ImagePicker _picker = ImagePicker();
   List<File> _images = [];
   bool? booleanValueOne = false;
@@ -58,6 +62,7 @@ class _AddScreenState extends State<AddScreen> {
 
   bool imagesBoolean = false;
   bool locationBoolean = false;
+  bool locationBooleanVisible = false;
 
   Future<void> _pickImage() async {
     var image = await _picker.pickMultiImage();
@@ -104,7 +109,7 @@ class _AddScreenState extends State<AddScreen> {
       property: MyProperty(
         status: 'waiting',
         reviews: const [],
-        rating: 3.0,
+        rating: const [3.0],
         availability: true,
         imageUrl: const [],
         id: '',
@@ -127,12 +132,12 @@ class _AddScreenState extends State<AddScreen> {
       images: _images,
     );
     context.read<PropertyBloc>().add(property);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CommissionConfirmationScreen(
-              propertyValue: property.property.price),
-        ));
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => CommissionConfirmationScreen(
+    //           propertyValue: property.property.price),
+    //     ));
   }
 
   @override
@@ -569,6 +574,9 @@ class _AddScreenState extends State<AddScreen> {
                                         builder: (context) =>
                                             const SelectLocationScreen(),
                                       ));
+                                  setState(() {
+                                    locationBooleanVisible = true;
+                                  });
                                 },
                                 child: SizedBox(
                                   width:
@@ -581,11 +589,14 @@ class _AddScreenState extends State<AddScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Text(
-                                  'Latitude: ${pickedData.latLong.latitude} Longitude: ${pickedData.latLong.longitude} address: ${pickedData.address['country']}'),
-                              const Visibility(
-                                  visible: false,
-                                  child: Text(
+                              Visibility(
+                                visible: locationBooleanVisible,
+                                child: Text(
+                                'Selected Address: ${pickedData.address['county']}, ${pickedData.address['state_district'].toString().split('/ ').elementAt(1)}'),
+                              ),
+                              Visibility(
+                                  visible: locationBoolean,
+                                  child: const Text(
                                     'Please select the location of your house on map',
                                     style: TextStyle(
                                       color: Colors.red,
@@ -683,7 +694,7 @@ class _AddScreenState extends State<AddScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'LET US KNOW THE FAIR MARKET VALUE TODAY',
+                            'LET US KNOW HOW LONG DO YOU WANT TO RENT',
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
@@ -827,9 +838,9 @@ class _AddScreenState extends State<AddScreen> {
                                           ),
                                   ),
                                 ),
-                                const Visibility(
-                                    visible: true,
-                                    child: Text(
+                                Visibility(
+                                    visible: !imagesBoolean,
+                                    child: const Text(
                                       'select at least 3 images of your house in 360 degree',
                                       style: TextStyle(
                                         color: Colors.black,
@@ -861,79 +872,94 @@ class _AddScreenState extends State<AddScreen> {
                         backgroundColor: Colors.blueAccent,
                       ),
                       onPressed: () {
-                        // __addToAmenities(
-                        //     booleanValueOne,
-                        //     booleanValueTwo,
-                        //     booleanValueThree,
-                        //     booleanValueFour,
-                        //     booleanValueFive,
-                        //     booleanValueSix);
-                        // _noOfRooms =
-                        //     '$integerValueOne living rooms, $integerValueTwo bed rooms, $integerValueThree shower rooms, $integerValueFour kitchen rooms';
-                        // if (_formKey.currentState!.saveAndValidate()) {
-                        //   if (pickedData.latLong.latitude == 0 &&
-                        //       pickedData.latLong.longitude == 0) {
-                        //     locationBoolean = true;
-                        //     ScaffoldMessenger.of(context).showSnackBar(
-                        //       const SnackBar(
-                        //         content: Text(
-                        //           'Please select the location of your house on map and select at least 3 images of your house',
-                        //         ),
-                        //       ),
-                        //     );
-                        //   } else {
-                        //     locationBoolean = false;
-                        //   }
-                        //   if (_images.length < 1) {
-                        //     imagesBoolean = true;
-                        //     ScaffoldMessenger.of(context).showSnackBar(
-                        //       const SnackBar(
-                        //         content: Text(
-                        //           'Please select at least 3 images of your house',
-                        //         ),
-                        //       ),
-                        //     );
-                        //   } else {
-                        //     imagesBoolean = false;
-                        //   }
-                        //   print(_formKey.currentState!.value);
-                        //   print('----------name---------- ');
-                        //   print(_nameController.text);
-                        //   print('----------description---------- ');
-                        //   print(_descriptionController.text);
-                        //   print('----------house type---------- ');
-                        //   print(houseType);
-                        //   print('----------number of rooms---------- ');
-                        //   print(_noOfRooms);
-                        //   print('----------Amenities---------- ');
-                        //   debugPrint(_amenitiesController.toString());
-                        //   if (imagesBoolean == false &&
-                        //       locationBoolean == false) {
-                        //     _addProperty(
-                        //         user!,
-                        //         _noOfRooms,
-                        //         _amenitiesController,
-                        //         houseType,
-                        //         pickedData.latLong.latitude,
-                        //         pickedData.latLong.longitude,
-                        //         '${pickedData.address['county']}, ${pickedData.address['state_district'].toString().split('/ ').elementAt(1)}');
-                        //   }
-                        // } else {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     const SnackBar(
-                        //       content: Text(
-                        //         'Please fill all the fields',
-                        //       ),
-                        //     ),
-                        //   );
-                        // }
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  CommissionConfirmationScreen(
-                                      propertyValue: 6000),
-                            ));
+                        __addToAmenities(
+                            booleanValueOne,
+                            booleanValueTwo,
+                            booleanValueThree,
+                            booleanValueFour,
+                            booleanValueFive,
+                            booleanValueSix);
+                        _noOfRooms =
+                            '$integerValueOne living rooms, $integerValueTwo bed rooms, $integerValueThree shower rooms, $integerValueFour kitchen rooms';
+                        if (_formKey.currentState!.saveAndValidate()) {
+                          if (pickedData.latLong.latitude == 0 &&
+                              pickedData.latLong.longitude == 0) {
+                            locationBoolean = true;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Please select the location of your house on map and select at least 3 images of your house',
+                                ),
+                              ),
+                            );
+                          } else {
+                            locationBoolean = false;
+                          }
+                          if (_images.length < 3) {
+                            imagesBoolean = true;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Please select at least 3 images of your house',
+                                ),
+                              ),
+                            );
+                          } else {
+                            imagesBoolean = false;
+                          }
+                          print(_formKey.currentState!.value);
+                          print('----------name---------- ');
+                          print(_nameController.text);
+                          print('----------description---------- ');
+                          print(_descriptionController.text);
+                          print('----------house type---------- ');
+                          print(houseType);
+                          print('----------number of rooms---------- ');
+                          print(_noOfRooms);
+                          print('----------Amenities---------- ');
+                          debugPrint(_amenitiesController.toString());
+                          if (imagesBoolean == false &&
+                              locationBoolean == false) {
+                            // _addProperty(
+                            //     user!,
+                            //     _noOfRooms,
+                            //     _amenitiesController,
+                            //     houseType,
+                            //     pickedData.latLong.latitude,
+                            //     pickedData.latLong.longitude,
+                            //     '${pickedData.address['county']}, ${pickedData.address['state_district'].toString().split('/ ').elementAt(1)}');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CommissionConfirmationScreen(
+                                  user: user!,
+                                  name: _nameController.text,
+                                  description: _descriptionController.text,
+                                  houseRules: _houseRulesController.text,
+                                  availableDates: _availableDatesController.text,
+                                  images: _images,
+                                  rooms: _noOfRooms,
+                                  amenities: _amenitiesController,
+                                  address: 
+                                  '${pickedData.address['county']}, ${pickedData.address['state_district'].toString().split('/ ').elementAt(1)}',
+                                  houseType: houseType,
+                                  price:
+                                      int.parse(_priceController.text),
+                                      pickedData: pickedData,
+                                ),
+                              ),
+                            );
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Please fill all the fields',
+                              ),
+                            ),
+                          );
+                        }
                       },
                       child: const Text(
                         'Save',

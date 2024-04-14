@@ -34,13 +34,13 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => UserProvider(),
-          child: const ProfileScreen(),)
+          child: const MyApp(),)
       ],
       child: const MyApp(),
     ),
   );
 }
-
+// 703797823
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 

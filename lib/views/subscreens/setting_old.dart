@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:gojo_renthub/Profile/screens/notification_screen.dart';
 import 'package:gojo_renthub/controllers/theme_provider/theme_provider.dart';
+import 'package:gojo_renthub/otp/about_us.dart';
 import 'package:gojo_renthub/views/shared/fonts/prata.dart';
 import 'package:provider/provider.dart';
 
@@ -86,34 +90,43 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                ListTile(
-                  leading: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[50],
-                      borderRadius: BorderRadius.circular(25),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NotificationPage(),
+                        ));
+                  },
+                  child: ListTile(
+                    leading: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.blue[50],
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: const Icon(Icons.notifications,
+                          color: Colors.blue, size: 30),
                     ),
-                    child: const Icon(Icons.notifications,
-                        color: Colors.blue, size: 30),
-                  ),
-                  title: Text(
-                    'Notifications',
-                    style: textStylePrata(
-                        14,
-                        Theme.of(context).colorScheme.inversePrimary,
-                        FontWeight.bold,
-                        1),
-                  ),
-                  trailing: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[50],
-                      borderRadius: BorderRadius.circular(25),
+                    title: Text(
+                      'Notifications',
+                      style: textStylePrata(
+                          14,
+                          Theme.of(context).colorScheme.inversePrimary,
+                          FontWeight.bold,
+                          1),
                     ),
-                    child: const Icon(Icons.arrow_forward,
-                        color: Colors.blue, size: 30),
+                    trailing: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.blue[50],
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: const Icon(Icons.arrow_forward,
+                          color: Colors.blue, size: 30),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -179,33 +192,43 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                ListTile(
-                  leading: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[50],
-                      borderRadius: BorderRadius.circular(25),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AboutUsPage(),
+                        ));
+                  },
+                  child: ListTile(
+                    leading: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.blue[50],
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child:
+                          const Icon(Icons.info, color: Colors.blue, size: 30),
                     ),
-                    child: const Icon(Icons.info, color: Colors.blue, size: 30),
-                  ),
-                  title: Text(
-                    'About Us',
-                    style: textStylePrata(
-                        14,
-                        Theme.of(context).colorScheme.inversePrimary,
-                        FontWeight.bold,
-                        1),
-                  ),
-                  trailing: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[50],
-                      borderRadius: BorderRadius.circular(25),
+                    title: Text(
+                      'About Us',
+                      style: textStylePrata(
+                          14,
+                          Theme.of(context).colorScheme.inversePrimary,
+                          FontWeight.bold,
+                          1),
                     ),
-                    child: const Icon(Icons.arrow_forward,
-                        color: Colors.blue, size: 30),
+                    trailing: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.blue[50],
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: const Icon(Icons.arrow_forward,
+                          color: Colors.blue, size: 30),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 40.0),

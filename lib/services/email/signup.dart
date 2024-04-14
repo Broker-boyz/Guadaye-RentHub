@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gojo_renthub/views/screens/login_and_register_pages/complete_registration_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 String? userId;
@@ -34,7 +35,7 @@ class EmailPasswordSignup {
         );
         userId = userCredential.user!.uid;
         // ignore: use_build_context_synchronously
-        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>  CompleteRegistrationScreen(accoutType: accountType,),));
         // ignore: avoid_print
         print('Sign-in successful for email: $email');
       } else {
@@ -75,6 +76,7 @@ class EmailPasswordSignup {
       'email': email,
       'account-type': accountType,
     });
+    await FirebaseAuth.instance.currentUser!.updateDisplayName(fullName);
     // print(userId);
   }
 }
