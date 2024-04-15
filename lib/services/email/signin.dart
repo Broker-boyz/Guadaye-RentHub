@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gojo_renthub/views/screens/auth/authpage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class EmailPasswordSignin {
@@ -26,8 +27,14 @@ class EmailPasswordSignin {
       );
       // removes the loading screen if logging in is successful
       // ignore: use_build_context_synchronously
-      Navigator.pop(context);
-      print('Sign-in successful for email: $email');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const AuthPage(),
+        ),
+        (route) => false,
+      );
+      print('Sign-in successful for email: ${email.text}');
     } on FirebaseAuthException catch (e) {
       // removes the loading screen to show the alert
       // ignore: use_build_context_synchronously

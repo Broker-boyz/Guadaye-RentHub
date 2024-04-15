@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Profile/screens/notification_screen.dart';
-import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/views/screens/tabs/categories.dart';
 import 'package:gojo_renthub/views/shared/components/widgets/Search.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   final PageController pageController;
@@ -58,20 +56,20 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(top: 0, left: 8, right: 8, bottom: 8),
             child: Column(
               children: [
                 FirstSearchBar(
                   pageController: widget.pageController,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 12.0),
+                  padding: const EdgeInsets.only(top: 2.0),
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+                      children:[
                         TabBar(
                             physics: const BouncingScrollPhysics(),
                             indicatorWeight: 6,

@@ -77,7 +77,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       height: 50,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Expanded(
                         child: ListView.builder(
@@ -114,7 +114,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                   const SizedBox(
                                     width: 8,
                                   ),
-                                  if (index != 4) const VerticalDivider(),
+                                  // if (index != 4) const VerticalDivider(),
                                 ],
                               ),
                             );
@@ -239,6 +239,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         padding: const EdgeInsets.only(left: 17),
@@ -321,15 +322,36 @@ class _FilterScreenState extends State<FilterScreen> {
                       const SizedBox(
                         width: 20,
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black),
-                        onPressed: () {
-                          Navigator.pop(context,
+                      Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: MaterialButton(
+                            minWidth: MediaQuery.of(context).size.width * .3,
+                            height: MediaQuery.of(context).size.width * .11,
+                            elevation: 0,
+                            color: Colors.black,
+                            textColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            onPressed: () {
+                             Navigator.pop(context,
                               '$selectedHouseType/$_selectedCity/$_selectedSubcity/${_currentRangeValues.start.round()}-${_currentRangeValues.end.round()}');
-                        },
-                        child: const Text('Search'),
-                      ),
+                            },
+                            child: const Text('Search',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 18)),
+                          ),
+                        ),
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //       backgroundColor: Colors.black),
+                      //   onPressed: () {
+                      //     Navigator.pop(context,
+                      //         '$selectedHouseType/$_selectedCity/$_selectedSubcity/${_currentRangeValues.start.round()}-${_currentRangeValues.end.round()}');
+                      //   },
+                      //   child: const Text('Search'),
+                      // ),
                     ],
                   ),
                 )

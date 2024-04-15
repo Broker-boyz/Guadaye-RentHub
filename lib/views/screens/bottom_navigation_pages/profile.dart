@@ -6,6 +6,7 @@ import 'package:gojo_renthub/Profile/user_model/user.dart';
 import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/routes/routes.dart';
 import 'package:gojo_renthub/services/email/signout.dart';
+import 'package:gojo_renthub/views/screens/login_and_register_pages/login_or_register_page.dart';
 import 'package:gojo_renthub/views/shared/fonts/orbitron.dart';
 import 'package:gojo_renthub/views/shared/fonts/prata.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -21,19 +22,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final MyPropertyRepo _repo = MyPropertyRepo();
   MyUser? user;
-
-  Future _info() async {
-    MyUser user = await _repo.getCurrentUserInfo();
-  }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _info();
-  //   user == null ? print('-----------------sth before full name and user is null -----------'):
-  //   print('-----------------sth before full name and user is not null -----------');
-  //   print(user!.fullName.toString());
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -53,20 +41,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   CircleAvatar(
                     radius: 60,
-                    backgroundImage: _user!.photoURL == null ? 
-                    const AssetImage('assets/images/avatar.png') 
-                    :Image.network(
-                      '${_user.photoURL}',
-                      loadingBuilder: (BuildContext context, Widget child,
-                          ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child;
-                        } else {
-                          return const CircularProgressIndicator();
-                        }
-                      },
-                      fit: BoxFit.cover,
-                    ).image,
+                    backgroundImage: _user!.photoURL == null
+                        ? const AssetImage('assets/images/avatar.png')
+                        : Image.network(
+                            '${_user.photoURL}',
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return const CircularProgressIndicator();
+                              }
+                            },
+                            fit: BoxFit.cover,
+                          ).image,
                   ),
                   Positioned(
                     bottom: 0,
@@ -105,8 +93,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         FontWeight.bold,
                         1),
                   ),
-                  if(_user.emailVerified) const Icon(Icons.verified_outlined,
-                  color: Colors.blue,)
+                  if (_user.emailVerified)
+                    const Icon(
+                      Icons.verified_outlined,
+                      color: Colors.blue,
+                    )
                 ],
               ),
               const SizedBox(height: 5),
@@ -189,7 +180,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 icon: LineAwesomeIcons.sign,
                 textColor: Colors.red,
                 endIcon: false,
-                onPress: () async => EmailPasswordSignout.signUserOut(),
+                onPress: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Log Out'),
+                        content:
+                            const Text('Are you sure you want to log out?'),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                'Cancel',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              )),
+                          TextButton(
+                              onPressed: () {
+                                EmailPasswordSignout.signUserOut();
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginOrRegisterPage(),
+                                    ),
+                                    (route) => false);
+                              },
+                              child: const Text(
+                                'Log Out',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              )),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
             ],
           ),

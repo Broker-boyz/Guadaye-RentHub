@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chapa_unofficial/chapa_unofficial.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,13 +7,9 @@ import 'package:gojo_renthub/Myproperty/bloc/property_bloc.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
 import 'package:gojo_renthub/Profile/user_provider/user_provider.dart';
 import 'package:gojo_renthub/controllers/theme_provider/theme_provider.dart';
-import 'package:gojo_renthub/onboarding/welcome.dart';
-import 'package:gojo_renthub/onboarding/welcome_bloc.dart';
-import 'package:gojo_renthub/onboarding/welcome_event.dart';
 import 'package:gojo_renthub/routes/routes.dart';
 import 'package:gojo_renthub/views/screens/auth/authpage.dart';
 import 'package:gojo_renthub/views/screens/tabs/bloc/favorite_bloc.dart';
-import 'package:gojo_renthub/views/screens/bottom_navigation_pages/profile.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +64,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: Provider.of<ThemeProvider>(context).themeData,
       home: const AuthPage(),
-      initialRoute: RouteClass.getHomeRoute(),
+      initialRoute: RouteClass.getSplash(),
       getPages: RouteClass.routes,
     );
   }

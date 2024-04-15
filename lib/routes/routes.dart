@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:gojo_renthub/mapService/screen/permission_screen.dart';
 import 'package:gojo_renthub/onboarding/splash_screen.dart';
-import 'package:gojo_renthub/onboarding/welcome.dart';
 import 'package:gojo_renthub/otp/otp_registration_page.dart';
 import 'package:gojo_renthub/views/screens/home_and%20_details_page/property_detail_page.dart';
 import 'package:gojo_renthub/views/screens/login_and_register_pages/confirm_email_verification_screen.dart';

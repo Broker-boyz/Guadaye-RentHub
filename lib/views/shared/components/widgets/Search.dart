@@ -7,7 +7,7 @@ class FirstSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
+      padding: const EdgeInsets.only(bottom: 2.0),
       child: Container(
         decoration: const BoxDecoration(),
         child: Row(
@@ -15,7 +15,6 @@ class FirstSearchBar extends StatelessWidget {
             Expanded(
               child: Material(
                 elevation: 5,
-                // borderRadius: const BorderRadius.all(Radius.circular(27)),
                 shape: RoundedRectangleBorder(
                     side: BorderSide.none,
                     borderRadius: BorderRadius.circular(17)),

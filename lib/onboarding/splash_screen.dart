@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gojo_renthub/onboarding/welcome.dart';
+import 'package:gojo_renthub/onboarding/onboarding.dart';
 import 'package:gojo_renthub/views/screens/auth/authpage.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const Welcome(),
+          builder: (_) => const AuthPage(),
         ),
       );
     });

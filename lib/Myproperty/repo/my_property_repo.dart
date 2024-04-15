@@ -21,7 +21,7 @@ class MyPropertyRepo {
   }
 
   // get current user info
-  Future<MyUser> getCurrentUserInfo()async {
+  Future<MyUser> getCurrentUserInfo() async {
     try {
       User? user = await _auth.currentUser;
       final rr = await _firestore.collection('users').doc(user!.uid).get();
@@ -29,7 +29,6 @@ class MyPropertyRepo {
     } catch (e) {
       print('Error while fetching user info: $e');
       throw Exception('Failed to retrieve user info');
-      
     }
   }
 
@@ -58,7 +57,6 @@ class MyPropertyRepo {
       throw Exception('Failed to retrieve user role');
     }
   }
-  
 
   // upload images
   Future<List<String>> uploadImage(
@@ -102,7 +100,7 @@ class MyPropertyRepo {
           'availableDates': property.availableDates,
           'amenities': property.amenities,
           'status': 'waiting',
-          'rating':property.rating,
+          'rating': property.rating,
           'reviews': const [],
           'availability': true,
           'isFavorite': false,
@@ -126,11 +124,14 @@ class MyPropertyRepo {
   }
 
   // add notification
-  Future<void> sendNotification(String userId, String hostId)async {
+  Future<void> sendNotification(String userId, String hostId) async {
     try {
       final rr = await _firestore.collection('users').doc(hostId).get();
       final host = MyUser.fromMap(rr.data()!);
-      CollectionReference notifications = _firestore.collection('notifications').doc(userId).collection('user-notifications');
+      CollectionReference notifications = _firestore
+          .collection('notifications')
+          .doc(userId)
+          .collection('user-notifications');
       await notifications.add({
         'address': host.address,
         'full-name': host.fullName,
@@ -142,7 +143,10 @@ class MyPropertyRepo {
       });
       final rrr = await _firestore.collection('users').doc(userId).get();
       final user = MyUser.fromMap(rrr.data()!);
-      CollectionReference notification = _firestore.collection('notifications').doc(hostId).collection('user-notifications');
+      CollectionReference notification = _firestore
+          .collection('notifications')
+          .doc(hostId)
+          .collection('user-notifications');
       await notification.add({
         'address': user.address,
         'full-name': user.fullName,
@@ -158,15 +162,37 @@ class MyPropertyRepo {
   }
 
   // fetch all notifications
-  Future<List<MyNotification>> fetchNotifications (String userId)async {
+  Future<List<MyNotification>> fetchNotifications(String userId) async {
     try {
-      final  rr = await _firestore.collection('notifications').doc(userId).collection('user-notifications').get();
+      final rr = await _firestore
+          .collection('notifications')
+          .doc(userId)
+          .collection('user-notifications')
+          .get();
       // QuerySnapshot querySnapshot = await notifications.get();
       // List<MyNotification> notificationsList = [];
       final result = rr.docs.map((data) {
         return MyNotification.fromMap(data.data());
       }).toList();
       return result;
+    } catch (e) {
+      print('Error while fetching notifications: $e');
+      throw Exception('Failed to fetch notifications');
+    }
+  }
+
+  Stream<List<MyNotification>> fetchNotification(String userId) {
+    try {
+      return _firestore
+          .collection('notifications')
+          .doc(userId)
+          .collection('user-notifications')
+          .snapshots()
+          .map((snapshot) {
+        return snapshot.docs.map((doc) {
+          return MyNotification.fromMap(doc.data());
+        }).toList();
+      });
     } catch (e) {
       print('Error while fetching notifications: $e');
       throw Exception('Failed to fetch notifications');
@@ -231,28 +257,31 @@ class MyPropertyRepo {
 
   // second method
   Future<List<MyProperty>> loadMyProperty(String category) async {
-  try {
-    List<MyProperty> pro = [];
-    final rr = await _firestore
-        .collection('property')
-        .where('category', isEqualTo: category)
-        .get();
-    final result = rr.docs.map((data) {
-      final mapData = data.data();
-      if (mapData != null) {
-        final df=  MyProperty.fromMap(mapData);
-        pro.add(df);
-      } else {
-        print('Document data is null');
-        return null;
-      }
-    }).where((item) => item != null).toList();
-    return pro;
-  } catch (e) {
-    print('Error while fetching property: $e');
-    return [];
+    try {
+      List<MyProperty> pro = [];
+      final rr = await _firestore
+          .collection('property')
+          .where('category', isEqualTo: category)
+          .get();
+      final result = rr.docs
+          .map((data) {
+            final mapData = data.data();
+            if (mapData != null) {
+              final df = MyProperty.fromMap(mapData);
+              pro.add(df);
+            } else {
+              print('Document data is null');
+              return null;
+            }
+          })
+          .where((item) => item != null)
+          .toList();
+      return pro;
+    } catch (e) {
+      print('Error while fetching property: $e');
+      return [];
+    }
   }
-}
 
   // fetch price range
   Future<List<int>> getPriceRange() async {
@@ -266,9 +295,9 @@ class MyPropertyRepo {
       int minPrice = result[0];
       int maxPrice = result[0];
 
-      for(var price in result){
-        if(price < minPrice) minPrice = price;
-        if(price > maxPrice) maxPrice = price;
+      for (var price in result) {
+        if (price < minPrice) minPrice = price;
+        if (price > maxPrice) maxPrice = price;
       }
       priceRange.add(minPrice);
       priceRange.add(maxPrice);
@@ -295,7 +324,8 @@ class MyPropertyRepo {
         properties = properties.where('sub-city', isEqualTo: subCity);
       }
       if (price.isNotEmpty) {
-        properties = properties.where('price', isGreaterThanOrEqualTo: price[0]);
+        properties =
+            properties.where('price', isGreaterThanOrEqualTo: price[0]);
         properties = properties.where('price', isLessThanOrEqualTo: price[1]);
       }
 
@@ -439,8 +469,6 @@ class MyPropertyRepo {
 
   // Loading favorites
 
-  
-
   Future<Map<String, dynamic>> findOneUser(String userId) async {
     final reference = await _firestore
         .collection('users')
@@ -452,13 +480,13 @@ class MyPropertyRepo {
   }
 
   Future<int> findLength(MyProperty property) async {
-      final reviewReference = await _firestore
-          .collection('reviews')
-          .doc(property.id)
-          .collection('home-reviews')
-          .get();
+    final reviewReference = await _firestore
+        .collection('reviews')
+        .doc(property.id)
+        .collection('home-reviews')
+        .get();
     final length = reviewReference.docs.length;
-    
+
     return length;
   }
 }

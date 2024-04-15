@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gojo_renthub/Myproperty/model/notification_model.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
+import 'package:gojo_renthub/Profile/screens/notification_details.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -12,6 +13,7 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
   final MyPropertyRepo _repo = MyPropertyRepo();
+  int sData = 0;
   @override
   Widget build(BuildContext context) {
     User? user = _repo.getCurrentUser();
@@ -55,27 +57,38 @@ class _NotificationPageState extends State<NotificationPage> {
                 ],
               ),
               Text(
-                "You have 3 Notifications Today",
+                "Your Notifications are here",
                 style: TextStyle(
                   color: Colors.grey[600],
                 ),
               ),
               const SizedBox(height: 15),
-            FutureBuilder<List<MyNotification>>(
-              future: _repo.fetchNotifications(user!.uid),
+            StreamBuilder<List<MyNotification>>(
+              stream: _repo.fetchNotification(user!.uid),
               builder: (context, snapshot) {
               if(snapshot.connectionState == ConnectionState.waiting){
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }else if(snapshot.hasData){
-                final sData = snapshot.data;
+                 sData = snapshot.data!.length;
                 return Expanded(
                   child: ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       final notification = snapshot.data![index];
-                      return NotifyCard(notification.fullName, notification.phoneNumber);
+                      return GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NotificationDetailsPage(
+                                notification: notification,
+                              ),
+                            ),
+                          );
+                        },
+                        child: NotifyCard(notification.fullName, notification.phoneNumber));
                     },),
                 );
               }else {
@@ -83,46 +96,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   child: Text('I dont know what happened to you...'),
                 );
               }
-                
               },
-              // child: ListView(
-              //   children: [
-              //     const Row(
-              //       children: [
-              //         Text(
-              //           "Notifications ",
-              //           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              //         ),
-              //         Text(
-              //           "*",
-              //           style: TextStyle(
-              //               fontSize: 30,
-              //               fontWeight: FontWeight.bold,
-              //               color: Colors.red),
-              //         ),
-              //       ],
-              //     ),
-              //     Text(
-              //       "You have 3 Notifications Today",
-              //       style: TextStyle(
-              //         color: Colors.grey[600],
-              //       ),
-              //     ),
-              //     const SizedBox(height: 15),
-              //     NotifyCard(),
-              //     NotifyCard(),
-              //     NotifyCard(),
-              //     const SizedBox(height: 15),
-              //     const Text(
-              //       "This Week",
-              //       style: TextStyle(fontWeight: FontWeight.w600),
-              //     ),
-              //     WeekNotifications(),
-              //     WeekNotifications(),
-              //     WeekNotifications(),
-              //     WeekNotifications()
-              //   ],
-              // ),
             ),
           ],
         ),

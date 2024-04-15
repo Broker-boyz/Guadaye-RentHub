@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                   errorStyle: textStylePrata(10,
                       Theme.of(context).colorScheme.error, FontWeight.bold, 1),
                 ),
-                validator: validateEmail,
+                // validator: validateEmail,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
               const SizedBox(height: 10),
