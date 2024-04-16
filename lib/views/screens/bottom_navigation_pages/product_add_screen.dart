@@ -11,6 +11,7 @@ import 'package:gojo_renthub/views/shared/fonts/nunito.dart';
 
 import 'package:gojo_renthub/views/shared/fonts/orbitron.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 
 class ProductAddScreen extends StatefulWidget {
@@ -115,10 +116,10 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
           },
           builder: (context, state) {
             if (state is PropertyLoading) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.black,
-                ),
+              return Center(
+                child: LoadingAnimationWidget.dotsTriangle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                    size: 50),
               );
             }
             return Padding(
@@ -140,10 +141,10 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         children: [
                           propertyConfirmation(
                               context, 'Owner: ', widget.user.email.toString()),
-                          propertyConfirmation(
-                              context, 'Property Address: ', widget.address.split(',').elementAt(0)),
-                          propertyConfirmation(
-                              context, 'Rooms: ', widget.rooms.substring(0,28)),
+                          propertyConfirmation(context, 'Property Address: ',
+                              widget.address.split(',').elementAt(0)),
+                          propertyConfirmation(context, 'Rooms: ',
+                              widget.rooms.substring(0, 28)),
                           propertyConfirmation(
                               context, 'House Type: ', widget.houseType),
                           propertyConfirmation(context, 'Amenities: ',
@@ -168,10 +169,10 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             0)),
                   ),
                   const SizedBox(height: 20.0),
-                  Row(
+                  Column(
                     children: [
                       Text(
-                        'You have successfully paid your Estimated Commission:',
+                        'You have successfully paid your Estimated Commission: ETB ${(widget.price * 0.04).ceilToDouble()}',
                         style: textStyleNunito(
                             18,
                             Theme.of(context).colorScheme.inversePrimary,
@@ -181,14 +182,14 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       const SizedBox(
                         width: 10,
                       ),
-                      Text(
-                        'ETB ${widget.price * 0.04}',
-                        style: textStyleNunito(
-                            18,
-                            Theme.of(context).colorScheme.inversePrimary,
-                            FontWeight.w900,
-                            0),
-                      ),
+                      // Text(
+                      //   'ETB ${(widget.price * 0.04).round()}',
+                      //   style: textStyleNunito(
+                      //       18,
+                      //       Theme.of(context).colorScheme.inversePrimary,
+                      //       FontWeight.w900,
+                      //       0),
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 20.0),

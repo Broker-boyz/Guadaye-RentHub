@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gojo_renthub/Myproperty/repo/my_property_repo.dart';
+import 'package:gojo_renthub/onboarding/onboard.dart';
 import 'package:gojo_renthub/onboarding/onboarding.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/complete_google_sign_in_screen.dart';
 import 'package:gojo_renthub/views/screens/bottom_navigation_pages/homepage.dart';
@@ -55,7 +56,7 @@ class _AuthPageState extends State<AuthPage> {
               },);
             // return HomePage();
           } else {
-            return const OnboardingPage();
+            return const OnBoard();
           }
         },
       ),

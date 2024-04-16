@@ -49,6 +49,7 @@ dependencies:
   flutter_custom_clippers: ^2.1.0
   flutter_ellipsis_text: ^1.0.1
   flutter_form_builder: ^9.2.1
+  flutter_rating_bar: ^4.0.1
   flutter_screenutil: ^5.9.0
   geolocator: ^10.1.1
   get: ^4.6.6
@@ -64,14 +65,14 @@ dependencies:
   permission_handler: ^11.3.1
   provider: ^6.1.2
   shimmer: ^3.0.0
-  flutter_rating_bar: ^4.0.1
+  smooth_page_indicator: ^1.1.0
   timeago: ^3.6.1
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.13.1"
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.13.1"
 
 flutter_launcher_icons:
   android: "launcher_icon"

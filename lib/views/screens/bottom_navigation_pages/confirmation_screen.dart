@@ -87,7 +87,7 @@ class _CommissionConfirmationScreenState
             const SnackBar(content: Text('An Error has occurred')));
         message = 'error';
       },
-      amount: finalTotal.toString(),
+      amount: finalTotal.ceilToDouble().toString(),
       currency: 'ETB',
       txRef: txRef,
     );
@@ -177,7 +177,7 @@ class _CommissionConfirmationScreenState
                     width: 10,
                   ),
                   Text(
-                    'ETB $commissionAmount',
+                    'ETB ${commissionAmount.ceilToDouble()}',
                     style: textStyleNunito(
                         18,
                         Theme.of(context).colorScheme.inversePrimary,
@@ -300,7 +300,7 @@ class _CommissionConfirmationScreenState
               ),
               const SizedBox(height: 20.0),
               const Text(
-                'Note: Commission fee will only be charged upon successful rental agreement.',
+                'Note: Commission fee will only be charged upon successful listing your property.',
                 style: TextStyle(fontSize: 12.0),
               ),
             ],

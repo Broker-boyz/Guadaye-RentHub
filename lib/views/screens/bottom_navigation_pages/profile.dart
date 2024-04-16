@@ -177,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 10),
               ProfileMenuWidget(
                 title: 'Log Out',
-                icon: LineAwesomeIcons.sign,
+                icon: Icons.logout,
                 textColor: Colors.red,
                 endIcon: false,
                 onPress: () {
