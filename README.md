@@ -1,4 +1,4 @@
-# Gojo-RentHub : Home rent mobile app
+# Guadaye-RentHub : Home rent mobile app
 
 ## Introduction
 
